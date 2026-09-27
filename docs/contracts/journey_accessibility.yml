@@ -1,0 +1,44 @@
+# J-DEMO-A11Y — keyboard / screen-reader path through the demo (INV-D7)
+journey_meta:
+  id: J-DEMO-A11Y
+  from_spec: "docs/prd.md"
+  covers_reqs: [INV-D7, US-3]
+  type: "e2e"
+  dod_criticality: important
+  # failing: accessibility.spec.ts expects start button text "Try RunTag Demo"
+  # (PRD §8) but Scene1Hook.tsx renders "Try Interactive Demo →".
+  status: failing
+  last_verified: "2026-09-27"
+  owner: "@hulupeep"
+
+preconditions:
+  - description: "None - fresh page load, keyboard only"
+    setup_hint: null
+
+steps:
+  - step: 1
+    name: "Tab reaches every interactive element with a visible focus ring"
+    required_elements:
+      - selector: "[data-testid='start-demo-button']"
+  - step: 2
+    name: "Page exposes ARIA landmarks; buttons have accessible names"
+    required_elements:
+      - selector: "main"
+  - step: 3
+    name: "Scene changes announced via aria-live region"
+    required_elements:
+      - selector: "[aria-live]"
+  - step: 4
+    name: "Focus moves sensibly on scene transition; never lost"
+    required_elements:
+      - selector: "[data-testid='demo-container']"
+  - step: 5
+    name: "prefers-reduced-motion minimises animation without losing content"
+
+wcag:
+  level: AA
+  contrast_normal_text: "4.5:1"
+  contrast_large_text: "3:1"
+
+test_hooks:
+  e2e_test_file: "tests/e2e/accessibility.spec.ts"

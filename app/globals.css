@@ -1,0 +1,401 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --runtag-black: #0a0a0a;
+  --runtag-white: #f5f5f0;
+  --runtag-green: #34c759;
+  --runtag-red: #ff3b30;
+  --runtag-gray: #86868b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--runtag-black);
+  color: var(--runtag-white);
+}
+
+/* Scene container */
+.scene {
+  @apply min-h-screen w-full flex flex-col items-center justify-center p-6;
+}
+
+/* Split layout for desktop */
+.split-view {
+  @apply flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 w-full max-w-6xl;
+}
+
+.split-left,
+.split-right {
+  @apply flex-1 flex items-center justify-center;
+}
+
+/* NFC Tag styling */
+.nfc-tag {
+  @apply relative w-20 h-20 rounded-full bg-runtag-white cursor-pointer;
+  @apply flex items-center justify-center;
+  @apply transition-all duration-200;
+  @apply hover:scale-105 focus:outline-none focus:ring-4 focus:ring-runtag-green focus:ring-opacity-50;
+}
+
+.nfc-tag[data-glowing="true"] {
+  @apply animate-pulse-glow;
+}
+
+.nfc-ripple {
+  @apply absolute inset-0 rounded-full bg-runtag-green;
+  @apply animate-nfc-ripple;
+  pointer-events: none;
+}
+
+/* iPhone Mockup */
+.iphone-mockup {
+  @apply relative w-64 h-[520px] bg-runtag-black rounded-[40px] border-4 border-gray-800;
+  @apply shadow-2xl overflow-hidden;
+}
+
+.iphone-screen {
+  @apply absolute inset-4 bg-runtag-black rounded-[30px] overflow-hidden;
+  @apply flex flex-col items-center justify-center;
+}
+
+.iphone-notch {
+  @apply absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-runtag-black rounded-b-2xl z-10;
+}
+
+/* Chain visual */
+.chain-visual {
+  @apply flex gap-2 items-center justify-center;
+}
+
+.chain-day {
+  @apply w-10 h-10 rounded-full flex items-center justify-center font-headline text-lg;
+  @apply transition-all duration-300;
+}
+
+.chain-day.completed {
+  @apply bg-runtag-green text-runtag-black;
+}
+
+.chain-day.current {
+  @apply bg-runtag-green text-runtag-black animate-chain-pop;
+}
+
+.chain-day.pending {
+  @apply border-2 border-gray-600 text-gray-600;
+}
+
+/* Runner animation */
+.runner-path {
+  @apply relative w-full h-32 overflow-hidden;
+}
+
+.runner-silhouette {
+  @apply absolute bottom-0 w-8 h-12;
+  @apply animate-runner;
+}
+
+.runner-dotted-path {
+  @apply absolute bottom-2 left-0 right-0 h-0.5;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--runtag-gray) 0,
+    var(--runtag-gray) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+}
+
+/* Tree illustration */
+.tree-container {
+  @apply relative w-48 h-64;
+}
+
+.tree-trunk {
+  @apply absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-24 bg-amber-800 rounded;
+}
+
+.tree-canopy {
+  @apply absolute bottom-16 left-1/2 -translate-x-1/2 w-40 h-40;
+  @apply bg-green-800 rounded-full;
+}
+
+/* Map view */
+.map-view {
+  @apply relative w-full max-w-md h-64 bg-gray-900 rounded-xl overflow-hidden;
+}
+
+.map-tag {
+  @apply absolute w-4 h-4 bg-runtag-green rounded-full;
+  @apply shadow-lg;
+}
+
+.map-path {
+  @apply absolute h-0.5 bg-gray-700 opacity-50;
+}
+
+/* CTA button */
+.cta-button {
+  @apply px-8 py-4 bg-runtag-green text-runtag-black font-headline text-xl;
+  @apply rounded-full cursor-pointer transition-all duration-200;
+  @apply hover:scale-105 hover:shadow-lg hover:shadow-runtag-green/30;
+  @apply focus:outline-none focus:ring-4 focus:ring-runtag-green focus:ring-opacity-50;
+  @apply active:scale-95;
+}
+
+.cta-button.secondary {
+  @apply bg-transparent border-2 border-runtag-white text-runtag-white;
+  @apply hover:bg-runtag-white hover:text-runtag-black;
+}
+
+/* Form elements */
+.email-input {
+  @apply px-6 py-4 bg-gray-900 text-runtag-white font-body;
+  @apply rounded-full border-2 border-gray-700 w-full max-w-sm;
+  @apply focus:outline-none focus:border-runtag-green;
+  @apply placeholder:text-gray-600;
+}
+
+/* Typography */
+.headline {
+  @apply font-headline text-5xl md:text-7xl tracking-tight;
+}
+
+.subline {
+  @apply font-body text-lg md:text-xl text-runtag-gray;
+}
+
+.narrative {
+  @apply font-body text-xl md:text-2xl text-center max-w-md;
+}
+
+/* Status display */
+.status-badge {
+  @apply font-headline text-4xl text-runtag-green;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus visible styles */
+:focus-visible {
+  @apply outline-2 outline-offset-2 outline-runtag-green;
+}
+
+/* ==========================================
+   LANDING PAGE STYLES
+   ========================================== */
+
+/* Hero Section */
+.hero-section {
+  @apply min-h-screen flex flex-col justify-center p-8 relative;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255,255,255,0.02) 2px,
+    rgba(255,255,255,0.02) 4px
+  );
+  pointer-events: none;
+}
+
+.hero-headline {
+  @apply font-headline uppercase leading-[0.9] tracking-tight mb-8;
+  font-size: clamp(3rem, 15vw, 12rem);
+}
+
+.hero-subhead {
+  @apply font-body text-runtag-gray max-w-[500px] mb-12;
+  font-size: clamp(1rem, 2vw, 1.4rem);
+}
+
+/* Stats Section */
+.stats-waste {
+  @apply flex flex-wrap gap-8 md:gap-12 py-8;
+  @apply border-t border-b border-white/10;
+}
+
+.stat {
+  @apply opacity-60;
+}
+
+.stat-number {
+  @apply font-headline text-5xl text-runtag-red line-through;
+}
+
+.stat-label {
+  @apply font-body text-xs uppercase tracking-widest;
+}
+
+/* Truth Section */
+.truth-section {
+  @apply py-24 px-8;
+  background: linear-gradient(180deg, var(--runtag-black) 0%, #111 100%);
+}
+
+.truth-heading {
+  @apply font-headline uppercase mb-12;
+  font-size: clamp(2rem, 8vw, 6rem);
+}
+
+.truth-list {
+  @apply list-none max-w-[700px];
+}
+
+.truth-list li {
+  @apply py-6 border-b border-white/10 flex items-start gap-4;
+  @apply font-body text-lg;
+}
+
+.truth-list .x {
+  @apply text-runtag-red font-bold shrink-0;
+}
+
+/* Method Section */
+.method-section {
+  @apply py-24 px-8 bg-runtag-white text-runtag-black;
+}
+
+.method-heading {
+  @apply font-headline uppercase mb-4;
+  font-size: clamp(2rem, 8vw, 6rem);
+}
+
+.method-sub {
+  @apply font-body text-xl text-gray-600 max-w-[500px] mb-16;
+}
+
+.steps {
+  @apply grid gap-12 max-w-[1000px];
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.step {
+  @apply relative;
+}
+
+.step-number {
+  @apply font-headline absolute -top-8 -left-4;
+  font-size: 8rem;
+  line-height: 1;
+  color: rgba(0,0,0,0.08);
+}
+
+.step-content {
+  @apply relative z-10;
+}
+
+.step-title {
+  @apply font-headline text-3xl uppercase mb-2;
+}
+
+.step-desc {
+  @apply font-body text-gray-600;
+}
+
+/* Chain Section (Landing) */
+.chain-section {
+  @apply py-24 px-8 bg-runtag-black text-center;
+}
+
+.chain-visual-landing {
+  @apply flex justify-center gap-2 mb-12 flex-wrap px-4;
+}
+
+.chain-day-landing {
+  @apply w-10 h-10 bg-runtag-green rounded flex items-center justify-center;
+  @apply font-body text-xs font-bold text-runtag-black;
+}
+
+.chain-day-landing.today {
+  @apply bg-transparent border-2 border-dashed border-white;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { border-color: var(--runtag-white); }
+  50% { border-color: var(--runtag-green); }
+}
+
+.chain-text {
+  @apply font-headline uppercase mb-4;
+  font-size: clamp(2rem, 6vw, 4rem);
+}
+
+.chain-sub {
+  @apply font-body text-runtag-gray max-w-[400px] mx-auto;
+}
+
+/* CTA Section (Landing) */
+.cta-section-landing {
+  @apply py-24 px-8 bg-runtag-green text-runtag-black text-center;
+}
+
+.cta-heading-landing {
+  @apply font-headline uppercase mb-8 leading-[0.95];
+  font-size: clamp(2.5rem, 10vw, 8rem);
+}
+
+.cta-button-landing {
+  @apply inline-block bg-runtag-black text-runtag-white;
+  @apply px-12 py-5 font-headline text-2xl uppercase tracking-wide;
+  @apply cursor-pointer transition-all duration-200;
+  @apply hover:shadow-xl;
+}
+
+.price {
+  @apply mt-6 font-body text-sm opacity-80;
+}
+
+/* Manifesto Section */
+.manifesto {
+  @apply py-16 px-8 bg-runtag-black text-center;
+  @apply border-t border-white/10;
+}
+
+.manifesto-text {
+  @apply font-headline uppercase max-w-[800px] mx-auto leading-tight;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+/* Footer */
+.landing-footer {
+  @apply py-8 px-8 text-center font-body text-sm text-runtag-gray bg-runtag-black;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+  .stats-waste {
+    @apply gap-6;
+  }
+
+  .chain-day-landing {
+    @apply w-8 h-8 text-[0.6rem];
+  }
+
+  .step-number {
+    font-size: 5rem;
+  }
+}

@@ -1,0 +1,36 @@
+# J-DEMO-MOBILE — full demo on a phone (US-10, INV-D6)
+journey_meta:
+  id: J-DEMO-MOBILE
+  from_spec: "docs/prd.md"
+  covers_reqs: [US-10, INV-D6]
+  type: "e2e"
+  dod_criticality: important
+  status: passing
+  last_verified: "2026-09-27"
+  owner: "@hulupeep"
+
+preconditions:
+  - description: "Viewport < 768px (tests use 375x667 and iPhone 13)"
+    setup_hint: "page.setViewportSize({ width: 375, height: 667 }) or devices['iPhone 13']"
+
+steps:
+  - step: 1
+    name: "Scene 1 renders with no horizontal overflow"
+    required_elements:
+      - selector: "[data-testid='scene-1']"
+  - step: 2
+    name: "Scene 2 stacks iPhone above tree"
+    required_elements:
+      - selector: "[data-testid='iphone-mockup']"
+      - selector: "[data-testid='tree-illustration']"
+  - step: 3
+    name: "NFC tag and CTAs are >= 48x48px; body text >= 16px"
+    required_elements:
+      - selector: "[data-testid='nfc-tag']"
+  - step: 4
+    name: "Whole demo completes via touch taps"
+    required_elements:
+      - selector: "[data-testid='scene-8']"
+
+test_hooks:
+  e2e_test_file: "tests/e2e/mobile.spec.ts"

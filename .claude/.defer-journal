@@ -1,0 +1,8 @@
+# Scoped journey deferrals -- each requires a tracking issue
+# Format: J-ID: reason (#tracking-issue)
+#
+# Rules:
+# - Only listed J-IDs are skipped by journey-gate
+# - Every deferral MUST reference a tracking issue
+# - Review and prune monthly
+# - .defer-tests is IGNORED (deprecated)

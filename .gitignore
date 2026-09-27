@@ -1,0 +1,21 @@
+# deps / build
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# test output
+test-results/
+playwright-report/
+coverage/
+
+# env / platform
+.env*
+!.env.example
+.vercel
+
+# local agent/tool state
+.claude/settings.local.json
+.claude-flow/
+.swarm/
+.specflow/runs/

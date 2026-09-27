@@ -1,0 +1,94 @@
+# J-DEMO-COMPLETE — the whole 8-scene story (PRD §2, US-1..US-9)
+journey_meta:
+  id: J-DEMO-COMPLETE
+  from_spec: "docs/prd.md"
+  covers_reqs: [US-1, US-2, US-3, US-4, US-5, US-6, US-7, US-8, US-9, INV-D1, INV-D2, INV-D3, INV-D4]
+  type: "e2e"
+  dod_criticality: critical
+  status: passing
+  last_verified: "2026-09-27"
+  owner: "@hulupeep"
+
+preconditions:
+  - description: "None - fresh page load at /"
+    setup_hint: null
+
+timing:
+  tap_feedback: 100        # INV-D5 max
+  scene_transition: 500
+  auto_advance: 2000       # scene 3 -> 4
+  run_animation: 5000      # scene 4 -> 5
+  chain_pop: 400
+
+steps:
+  - step: 1
+    name: "Scene 1 hook"
+    required_elements:
+      - selector: "[data-testid='scene-1']"
+      - selector: "[data-testid='start-demo-button']"
+    expected:
+      - type: "text_visible"
+        contains: "Your watch is making you fat"
+  - step: 2
+    name: "Start demo -> Scene 2 setup (chain = 4)"
+    required_elements:
+      - selector: "[data-testid='scene-2']"
+      - selector: "[data-testid='iphone-mockup']"
+      - selector: "[data-testid='tree-illustration']"
+      - selector: "[data-testid='nfc-tag']"
+    expected:
+      - type: "text_visible"
+        contains: "It's 7am. You're at the edge of the woods."
+  - step: 3
+    name: "Tap tag -> Scene 3 tap-in (tap required, INV-D2)"
+    required_elements:
+      - selector: "[data-testid='scene-3']"
+    expected:
+      - type: "text_visible"
+        contains: "You're in. Now go."
+  - step: 4
+    name: "Scene 4 run auto-plays ~5s, no metrics (INV-D4)"
+    required_elements:
+      - selector: "[data-testid='scene-4']"
+      - selector: "[data-testid='runner-animation']"
+    expected:
+      - type: "text_visible"
+        contains: "No pace to check. No watch to glance at."
+  - step: 5
+    name: "Scene 5 tap-out requires tag tap (INV-D2)"
+    required_elements:
+      - selector: "[data-testid='scene-5']"
+      - selector: "[data-testid='nfc-tag']"
+    expected:
+      - type: "text_visible"
+        contains: "Run complete. Tap out."
+  - step: 6
+    name: "Scene 6 chain grows 4 -> 5 (INV-D3)"
+    required_elements:
+      - selector: "[data-testid='scene-6']"
+      - selector: "[data-testid='big-checkmark']"
+      - selector: "[data-testid='chain-visual']"
+    expected:
+      - type: "text_visible"
+        contains: "Day 5. Chain unbroken."
+  - step: 7
+    name: "Scene 7 discovery map"
+    required_elements:
+      - selector: "[data-testid='scene-7']"
+      - selector: "[data-testid='map-view']"
+  - step: 8
+    name: "Scene 8 CTA: waitlist + starter kit"
+    required_elements:
+      - selector: "[data-testid='scene-8']"
+    expected:
+      - type: "text_visible"
+        contains: "Stop optimizing. Start moving."
+  - step: 9
+    name: "Restart returns to Scene 1 with state reset (US-9, INV-D1)"
+    required_elements:
+      - selector: "[data-testid='restart-button']"
+
+test_hooks:
+  e2e_test_file: "tests/e2e/demo-flow.spec.ts"
+  related:
+    - "tests/invariants/invariants.spec.ts"

@@ -1,0 +1,102 @@
+contract_meta:
+  id: feature_demo
+  version: 1
+  created_from_spec: "docs/prd.md §4 Invariants (INV-D1..INV-D7)"
+  covers_reqs:
+    - INV-D3
+    - INV-D4
+    - INV-D7
+  owner: "@hulupeep"
+
+llm_policy:
+  enforce: true
+  llm_may_modify_non_negotiables: false
+  override_phrase: "override_contract: feature_demo"
+
+# Static rules only. Behavioural invariants (INV-D1 linear progression,
+# INV-D2 required taps, INV-D5 feedback timing, INV-D6 responsive) are
+# enforced by Playwright in tests/invariants/invariants.spec.ts and the
+# journey_*.yml contracts.
+rules:
+  non_negotiable:
+    - id: INV-D4
+      title: "Demo must never render performance metrics (pace, distance, time, calories, HR)"
+      scope:
+        - "app/**/*.tsx"
+        - "components/**/*.tsx"
+        - "lib/**/*.ts"
+      behavior:
+        forbidden_patterns:
+          - pattern: /\b\d+(?:[.,]\d+)?\s?(?:km|mi|miles|mph|kph|kcal|bpm)\b/i
+            message: "Numeric distance/speed/calorie/heart-rate value found — RunTag shows no metrics (INV-D4)"
+          - pattern: /\b\d{1,2}:\d{2}\s?\/\s?(?:km|mi)\b/i
+            message: "Pace value (mm:ss/km) found — RunTag shows no metrics (INV-D4)"
+        example_violation: |
+          <p>5.2 km in 28:14 — 5:25 /km</p>
+        example_compliant: |
+          <p>No pace to check. No watch to glance at.</p>
+
+    - id: INV-D3
+      title: "Chain starts at 4 and becomes 5 after the run — values live only in lib/constants.ts"
+      scope:
+        - "hooks/**/*.ts"
+        - "components/**/*.tsx"
+      behavior:
+        forbidden_patterns:
+          - pattern: /chainCount\s*[:=]\s*\d+/
+            message: "Hard-coded chainCount — use CHAIN.initial / CHAIN.afterRun from lib/constants.ts (INV-D3)"
+        example_violation: |
+          chainCount: 5,
+        example_compliant: |
+          chainCount: CHAIN.afterRun,
+
+    - id: INV-D7
+      title: "Images need alt text and tab order must stay natural"
+      scope:
+        - "app/**/*.tsx"
+        - "components/**/*.tsx"
+      behavior:
+        forbidden_patterns:
+          - pattern: /<img\s+(?![^>]*\balt\s*=)[^>]*\/?>/
+            message: "Image missing alt attribute (INV-D7)"
+          - pattern: /tabIndex\s*=\s*\{?\s*[1-9]/
+            message: "Positive tabIndex breaks keyboard order (INV-D7)"
+        example_violation: |
+          <img src="/tree.png" /> <div tabIndex={3}>
+        example_compliant: |
+          <img src="/tree.png" alt="Tree with RunTag NFC tag" /> <div tabIndex={0}>
+
+    - id: SEC-RESEND
+      title: "Waitlist Resend credentials come from env, never source"
+      scope:
+        - "app/**/*.ts"
+        - "lib/**/*.ts"
+      behavior:
+        forbidden_patterns:
+          - pattern: /\bre_[A-Za-z0-9_]{16,}\b/
+            message: "Hard-coded Resend API key — read process.env.RESEND_API_KEY"
+        example_violation: |
+          const apiKey = 're_AbCdEf1234567890xyz'
+        example_compliant: |
+          const apiKey = process.env.RESEND_API_KEY
+
+  soft:
+    - id: INV-D6-SOFT
+      title: "Tap targets should be at least 48x48px"
+      suggestion: "Use min-w-12 min-h-12 (48px) on NFC tag and CTA buttons; verified at runtime by mobile.spec.ts"
+      llm_may_bend_if:
+        - "Element is decorative and not interactive"
+
+compliance_checklist:
+  before_editing_files:
+    - question: "Does the change display any number next to a unit, a time, or a pace?"
+      if_yes: "Remove it — INV-D4"
+    - question: "Does the change set chainCount to a literal?"
+      if_yes: "Use CHAIN constants — INV-D3"
+
+test_hooks:
+  tests:
+    - file: "tests/contracts/contract-enforcement.test.js"
+      description: "Scans scoped source for forbidden_patterns"
+    - file: "tests/invariants/invariants.spec.ts"
+      description: "Runtime invariants INV-D1..INV-D7"

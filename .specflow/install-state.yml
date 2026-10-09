@@ -1,0 +1,8 @@
+schema_version: 1
+specflow_version: 0.11.1
+routing:
+  runtime: claude-code
+  template: claude-code-large-routing.yml
+  template_sha256: 9cdc42370368393d626ac16eb29ce47cb0415478669552033f370d12a3c40ba3
+  installed_sha256: 9cdc42370368393d626ac16eb29ce47cb0415478669552033f370d12a3c40ba3
+  managed: true

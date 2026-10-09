@@ -1,0 +1,17 @@
+{
+ "source": {
+  "kind": "file",
+  "path": "evidence/tier-replay/US-10.issue.json",
+  "note": "pre-issue local replay of the story draft; not live GitHub promotion"
+ },
+ "issue": {
+  "number": 0,
+  "title": "US-10: Mobile experience",
+  "body": "# US-10: Mobile experience\n\n**Priority:** P1  ·  **Journey criticality:** important  ·  **Spec depth:** thin (no tier promotion yet)\n**Source:** docs/prd.md §5 US-10, §4 invariants, §8 copy  ·  **Goal:** docs/goal.md\n**Persona:** Visitor on a phone (< 768 px)\n**Promise:** \"The whole story works one-handed on my phone.\"\n\n## Scope\n### In Scope\n- Behaviour and exact copy defined for US-10 in docs/prd.md\n### Not In Scope\n- Real mobile app, physical NFC tags, accounts, fulfilment\n\n## Data Contract\nN/A — client-side demo state only (hooks/useDemoState.ts).\n\n## Frontend Interface\ndata-testids: `iphone-mockup`, `tree-illustration`, `nfc-tag`\n\n## Invariants Referenced\n- **INV-D6** — docs/prd.md §4 / docs/contracts/feature_demo.yml\n\n## Acceptance Criteria (with verification status)\nStatuses are against the working tree at commit 41b6d95 and the captured Playwright run of 2026-09-27 (local dev server, projects: chromium + mobile/WebKit iPhone 13). A passing test case is not full journey coverage; only VERIFIED rows are proven.\n\n| AC | Criterion | Status |\n|---|---|---|\n| AC-US10-1 | iPhone mockup stacks above the tree below 768 px | VERIFIED — mobile.spec.ts:41; invariants.spec.ts:143 |\n| AC-US10-2 | All tap targets ≥ 48×48 px | PARTIAL — mobile.spec.ts:51, :62-63; start button and NFC tag only; other CTAs unchecked |\n| AC-US10-3 | No horizontal overflow at 375 px on any scene | PARTIAL — mobile.spec.ts:67-80; checks main element width on Scene 1 only, at iPhone 13 viewport (390 px), not 375 px or document scroll width |\n| AC-US10-4 | Body text ≥ 16 px | UNVERIFIED — no assertion |\n| AC-US10-5 | Entire demo completes via touch on iPhone 13 | VERIFIED — mobile.spec.ts:84-108 (mobile project, WebKit) |\n| AC-US10-6 | Landscape 667×375: no clipped content, demo completable | UNVERIFIED — no spec (SIM-6) |\n\n**Coverage:** 2 VERIFIED, 2 PARTIAL, 2 UNVERIFIED. Journey coverage incomplete — not done.\n\n## Gherkin Scenarios (PRD §5, verbatim)\n```gherkin\nFeature: Demo works on mobile devices\n\nScenario: Mobile layout adaptation\n  Given I am viewing on a device with width < 768px\n  Then the iPhone and tree should stack vertically\n  And all text should be readable\n  And all tap targets should be at least 48x48px\n```\n\n## Journey (Definition of Done)\n- **J-ID:** J-DEMO-MOBILE\n- **Mapped specs:** see Status column; each VERIFIED/PARTIAL row names file:line\n\n## Simulation Findings (proposed)\nSource: docs/specs/runtag-stories-simulation.md\n- SIM-6\n- SIM-11\n\n## Definition of Done\n- [ ] Every AC is VERIFIED by an assertion in a mapped Playwright spec\n- [ ] Mapped specs pass on chromium and mobile projects\n- [ ] `npm run test:contracts` passes\n- [ ] Journey gate Tier 1 result posted to this issue\n",
+  "labels": [],
+  "comments": []
+ },
+ "freshness": {
+  "status": "current"
+ }
+}

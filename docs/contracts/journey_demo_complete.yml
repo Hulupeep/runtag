@@ -8,6 +8,8 @@ journey_meta:
   status: passing
   last_verified: "2026-09-27"
   owner: "@hulupeep"
+  # status = mapped spec cases pass; coverage is partial: see AC tables in docs/specs/runtag-stories/US-1..US-9
+  coverage: partial
 
 preconditions:
   - description: "None - fresh page load at /"

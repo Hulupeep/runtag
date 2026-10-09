@@ -1,0 +1,9 @@
+{
+ "action": "create",
+ "repo": "Hulupeep/runtag",
+ "title": "US-3: Tap in to start the run",
+ "bodyFile": "docs/specs/runtag-stories/US-3-tap-in.md",
+ "linkedFiles": [
+  "docs/specs/runtag-stories-simulation.md"
+ ]
+}

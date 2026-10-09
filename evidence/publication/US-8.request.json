@@ -1,0 +1,9 @@
+{
+ "action": "create",
+ "repo": "Hulupeep/runtag",
+ "title": "US-8: Conversion CTA — waitlist + starter kit",
+ "bodyFile": "docs/specs/runtag-stories/US-8-cta.md",
+ "linkedFiles": [
+  "docs/specs/runtag-stories-simulation.md"
+ ]
+}

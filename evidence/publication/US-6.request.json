@@ -1,0 +1,9 @@
+{
+ "action": "create",
+ "repo": "Hulupeep/runtag",
+ "title": "US-6: Chain celebration (4 → 5)",
+ "bodyFile": "docs/specs/runtag-stories/US-6-chain.md",
+ "linkedFiles": [
+  "docs/specs/runtag-stories-simulation.md"
+ ]
+}

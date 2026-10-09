@@ -1,0 +1,9 @@
+{
+ "action": "create",
+ "repo": "Hulupeep/runtag",
+ "title": "US-4: Run animation with no metrics",
+ "bodyFile": "docs/specs/runtag-stories/US-4-run.md",
+ "linkedFiles": [
+  "docs/specs/runtag-stories-simulation.md"
+ ]
+}

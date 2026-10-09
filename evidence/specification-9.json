@@ -1,0 +1,17 @@
+{
+  "issue": {
+    "body": "# US-8: Conversion CTA — waitlist + starter kit\n\n**Priority:** P0  ·  **Journey criticality:** critical  ·  **Spec depth:** thin (no tier promotion yet)\n**Source:** docs/prd.md §5 US-8, §4 invariants, §8 copy  ·  **Goal:** docs/goal.md\n**Persona:** Convinced visitor\n**Promise:** \"I can leave my email or buy a £19 starter kit before I lose interest.\"\n\n## Scope\n### In Scope\n- Behaviour and exact copy defined for US-8 in docs/prd.md\n### Not In Scope\n- Real mobile app, physical NFC tags, accounts, fulfilment\n\n## Data Contract\n`POST /api/waitlist` body `{ email: string }` → 200 | 400 | 500 (app/api/waitlist/route.ts, Resend).\n\n## Frontend Interface\ndata-testids: `scene-8`, `restart-button`\n\n## Invariants Referenced\n- **SEC-RESEND** — docs/prd.md §4 / docs/contracts/feature_demo.yml\n\n## Acceptance Criteria (with verification status)\nStatuses are against the working tree at commit 41b6d95 and the captured Playwright run of 2026-09-27 (local dev server, projects: chromium + mobile/WebKit iPhone 13). A passing test case is not full journey coverage; only VERIFIED rows are proven.\n\n| AC | Criterion | Status |\n|---|---|---|\n| AC-US8-1 | Headline \"Stop optimizing. Start moving.\" | VERIFIED — demo-flow.spec.ts:65 |\n| AC-US8-2 | Email field with an accessible label and a \"Join the Waitlist\" submit button | PARTIAL — demo-flow.spec.ts:66 (placeholder only); \"Join the Waitlist\" NOT IMPLEMENTED; label not asserted |\n| AC-US8-3 | Separate \"Get Starter Kit - £19\" action | DEVIATION — Scene8CTA.tsx:83 uses COPY.scene8.cta (\"Get Starter Kit – £19\") as the waitlist submit label; no separate action or destination |\n| AC-US8-4 | Social proof \"2,847 chains unbroken this week\" visible | UNVERIFIED — rendered at Scene8CTA.tsx:106; no assertion |\n| AC-US8-5 | Waitlist success shows confirmation; failure (4xx/5xx, missing RESEND_API_KEY) shows a retryable error and keeps the email | UNVERIFIED — no spec (SIM-9, SIM-10) |\n| AC-US8-6 | Owner-notification email HTML-escapes the address; endpoint rate-limited with server-side validation | UNVERIFIED — app/api/waitlist/route.ts interpolates raw email into HTML and only checks includes(\"@\") (SIM-7, SIM-8) |\n\n**Coverage:** 1 VERIFIED, 1 PARTIAL, 1 DEVIATION, 3 UNVERIFIED. Journey coverage incomplete — not done.\n\n## Gherkin Scenarios (PRD §5, verbatim)\n```gherkin\nFeature: Demo ends with conversion opportunity\n\nScenario: User reaches final CTA\n  Given I am on the final scene\n  Then I should see \"Stop optimizing. Start moving.\"\n  And I should see a waitlist signup form\n  And I should see a \"Get Starter Kit\" option\n```\n\n## Journey (Definition of Done)\n- **J-ID:** J-DEMO-COMPLETE\n- **Mapped specs:** see Status column; each VERIFIED/PARTIAL row names file:line\n\n## Simulation Findings (proposed)\nSource: docs/specs/runtag-stories-simulation.md\n- SIM-7\n- SIM-8\n- SIM-9\n- SIM-10\n- Open question 1: starter-kit destination\n- Open question 2: social-proof claim\n\n## Definition of Done\n- [ ] Every AC is VERIFIED by an assertion in a mapped Playwright spec\n- [ ] Mapped specs pass on chromium and mobile projects\n- [ ] `npm run test:contracts` passes\n- [ ] Journey gate Tier 1 result posted to this issue\n",
+    "comments": [],
+    "labels": [],
+    "number": 9,
+    "title": "US-8: Conversion CTA — waitlist + starter kit"
+  },
+  "source": {
+    "kind": "github",
+    "repo": "Hulupeep/runtag",
+    "number": 9
+  },
+  "freshness": {
+    "status": "current"
+  }
+}

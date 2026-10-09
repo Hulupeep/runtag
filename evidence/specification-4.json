@@ -1,0 +1,17 @@
+{
+  "issue": {
+    "body": "# US-3: Tap in to start the run\n\n**Priority:** P0  ·  **Journey criticality:** critical  ·  **Spec depth:** thin (no tier promotion yet)\n**Source:** docs/prd.md §5 US-3, §4 invariants, §8 copy  ·  **Goal:** docs/goal.md\n**Persona:** Visitor on Scene 2 (mouse, touch or keyboard)\n**Promise:** \"Tapping the tag feels like a real NFC tap and starts my run.\"\n\n## Scope\n### In Scope\n- Behaviour and exact copy defined for US-3 in docs/prd.md\n### Not In Scope\n- Real mobile app, physical NFC tags, accounts, fulfilment\n\n## Data Contract\nN/A — client-side demo state only (hooks/useDemoState.ts).\n\n## Frontend Interface\ndata-testids: `nfc-tag`, `scene-3`\n\n## Invariants Referenced\n- **INV-D2** — docs/prd.md §4 / docs/contracts/feature_demo.yml\n- **INV-D5** — docs/prd.md §4 / docs/contracts/feature_demo.yml\n- **INV-D7** — docs/prd.md §4 / docs/contracts/feature_demo.yml\n\n## Acceptance Criteria (with verification status)\nStatuses are against the working tree at commit 41b6d95 and the captured Playwright run of 2026-09-27 (local dev server, projects: chromium + mobile/WebKit iPhone 13). A passing test case is not full journey coverage; only VERIFIED rows are proven.\n\n| AC | Criterion | Status |\n|---|---|---|\n| AC-US3-1 | Scene 2 does not advance without activating the tag | VERIFIED — invariants.spec.ts:27-28 (still Scene 2 after 2 s) |\n| AC-US3-2 | Tag activation shows visual ripple feedback within 100 ms (INV-D5) | UNVERIFIED — interactions.spec.ts:10-18 and invariants.spec.ts:99-115 assert only that Scene 3 appears (≤ 3 s); neither the ripple nor 100 ms is measured |\n| AC-US3-3 | iPhone shows \"TAGGED\" / \"Run started\" and Scene 3 shows \"You're in. Now go.\" | PARTIAL — demo-flow.spec.ts:33; only \"TAGGED\" asserted |\n| AC-US3-4 | Enter and Space on the focused tag trigger tap-in | VERIFIED — interactions.spec.ts:30-36 (Enter), :39-45 (Space) |\n| AC-US3-5 | Scene 4 begins within 3 s of tap-in | UNVERIFIED — demo-flow.spec.ts:36 allows 5 s |\n| AC-US3-6 | Rapid double activation advances exactly one scene | UNVERIFIED — no spec (SIM-1) |\n\n**Coverage:** 2 VERIFIED, 3 UNVERIFIED, 1 PARTIAL. Journey coverage incomplete — not done.\n\n## Gherkin Scenarios (PRD §5, verbatim)\n```gherkin\nFeature: User taps NFC tag to start run\n\nScenario: Successful tap in\n  Given I am on Scene 2 (The Setup)\n  When I click on the NFC tag on the tree\n  Then I should see an NFC ripple animation\n  And the iPhone screen should show \"TAGGED - Run started\"\n  And Scene 3 should display \"You're in. Now go.\"\n  And Scene 4 should begin within 3 seconds\n\nScenario: Tag is keyboard accessible\n  Given I am on Scene 2 (The Setup)\n  When I focus the NFC tag with Tab key\n  And I press Enter\n  Then the tap in sequence should trigger\n```\n\n## Journey (Definition of Done)\n- **J-ID:** J-DEMO-TAP\n- **Mapped specs:** see Status column; each VERIFIED/PARTIAL row names file:line\n\n## Simulation Findings (proposed)\nSource: docs/specs/runtag-stories-simulation.md\n- SIM-1\n\n## Definition of Done\n- [ ] Every AC is VERIFIED by an assertion in a mapped Playwright spec\n- [ ] Mapped specs pass on chromium and mobile projects\n- [ ] `npm run test:contracts` passes\n- [ ] Journey gate Tier 1 result posted to this issue\n",
+    "comments": [],
+    "labels": [],
+    "number": 4,
+    "title": "US-3: Tap in to start the run"
+  },
+  "source": {
+    "kind": "github",
+    "repo": "Hulupeep/runtag",
+    "number": 4
+  },
+  "freshness": {
+    "status": "current"
+  }
+}

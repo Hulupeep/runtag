@@ -19,3 +19,10 @@ coverage/
 .claude-flow/
 .swarm/
 .specflow/runs/
+
+# Specflow source checkout (tooling; installed into scripts/, .claude/, QA/)
+Specflow/
+
+# Specflow local journals / raw duo-build run records (keep local; repo is public)
+.specflow/duo/
+.specflow/specification/

@@ -1,0 +1,9 @@
+{
+ "action": "create",
+ "repo": "Hulupeep/runtag",
+ "title": "US-7: Discovery tease",
+ "bodyFile": "docs/specs/runtag-stories/US-7-discovery.md",
+ "linkedFiles": [
+  "docs/specs/runtag-stories-simulation.md"
+ ]
+}

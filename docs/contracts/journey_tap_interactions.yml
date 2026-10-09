@@ -8,6 +8,8 @@ journey_meta:
   status: passing
   last_verified: "2026-09-27"
   owner: "@hulupeep"
+  # status = mapped spec cases pass; coverage partial: no double-tap test, 100 ms feedback not measured, Scene 5 wait-without-tap not tested
+  coverage: partial
 
 preconditions:
   - description: "User has started the demo and is on Scene 2"

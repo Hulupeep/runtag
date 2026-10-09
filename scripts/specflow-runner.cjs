@@ -8,9 +8,13 @@
  */
 
 const { spawnSync } = require('child_process');
+const routingShadow = require('./typesafe-routing-bridge.cjs');
+const tierPolicy = require('./specflow-tier.cjs');
+const { createHash } = require('crypto');
 const { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync, appendFileSync, statSync } = require('fs');
 const { basename, dirname, join, resolve } = require('path');
 const yaml = require('js-yaml');
+const { installRuntimeRouting } = require('./runtime-routing.cjs');
 
 const LOOP_PATHS = {
   'spec-build': 'templates/QA/loops/spec-build.yaml',
@@ -49,6 +53,11 @@ const DEFAULT_ROUTING_PATHS = [
   '.specflow/adapter-routing.json',
 ];
 const DEFAULT_ROUTING_TEMPLATE = 'claude-code-large-routing.yml';
+const ROUTING_MODEL_FIELDS = new Set(['model', 'requested_model', 'fallback_model']);
+const ROUTING_MODEL_ALIAS_REPLACEMENTS = {
+  'fable-5': 'claude-fable-5',
+  'opus-4.8': 'claude-opus-4-8',
+};
 
 function ensureDir(path) {
   mkdirSync(dirname(path), { recursive: true });
@@ -91,11 +100,12 @@ function defaultStatePaths(contractPath, options = {}) {
   };
 }
 
-function createRunContract({ loop, slug, goal, input, contractPath, ledgerPath }) {
+function createRunContract({ loop, slug, goal, input, contractPath, ledgerPath, tierRecord, repoRoot }) {
   if (!LOOP_PATHS[loop]) throw new Error(`unknown loop "${loop}"`);
   return {
     run_contract: {
       loop,
+      run_id: modelConfirmationRunId(slug, contractPath),
       goal,
       input_artifact: input,
       path: LOOP_PATHS[loop],
@@ -104,7 +114,10 @@ function createRunContract({ loop, slug, goal, input, contractPath, ledgerPath }
         ? 'ticket + ACs + journey id confirmed'
         : 'grounding written with problem + oracle',
       durable_evidence: [contractPath, ledgerPath],
-      simulation_required: loop === 'spec-build',
+      tier: 'thin',
+      tier_record: tierRecord || null,
+      repository_root: repoRoot || process.cwd(),
+      simulation_required: false,
       stop_condition: 'continue until handoff, human gate, missing evidence, or failure',
       never_without_human: ['git push', 'open PR', 'merge', '--no-verify', 'override contract'],
       budgets: {},
@@ -141,6 +154,14 @@ function defaultRoutingTemplatePath(options = {}) {
 }
 
 function installDefaultAdapterRouting(options = {}) {
+  if (!options.routingTemplate) {
+    return installRuntimeRouting({
+      sourceRoot: resolve(__dirname, '..'),
+      targetRoot: options.targetRoot || process.cwd(),
+      runtime: options.runtime,
+      replaceRouting: options.replaceRouting === true || options.force === true,
+    });
+  }
   const destination = options.adapterRouting || '.specflow/adapter-routing.yml';
   if (existsSync(destination) && !options.force) {
     return { status: 'exists', routing_path: destination };
@@ -160,6 +181,102 @@ function installDefaultAdapterRouting(options = {}) {
     status: 'installed',
     routing_path: destination,
     template_path: template,
+  };
+}
+
+function routingPolicyIdFromPath(parts, parent = {}) {
+  if (parent && typeof parent.id === 'string') return parent.id;
+  const policyIndex = parts.indexOf('policies');
+  if (policyIndex !== -1 && parts[policyIndex + 1]) return parts[policyIndex + 1];
+  const routeIndex = parts.indexOf('routes');
+  if (routeIndex !== -1) return parts.slice(routeIndex + 1, -1).join('.') || null;
+  return null;
+}
+
+function collectRoutingModelFindings(value, parts = [], findings = []) {
+  if (!value || typeof value !== 'object') return findings;
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => collectRoutingModelFindings(item, [...parts, String(index)], findings));
+    return findings;
+  }
+  for (const [key, child] of Object.entries(value)) {
+    const childParts = [...parts, key];
+    if (ROUTING_MODEL_FIELDS.has(key) && typeof child === 'string') {
+      const replacement = ROUTING_MODEL_ALIAS_REPLACEMENTS[child];
+      if (replacement) {
+        findings.push({
+          severity: 'alias',
+          policy_id: routingPolicyIdFromPath(childParts, value),
+          path: childParts.join('.'),
+          field: key,
+          value: child,
+          replacement,
+          message: `${key} uses shorthand "${child}"; use provider model id "${replacement}".`,
+        });
+      }
+    }
+    collectRoutingModelFindings(child, childParts, findings);
+  }
+  return findings;
+}
+
+function applyRoutingModelAliasUpdates(value) {
+  let updated = 0;
+  if (!value || typeof value !== 'object') return updated;
+  if (Array.isArray(value)) {
+    for (const item of value) updated += applyRoutingModelAliasUpdates(item);
+    return updated;
+  }
+  for (const [key, child] of Object.entries(value)) {
+    if (ROUTING_MODEL_FIELDS.has(key) && typeof child === 'string' && ROUTING_MODEL_ALIAS_REPLACEMENTS[child]) {
+      value[key] = ROUTING_MODEL_ALIAS_REPLACEMENTS[child];
+      updated += 1;
+      continue;
+    }
+    updated += applyRoutingModelAliasUpdates(child);
+  }
+  return updated;
+}
+
+function checkRoutingModels(options = {}) {
+  const routingPath = findDefaultAdapterRoutingPath(options);
+  if (!routingPath) {
+    return {
+      status: 'missing_routing',
+      routing_path: null,
+      setup: ['specflow run --setup-routing'],
+    };
+  }
+  const routing = loadDataFile(routingPath);
+  if (!routing || typeof routing !== 'object') {
+    return {
+      status: 'invalid_routing',
+      routing_path: routingPath,
+      error: 'adapter routing file must be an object',
+    };
+  }
+  const findings = collectRoutingModelFindings(routing);
+  return {
+    status: findings.length ? 'updates_available' : 'ok',
+    routing_path: routingPath,
+    checked_fields: Array.from(ROUTING_MODEL_FIELDS).sort(),
+    known_replacements: ROUTING_MODEL_ALIAS_REPLACEMENTS,
+    findings,
+    note: 'This check only detects known stale aliases. It does not invent or validate future provider model IDs.',
+  };
+}
+
+function updateRoutingModels(options = {}) {
+  const checked = checkRoutingModels(options);
+  if (checked.status !== 'updates_available') return checked;
+  const routingPath = checked.routing_path;
+  const routing = loadDataFile(routingPath);
+  const updated = applyRoutingModelAliasUpdates(routing);
+  writeYaml(routingPath, routing);
+  return {
+    ...checked,
+    status: 'updated',
+    updated,
   };
 }
 
@@ -436,6 +553,126 @@ function runCommand(command, options = {}) {
   };
 }
 
+function fileSha256(path) {
+  return createHash('sha256').update(readFileSync(path)).digest('hex');
+}
+
+function loadStageEvidence(path) {
+  if (!path || !existsSync(path)) {
+    return { ok: false, errors: [`stage evidence file not found: ${path || '(missing)'}`] };
+  }
+  let wrapper;
+  try {
+    wrapper = loadDataFile(path);
+  } catch (error) {
+    return { ok: false, errors: [`stage evidence is invalid: ${error.message}`] };
+  }
+  const evidence = wrapper && wrapper.stage_evidence ? wrapper.stage_evidence : wrapper;
+  const errors = [];
+  if (!evidence || evidence.schema_version !== 1) errors.push('stage_evidence.schema_version must be 1');
+  if (!evidence || !evidence.stage) errors.push('stage_evidence.stage is required');
+  if (!evidence || !Array.isArray(evidence.artifacts) || !evidence.artifacts.length) {
+    errors.push('stage_evidence.artifacts must contain at least one hashed artifact');
+  }
+  if (!evidence || !Array.isArray(evidence.checks) || !evidence.checks.length) {
+    errors.push('stage_evidence.checks must contain at least one verifier command');
+  }
+  return { ok: errors.length === 0, errors, evidence };
+}
+
+function forbiddenStageCheck(command, neverWithoutHuman = []) {
+  const declared = containsForbiddenAction(command, neverWithoutHuman);
+  if (declared) return declared;
+  const patterns = [
+    [/\bgit\s+push\b/i, 'git push'],
+    [/\bgh\s+pr\s+create\b/i, 'open PR'],
+    [/\bgh\s+pr\s+merge\b/i, 'merge'],
+    [/--no-verify\b/i, '--no-verify'],
+  ];
+  const matched = patterns.find(([pattern]) => pattern.test(String(command || '')));
+  return matched ? matched[1] : null;
+}
+
+function executeStageEvidence(contract, evidencePath, options = {}) {
+  const loaded = loadStageEvidence(evidencePath);
+  if (!loaded.ok) {
+    return {
+      status: 'invalid_stage_evidence',
+      advance: false,
+      entries: [{
+        stage: contract.current_stage_or_rail,
+        event: 'stage_evidence',
+        result: 'fail',
+        stop_reason: 'invalid_stage_evidence',
+        evidence_path: evidencePath,
+        errors: loaded.errors,
+      }],
+    };
+  }
+  const evidence = loaded.evidence;
+  const errors = [];
+  if (evidence.stage !== contract.current_stage_or_rail) {
+    errors.push(`stage evidence targets ${evidence.stage}, but durable run is at ${contract.current_stage_or_rail}`);
+  }
+  for (const artifact of evidence.artifacts) {
+    if (!artifact || !artifact.path || !artifact.sha256) {
+      errors.push('every stage evidence artifact requires path and sha256');
+      continue;
+    }
+    if (!existsSync(artifact.path)) {
+      errors.push(`stage evidence artifact not found: ${artifact.path}`);
+      continue;
+    }
+    if (fileSha256(artifact.path) !== artifact.sha256) {
+      errors.push(`stage evidence artifact hash mismatch: ${artifact.path}`);
+    }
+  }
+  for (const check of evidence.checks) {
+    if (!check || !check.name || !check.command) {
+      errors.push('every stage evidence check requires name and command');
+      continue;
+    }
+    const forbidden = forbiddenStageCheck(check.command, contract.never_without_human || []);
+    if (forbidden) errors.push(`stage evidence check requires human action "${forbidden}": ${check.name}`);
+  }
+  if (errors.length) {
+    return {
+      status: 'invalid_stage_evidence',
+      advance: false,
+      entries: [{
+        stage: contract.current_stage_or_rail,
+        event: 'stage_evidence',
+        result: 'fail',
+        stop_reason: 'invalid_stage_evidence',
+        evidence_path: evidencePath,
+        evidence_sha256: fileSha256(evidencePath),
+        errors,
+      }],
+    };
+  }
+
+  const entries = [];
+  for (const check of evidence.checks) {
+    const result = runCommand(check.command, options);
+    const pass = result.exit_code === 0;
+    entries.push({
+      stage: contract.current_stage_or_rail,
+      verifier: check.name,
+      command: check.command,
+      result: pass ? 'pass' : 'fail',
+      exit_code: result.exit_code,
+      stdout: result.stdout,
+      stderr: result.stderr,
+      stop_reason: pass ? null : 'gate_failed',
+      evidence_path: evidencePath,
+      evidence_sha256: fileSha256(evidencePath),
+      artifacts: evidence.artifacts,
+    });
+    if (!pass) return { status: 'gate_failed', entries, advance: false };
+  }
+  return { status: 'gate_passed', entries, advance: true };
+}
+
 function fileMtimeMs(path) {
   try {
     return statSync(path).mtimeMs;
@@ -483,6 +720,8 @@ function fallbackLoopSequence(contract) {
 }
 
 function loopSequence(contract, options = {}) {
+  if (contract.loop === 'spec-build' && contract.tier === 'thin') return ['discover', 'draft', 'tickets', 'handoff'];
+  if (contract.loop === 'spec-build' && contract.tier === 'contracted') return ['discover', 'draft', 'adversary', 'tickets', 'handoff'];
   const fromDefinition = loopSequenceFromDefinition(loadLoopDefinition(contract, options));
   return fromDefinition.length ? fromDefinition : fallbackLoopSequence(contract);
 }
@@ -809,7 +1048,8 @@ function costAccounting(entries = []) {
   let acceptedGates = 0;
   for (const e of entries) {
     if (e.result === 'pass') acceptedGates += 1;
-    const isWork = Boolean(e.provider) || e.event === 'adapter' || typeof e.estimated_cost === 'number';
+    const isWork = e.event !== 'model_confirmation'
+      && (Boolean(e.provider) || e.event === 'adapter' || typeof e.estimated_cost === 'number');
     if (!isWork) continue;
     const model = e.effective_model || e.requested_model || UNKNOWN;
     if (typeof e.estimated_cost === 'number') {
@@ -1070,6 +1310,7 @@ function verifierCommandsForStage(contract, options = {}) {
 function executeVerifierRegistry(contract, options = {}) {
   const commands = verifierCommandsForStage(contract, options);
   if (!commands.length) {
+    if (options.stageEvidence) return executeStageEvidence(contract, options.stageEvidence, options);
     return {
       status: 'agent_action_required',
       entries: [{
@@ -1268,14 +1509,127 @@ function resolveAdapterRouting(options = {}, contract = null) {
     stage: contract.current_stage_or_rail,
     policyId: policyId || policy?.id || null,
     policy,
+    routing,
     route: routeObj,
     confirmationRequired,
     reason: routeObj?.reason || policy?.reason || defaults.reason || null,
   };
 }
 
+function canonicalizeSemanticValue(value) {
+  if (Array.isArray(value)) return value.map(canonicalizeSemanticValue);
+  if (!value || typeof value !== 'object') return value;
+  return Object.fromEntries(Object.keys(value).sort().map((key) => [key, canonicalizeSemanticValue(value[key])]));
+}
+
+function routingConfirmationSemantics(resolved) {
+  const policy = resolved.policy || {};
+  return {
+    routing: canonicalizeSemanticValue(resolved.routing || {}),
+    resolved_policy: {
+      provider: policy.provider || null,
+      requested_model: policy.requested_model || policy.model || null,
+      effort: policy.effort || null,
+      fallback_model: policy.fallback_model || null,
+      budget_guard: policy.max_budget_usd ?? null,
+    },
+  };
+}
+
+function routingConfirmationSemanticSha256(resolved) {
+  const canonical = JSON.stringify(canonicalizeSemanticValue(routingConfirmationSemantics(resolved)));
+  return createHash('sha256').update(canonical).digest('hex');
+}
+
+function modelConfirmationRunId(slug, contractPath) {
+  const identity = `${slug || 'run'}\0${resolve(contractPath)}`;
+  return `${slug || 'run'}:${createHash('sha256').update(identity).digest('hex').slice(0, 16)}`;
+}
+
+function modelConfirmationStatus({ ledgerPath, runId, semanticSha256 }) {
+  const confirmations = readLedger(ledgerPath).filter((entry) => (
+    entry.event === 'model_confirmation'
+    && entry.result === 'confirmed'
+    && entry.scope === 'run'
+    && entry.source === 'human_cli_flag'
+  ));
+  const sameRun = confirmations.filter((entry) => entry.run_id === runId).slice(-1)[0] || null;
+  if (!sameRun) {
+    return {
+      status: 'missing',
+      valid: false,
+      run_id: runId,
+      routing_semantic_sha256: semanticSha256,
+      invalidation_reason: confirmations.length ? 'run_scope_mismatch' : 'confirmation_missing',
+    };
+  }
+  if (sameRun.routing_semantic_sha256 !== semanticSha256) {
+    return {
+      status: 'invalidated',
+      valid: false,
+      run_id: runId,
+      routing_semantic_sha256: semanticSha256,
+      prior_routing_semantic_sha256: sameRun.routing_semantic_sha256,
+      confirmed_at: sameRun.confirmed_at,
+      invalidation_reason: 'routing_semantics_changed',
+    };
+  }
+  return {
+    status: 'valid',
+    valid: true,
+    run_id: runId,
+    routing_semantic_sha256: semanticSha256,
+    confirmed_at: sameRun.confirmed_at,
+    scope: 'run',
+    invalidation_reason: null,
+  };
+}
+
+function modelConfirmationFields(resolved, runId, semanticSha256) {
+  const policy = resolved.policy || {};
+  return {
+    scope: 'run',
+    run_id: runId,
+    routing_semantic_sha256: semanticSha256,
+    provider: policy.provider || null,
+    requested_model: policy.requested_model || policy.model || null,
+    effort: policy.effort || null,
+    fallback_model: policy.fallback_model || null,
+    budget_guard: policy.max_budget_usd ?? null,
+    routing_path: resolved.routingPath,
+    policy_id: resolved.policyId || policy.id || null,
+  };
+}
+
+function recordModelConfirmationInvalidation(ledgerPath, contract, fields, status) {
+  if (status.status !== 'invalidated') return null;
+  const existing = readLedger(ledgerPath).filter((entry) => (
+    entry.event === 'model_confirmation'
+    && entry.result === 'invalidated'
+    && entry.run_id === fields.run_id
+    && entry.current_routing_semantic_sha256 === fields.routing_semantic_sha256
+  )).slice(-1)[0];
+  if (existing) return existing;
+  const entry = {
+    stage: contract.current_stage_or_rail,
+    event: 'model_confirmation',
+    result: 'invalidated',
+    ...fields,
+    routing_semantic_sha256: status.prior_routing_semantic_sha256,
+    current_routing_semantic_sha256: fields.routing_semantic_sha256,
+    confirmed_at: status.confirmed_at || null,
+    invalidated_at: new Date().toISOString(),
+    invalidation_reason: status.invalidation_reason,
+  };
+  appendLedger(ledgerPath, entry);
+  return entry;
+}
+
 function modelConfirmationPlan(resolved, options = {}) {
   const policy = resolved.policy || {};
+  const budgetNote = policy.provider === 'codex-exec'
+    ? 'max_budget_usd is a policy cap/quota guard. If Codex CLI is signed in with ChatGPT, usage consumes Codex plan quota/credits rather than OpenAI API billing.'
+    : 'max_budget_usd is a policy cap/quota guard, not a guaranteed charge.';
   return {
     status: 'model_confirmation_required',
     routing_path: resolved.routingPath,
@@ -1288,6 +1642,7 @@ function modelConfirmationPlan(resolved, options = {}) {
     requested_model: policy.requested_model || policy.model || null,
     fallback_model: policy.fallback_model || null,
     max_budget_usd: policy.max_budget_usd ?? null,
+    budget_note: budgetNote,
     reason: resolved.reason,
     transcript_path: policy.transcript_path,
     output_path: policy.output_path,
@@ -1299,6 +1654,9 @@ function modelRoutingBriefing(options = {}, contract = null) {
   const resolved = resolveAdapterRouting(options, contract);
   if (resolved.status === 'resolved') {
     const policy = resolved.policy || {};
+    const budgetNote = policy.provider === 'codex-exec'
+      ? 'max_budget_usd is a policy cap/quota guard. If Codex CLI is signed in with ChatGPT, usage consumes Codex plan quota/credits rather than OpenAI API billing.'
+      : 'max_budget_usd is a policy cap/quota guard, not a guaranteed charge.';
     return {
       active: true,
       status: 'active',
@@ -1312,6 +1670,7 @@ function modelRoutingBriefing(options = {}, contract = null) {
       requested_model: policy.requested_model || policy.model || null,
       fallback_model: policy.fallback_model || null,
       max_budget_usd: policy.max_budget_usd ?? null,
+      budget_note: budgetNote,
       confirmation_required: resolved.confirmationRequired,
       message: `Model routing active: ${policy.requested_model || policy.model || UNKNOWN} for ${resolved.loop}.${resolved.stage} (${policy.role || 'worker'}).`,
     };
@@ -1346,6 +1705,11 @@ function buildAdapterCommand(policy, promptPath) {
   const deniedTools = policy.denied_tools || [];
   if (policy.provider === 'claude-print') {
     const args = policy.args.length ? [...policy.args] : ['-p', '--output-format', 'stream-json'];
+    if (policy.effort) {
+      const existing = args.flatMap((arg, i) => arg === '--effort' ? [args[i + 1]] : arg.startsWith('--effort=') ? [arg.slice(9)] : []);
+      if (existing.length > 1 || existing.some(e => e !== policy.effort)) throw Error('Conflicting Claude effort flags');
+      if (!existing.length) args.push('--effort', policy.effort);
+    }
     if (!args.includes('-p') && !args.includes('--print')) args.unshift('-p');
     const requestedModel = policy.requested_model || policy.model;
     if (requestedModel && !args.includes('--model')) args.push('--model', String(requestedModel));
@@ -1362,8 +1726,10 @@ function buildAdapterCommand(policy, promptPath) {
     if (policy.session_id && !args.includes('--resume') && !args.includes('--session-id')) {
       args.push('--resume', String(policy.session_id));
     }
-    if (promptPath) args.push(readFileSync(promptPath, 'utf8'));
-    else if (policy.prompt) args.push(String(policy.prompt));
+    // --allowedTools/--disallowedTools are variadic in the Claude CLI and would
+    // swallow a trailing prompt; end option parsing first (#171 discovery).
+    const prompt = promptPath ? readFileSync(promptPath, 'utf8') : policy.prompt ? String(policy.prompt) : null;
+    if (prompt !== null) args.push('--', prompt);
     return { command: policy.command || 'claude', args };
   }
 
@@ -1371,6 +1737,11 @@ function buildAdapterCommand(policy, promptPath) {
     const args = policy.session_id
       ? ['exec', 'resume', String(policy.session_id), ...(policy.args || [])]
       : ['exec', ...(policy.args || [])];
+    if (policy.effort) {
+      const settings = args.filter(a => a.includes('model_reasoning_effort='));
+      if (settings.length > 1 || settings.some(a => !new RegExp('^model_reasoning_effort=["\']?' + policy.effort + '["\']?$').test(a))) throw Error('Conflicting Codex effort flags');
+      if (!settings.length) args.push('-c', `model_reasoning_effort="${policy.effort}"`);
+    }
     if (!args.includes('--json')) args.push('--json');
     const requestedModel = policy.requested_model || policy.model;
     if (requestedModel && !args.includes('--model')) args.push('--model', String(requestedModel));
@@ -1421,7 +1792,8 @@ function mergeUsage(current, event) {
     event.total_tokens,
     inputTokens !== null || outputTokens !== null ? Number(inputTokens || 0) + Number(outputTokens || 0) : null,
   );
-  const costUsd = pickFirstNumber(usage.cost_usd, usage.estimated_cost_usd, event.cost_usd, event.estimated_cost_usd);
+  // claude -p reports the run total as total_cost_usd on its result event.
+  const costUsd = pickFirstNumber(usage.cost_usd, usage.estimated_cost_usd, event.cost_usd, event.estimated_cost_usd, event.total_cost_usd);
   return {
     input_tokens: current.input_tokens ?? inputTokens,
     output_tokens: current.output_tokens ?? outputTokens,
@@ -1553,6 +1925,10 @@ function runAdapter(policy, options = {}) {
       encoding: 'utf8',
       timeout: Number(policy.timeout_seconds) * 1000,
       maxBuffer: 10 * 1024 * 1024,
+      // Optional isolation for callers such as `specflow improve` (#176):
+      // run inside a delegated worktree with a scrubbed environment.
+      ...(options.cwd ? { cwd: options.cwd } : {}),
+      ...(options.env ? { env: options.env } : {}),
     });
   }
 
@@ -1615,6 +1991,18 @@ function runAdapter(policy, options = {}) {
 }
 
 function runLoop(options) {
+  const result = runLoopBody(options);
+  if (result.contractPath && existsSync(result.contractPath)) {
+    const contract = loadRunContract(result.contractPath);
+    if (contract.routing_shadow && ['handoff', 'failed', 'blocked'].includes(contract.terminal_status)) {
+      result.routing_shadow_terminal = routingShadow.terminal(contract.routing_shadow, contract.run_id, contract.terminal_status === 'handoff' ? 'completed' : contract.terminal_status, [result.ledgerPath]);
+    }
+    if (contract.routing_shadow) result.routing_shadow = routingShadow.reportStatus(contract.routing_shadow);
+    if (contract.routing_shadow_error) result.routing_shadow_error = contract.routing_shadow_error;
+  }
+  return result;
+}
+function runLoopBody(options) {
   const slug = options.slug || 'specflow-run';
   const { contractPath, ledgerPath } = defaultRunPaths(slug, options);
   let wrapper;
@@ -1630,7 +2018,11 @@ function runLoop(options) {
       input: options.input || 'unspecified',
       contractPath,
       ledgerPath,
+      tierRecord: options.tierRecord,
+      repoRoot: options.repoRoot,
     });
+    try { wrapper.run_contract.routing_shadow = routingShadow.enrollment(process.cwd()); }
+    catch (e) { wrapper.run_contract.routing_shadow_error = e.message; }
     writeYaml(contractPath, wrapper);
   }
 
@@ -1660,32 +2052,117 @@ function runLoop(options) {
     return { status: 'invalid_contract', errors: validation.errors, contractPath, ledgerPath };
   }
 
-  const routed = !options.adapterPolicy ? resolveAdapterRouting({ ...options, slug }, contract) : null;
-  if (routed && routed.status === 'resolved' && routed.confirmationRequired && !options.confirmModels) {
-    const plan = modelConfirmationPlan(routed, { slug });
-    appendLedger(ledgerPath, {
-      stage: contract.current_stage_or_rail,
-      event: 'model_confirmation',
-      result: 'blocked',
-      stop_reason: 'model_confirmation_required',
-      provider: plan.provider,
-      role: plan.role,
-      effort: plan.effort,
-      requested_model: plan.requested_model,
-      fallback_model: plan.fallback_model,
-      max_budget_usd: plan.max_budget_usd,
-      routing_path: plan.routing_path,
-      policy_id: plan.policy_id,
+  if (['spec-build', 'feature-build'].includes(contract.loop)) {
+    let record;
+    try {
+      record = contract.tier_record ? loadDataFile(contract.tier_record) : { issue: { labels: [] } };
+    } catch (error) {
+      record = null;
+    }
+    const decision = require('./specflow-specification.cjs').boundary(contract.repository_root || process.cwd(), record, {
+      route: contract.loop,
+      operation: contract.loop === 'feature-build' ? (resuming ? 'resume' : 'build') : 'inspect',
     });
-    contract.terminal_status = 'blocked';
-    recordRunState(contract, {
-      contractPath,
-      ledgerPath,
-      status: 'model_confirmation_required',
-      stopReason: 'model_confirmation_required',
-    });
+    contract.tier = decision.tier;
+    contract.simulation_required = decision.simulation_required;
+    contract.tier_warnings = decision.warnings;
+    contract.tier_decision = decision;
     writeYaml(contractPath, { run_contract: contract });
-    return { ...plan, contractPath, ledgerPath };
+    if (decision.status === 'blocked') {
+      const entry = { stage: contract.current_stage_or_rail, event: 'tier_gate', result: 'blocked', stop_reason: 'blocked_specification', errors: decision.errors, next_action: decision.next_action };
+      appendLedger(ledgerPath, entry);
+      return { status: 'blocked_specification', decision, entry, contractPath, ledgerPath };
+    }
+    if (contract.loop === 'spec-build' && contract.tier !== 'build-ready' && !loopSequence(contract, options).includes(contract.current_stage_or_rail)) {
+      return { status: 'planning_complete', decision, contractPath, ledgerPath, next_action: 'The backlog remains at its recorded tier. Promote only the next justified slice.' };
+    }
+  }
+
+  if (contract.loop === 'feature-build' && contract.current_stage_or_rail === '7_ci_handoff') {
+    const entry = {
+      stage: '7_ci_handoff',
+      event: 'human_handoff',
+      result: 'blocked',
+      stop_reason: 'human_ci_handoff_required',
+      next_action: 'human pushes the branch or opens the PR so branch-protected Gate C can run',
+    };
+    appendLedger(ledgerPath, entry);
+    contract.terminal_status = 'handoff';
+    writeYaml(contractPath, { run_contract: contract });
+    return { status: 'human_ci_handoff_required', entry, contractPath, ledgerPath };
+  }
+
+  // Specification review has one native boundary: Duo reserves the durable
+  // issue/tier budget before invoking the opposite CLI. Generic stage adapters
+  // and supplied stage-evidence cannot bypass that boundary.
+  if (contract.loop === 'spec-build' && ['adversary', 'GATE_B5'].includes(contract.current_stage_or_rail)) {
+    const record = contract.tier_record ? loadDataFile(contract.tier_record) : null;
+    const scoped = require('./specflow-reviews.cjs').stageGate(contract.repository_root || process.cwd(), record, contract.current_stage_or_rail);
+    const entry = { stage: contract.current_stage_or_rail, event: 'scoped_review', result: scoped.passed ? 'pass' : 'blocked', ...scoped };
+    appendLedger(ledgerPath, entry);
+    if (scoped.passed) contract.current_stage_or_rail = nextStage(contract, options);
+    contract.terminal_status = scoped.passed ? 'in_progress' : 'blocked';
+    writeYaml(contractPath, { run_contract: contract });
+    return { status: scoped.passed ? 'scoped_review_accepted' : 'scoped_review_required', entry, contractPath, ledgerPath };
+  }
+
+  const runId = contract.run_id || modelConfirmationRunId(slug, contractPath);
+  contract.run_id = runId;
+  const routed = (!options.adapterPolicy && !options.stageEvidence)
+    ? resolveAdapterRouting({ ...options, slug }, contract)
+    : null;
+  let confirmation = null;
+  if (routed && routed.status === 'resolved' && routed.confirmationRequired) {
+    const semanticSha256 = routingConfirmationSemanticSha256(routed);
+    const fields = modelConfirmationFields(routed, runId, semanticSha256);
+    confirmation = modelConfirmationStatus({ ledgerPath, runId, semanticSha256 });
+    recordModelConfirmationInvalidation(ledgerPath, contract, fields, confirmation);
+
+    if (!confirmation.valid && !options.confirmModels) {
+      const plan = modelConfirmationPlan(routed, { slug });
+      appendLedger(ledgerPath, {
+        stage: contract.current_stage_or_rail,
+        event: 'model_confirmation',
+        result: 'blocked',
+        stop_reason: 'model_confirmation_required',
+        ...fields,
+        role: plan.role,
+        confirmed_at: null,
+        invalidated_at: confirmation.status === 'invalidated' ? new Date().toISOString() : null,
+        invalidation_reason: confirmation.invalidation_reason,
+      });
+      contract.terminal_status = 'blocked';
+      recordRunState(contract, {
+        contractPath,
+        ledgerPath,
+        status: 'model_confirmation_required',
+        stopReason: 'model_confirmation_required',
+      });
+      writeYaml(contractPath, { run_contract: contract });
+      return { ...plan, confirmation: { ...confirmation, ...fields }, contractPath, ledgerPath };
+    }
+
+    if (!confirmation.valid && options.confirmModels) {
+      const confirmedAt = new Date().toISOString();
+      const entry = {
+        stage: contract.current_stage_or_rail,
+        event: 'model_confirmation',
+        result: 'confirmed',
+        ...fields,
+        confirmed_at: confirmedAt,
+        invalidated_at: null,
+        invalidation_reason: null,
+        source: 'human_cli_flag',
+      };
+      appendLedger(ledgerPath, entry);
+      confirmation = {
+        status: 'valid',
+        valid: true,
+        ...fields,
+        confirmed_at: confirmedAt,
+        invalidation_reason: null,
+      };
+    }
   }
 
   if (options.adapterPolicy || (routed && routed.status === 'resolved')) {
@@ -1722,18 +2199,43 @@ function runLoop(options) {
     }
 
     const prompt = options.prompt ? { promptPath: options.prompt } : materializeStagePrompt(contract, { ...options, contractPath, slug });
+    const shadowTask = contract.routing_shadow ? {
+      taskFamilyId: contract.routing_task_family || contract.input_artifact,
+      runId, stage: contract.current_stage_or_rail, loop: contract.loop,
+      attempt: readLedger(ledgerPath).filter(e => e.event === 'routing_shadow_begin' && e.stage === contract.current_stage_or_rail).length,
+      goal: contract.goal, acceptance: readFileSync(prompt.promptPath, 'utf8'),
+      context: contract.input_artifact, evidenceRefs: [prompt.promptPath],
+      recentEvidence: readLedgerTail(ledgerPath, 3),
+      configured: { model: policy.model || policy.requested_model || UNKNOWN, effort: policy.effort || null },
+      requested: { model: policy.requested_model || policy.model || UNKNOWN, effort: policy.effort || null },
+    } : null;
+    const shadowReceipt = policy.dry_run || options.adapterDryRun ? null : routingShadow.begin(process.cwd(), contract.routing_shadow, shadowTask);
+    if (shadowReceipt) appendLedger(ledgerPath, { event: 'routing_shadow_begin', stage: contract.current_stage_or_rail, ...shadowReceipt });
+    const discoveryBatch = contract.loop === 'feature-build' && contract.current_stage_or_rail === '5_impl' && !policy.dry_run && !options.adapterDryRun ? `runner-${runId}-${Date.now()}` : null;
+    if(discoveryBatch) require('./specflow-specification.cjs').beginBatch(contract.repository_root || process.cwd(),loadDataFile(contract.tier_record),discoveryBatch);
     const adapterResult = runAdapter(policy, {
       dryRun: options.adapterDryRun,
       promptPath: prompt.promptPath,
       stage: contract.current_stage_or_rail,
       owningGateCommand: options.owningGateCommand,
     });
+    if(discoveryBatch) {
+      require('./specflow-reviews.cjs').change(contract.repository_root || process.cwd(),loadDataFile(contract.tier_record).issue.number,journal=>{journal.batches[discoveryBatch].outcome=adapterResult.status==='gate_rerun_required'?'success':'blocked';journal.batches[discoveryBatch].evidence=policy.transcript_path;});
+      adapterResult.discoveryBatch=discoveryBatch;
+      adapterResult.discoveryNextAction=`Collect discoveries or explicit none for ${discoveryBatch} before advancing`;
+    }
+    if (shadowReceipt) {
+      const result = routingShadow.end(contract.routing_shadow, shadowReceipt, { status: adapterResult.status === 'gate_rerun_required' ? 'completed' : 'blocked', terminal: false, observed: { model: adapterResult.entry.effective_model || UNKNOWN, effort: null }, evidenceRefs: [policy.transcript_path], note: 'Provider completion is not gate acceptance; effective effort is unknown without native metadata.' });
+      appendLedger(ledgerPath, { event: 'routing_shadow_outcome', stage: contract.current_stage_or_rail, ...result });
+    }
     appendLedger(ledgerPath, {
       ...adapterResult.entry,
       prompt_path: prompt.promptPath,
       routing_path: routed?.routingPath || null,
       policy_id: routed?.policyId || policy.id,
       model_confirmation: routed ? 'confirmed' : null,
+      model_confirmation_run_id: confirmation?.run_id || null,
+      routing_semantic_sha256: confirmation?.routing_semantic_sha256 || null,
     });
     contract.terminal_status = adapterResult.status === 'gate_rerun_required' ? 'in_progress' : 'blocked';
     contract.current_stage_or_rail = adapterResult.status === 'gate_rerun_required' ? contract.current_stage_or_rail : contract.current_stage_or_rail;
@@ -1778,6 +2280,16 @@ function runLoop(options) {
   }
   for (const entry of registryResult.entries) appendLedger(ledgerPath, promptPath ? { ...entry, prompt_path: promptPath } : entry);
   if (registryResult.advance) {
+    if (options.stageEvidence) {
+      if (Array.isArray(contract.durable_evidence) && !contract.durable_evidence.includes(options.stageEvidence)) {
+        contract.durable_evidence.push(options.stageEvidence);
+      } else if (!Array.isArray(contract.durable_evidence)) {
+        contract.durable_evidence.stage_evidence = contract.durable_evidence.stage_evidence || [];
+        if (!contract.durable_evidence.stage_evidence.includes(options.stageEvidence)) {
+          contract.durable_evidence.stage_evidence.push(options.stageEvidence);
+        }
+      }
+    }
     contract.current_stage_or_rail = nextStage(contract, options);
     contract.next_gate = `advance to ${contract.current_stage_or_rail}`;
     contract.terminal_status = contract.current_stage_or_rail === 'handoff' ? 'handoff' : 'in_progress';
@@ -1834,7 +2346,7 @@ function summarizeLedger(entries) {
       if (entry.result === 'pass') summary.gate_passes += 1;
       if (entry.result === 'fail') summary.gate_failures += 1;
     }
-    if (entry.provider) {
+    if (entry.provider && entry.event !== 'model_confirmation') {
       summary.adapter_attempts += 1;
       if (entry.stop_reason === 'gate_rerun_required') summary.adapter_successes_requiring_gate_rerun += 1;
       if (entry.stop_reason === 'adapter_failed') summary.adapter_failures += 1;
@@ -1842,10 +2354,12 @@ function summarizeLedger(entries) {
       if (entry.estimated_cost_usd === null || entry.estimated_cost_usd === undefined) summary.unknown_usage_entries += 1;
       else summary.known_estimated_cost_usd += Number(entry.estimated_cost_usd);
     }
-    if (entry.requested_model) {
+    if (entry.requested_model && entry.event !== 'model_confirmation') {
       summary.requested_models[entry.requested_model] = (summary.requested_models[entry.requested_model] || 0) + 1;
     }
-    const effective = entry.effective_model || (entry.provider ? UNKNOWN : null);
+    const effective = entry.event === 'model_confirmation'
+      ? null
+      : (entry.effective_model || (entry.provider ? UNKNOWN : null));
     if (effective) {
       summary.effective_models[effective] = (summary.effective_models[effective] || 0) + 1;
     }
@@ -1863,6 +2377,17 @@ function runStatus(options = {}) {
   }
   const contract = loadRunContract(contractPath);
   const ledgerPath = options.ledger || contract.storage?.ledger_path || join(dirname(contractPath), 'ledger.jsonl');
+  const routing = modelRoutingBriefing(options, contract);
+  const resolved = resolveAdapterRouting(options, contract);
+  let confirmation = { status: 'not_required', valid: true, invalidation_reason: null };
+  if (resolved.status === 'resolved' && resolved.confirmationRequired) {
+    const runId = contract.run_id || modelConfirmationRunId(options.slug || basename(dirname(contractPath)), contractPath);
+    confirmation = modelConfirmationStatus({
+      ledgerPath,
+      runId,
+      semanticSha256: routingConfirmationSemanticSha256(resolved),
+    });
+  }
   return {
     status: 'ok',
     contract_path: contractPath,
@@ -1877,7 +2402,9 @@ function runStatus(options = {}) {
     verifier_trace: verifierTrace({ contract: contractPath, ledger: ledgerPath }),
     reentry: reentryBriefing({ contract: contractPath, ledger: ledgerPath }),
     cost: costAccounting(readLedger(ledgerPath)),
-    model_routing: modelRoutingBriefing(options, contract),
+    model_routing: routing,
+    model_confirmation: confirmation,
+    routing_shadow: routingShadow.reportStatus(contract.routing_shadow),
   };
 }
 
@@ -1893,6 +2420,8 @@ function isTerminalStatus(status) {
     'blocked_verification_required',
     'blocked_verifier_stage',
     'dry_run',
+    'blocked_specification',
+    'planning_complete', 'scoped_review_required',
   ].includes(status);
 }
 
@@ -1927,7 +2456,7 @@ function planAdapterSmoke(provider, options = {}) {
     command: provider === 'claude-print' ? 'claude' : 'codex',
     args: provider === 'claude-print'
       ? ['-p', '--output-format', 'json']
-      : ['--sandbox', 'read-only', '--ask-for-approval', 'never'],
+      : ['--sandbox', 'read-only', '--ephemeral', '-c', 'approval_policy="never"'],
     timeout_seconds: 120,
     max_iterations: 1,
     transcript_path: `.specflow/runs/adapter-smoke/${provider}.jsonl`,
@@ -1943,6 +2472,16 @@ function planAdapterSmoke(provider, options = {}) {
 function cli(argv = process.argv.slice(2)) {
   const opts = parseKeyValueArgs(argv);
   const loop = opts._[0];
+  if (!loop && (opts.checkRoutingModels || opts.updateRoutingModels)) {
+    try {
+      const result = opts.updateRoutingModels ? updateRoutingModels(opts) : checkRoutingModels(opts);
+      console.log(JSON.stringify(result, null, 2));
+      return result.status === 'invalid_routing' ? 1 : 0;
+    } catch (e) {
+      console.error(`specflow run failed: ${e.message}`);
+      return 1;
+    }
+  }
   if (!loop && opts.setupRouting) {
     try {
       console.log(JSON.stringify(installDefaultAdapterRouting(opts), null, 2));
@@ -1953,7 +2492,7 @@ function cli(argv = process.argv.slice(2)) {
     }
   }
   if (!loop) {
-    console.error('Usage: specflow run <loop|status|trace> --slug <slug> --goal <goal> --input <path> [--contract path] [--run-dir path] [--until-terminal] [--max-iterations n] [--setup-routing]');
+    console.error('Usage: specflow run <loop|status|trace> --slug <slug> --goal <goal> --input <path> [--contract path] [--run-dir path] [--stage-evidence path] [--until-terminal] [--max-iterations n] [--setup-routing|--check-routing-models|--update-routing-models]');
     return 2;
   }
   try {
@@ -1976,7 +2515,7 @@ function cli(argv = process.argv.slice(2)) {
           console.error(`Model routing enabled: ${installed.routing_path}`);
         } else if (enabled === false) {
           console.error('Model routing not enabled. Continuing without routed adapters.');
-          console.error('To enable later: specflow run --setup-routing');
+          console.error('To enable later: specflow run --setup-routing --runtime codex|claude-code');
         }
       }
       result = opts.untilTerminal ? runUntilTerminal({ ...opts, loop }) : runLoop({ ...opts, loop });
@@ -1989,8 +2528,13 @@ function cli(argv = process.argv.slice(2)) {
       console.error(result.error);
       return 2;
     }
+    if (result.status === 'invalid_stage_evidence') {
+      console.error('specflow run failed: stage evidence did not satisfy the durable rail contract');
+      console.log(JSON.stringify(result, null, 2));
+      return 1;
+    }
     console.log(JSON.stringify(result, null, 2));
-    return 0;
+    return result.status === 'blocked_specification' ? 2 : 0;
   } catch (e) {
     console.error(`specflow run failed: ${e.message}`);
     return 1;
@@ -2017,11 +2561,18 @@ module.exports = {
   normalizeAdapterPolicy,
   resolveAdapterRouting,
   modelConfirmationPlan,
+  routingConfirmationSemantics,
+  routingConfirmationSemanticSha256,
+  modelConfirmationRunId,
+  modelConfirmationStatus,
   modelRoutingBriefing,
   installDefaultAdapterRouting,
+  checkRoutingModels,
+  updateRoutingModels,
   buildAdapterCommand,
   commandExists,
   containsForbiddenAction,
+  forbiddenStageCheck,
   parseProviderEvents,
   forbiddenFromProviderEvents,
   isSimulationFresh,
@@ -2031,6 +2582,8 @@ module.exports = {
   nextStage,
   verifierCommandsForStage,
   executeVerifierRegistry,
+  loadStageEvidence,
+  executeStageEvidence,
   materializeStagePrompt,
   planAdapterSmoke,
   verificationPaths,

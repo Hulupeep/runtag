@@ -1,0 +1,17 @@
+{
+ "source": {
+  "kind": "file",
+  "path": "evidence/tier-replay/US-5.issue.json",
+  "note": "pre-issue local replay of the story draft; not live GitHub promotion"
+ },
+ "issue": {
+  "number": 0,
+  "title": "US-5: Tap out to finish the run",
+  "body": "# US-5: Tap out to finish the run\n\n**Priority:** P0  ·  **Journey criticality:** critical  ·  **Spec depth:** thin (no tier promotion yet)\n**Source:** docs/prd.md §5 US-5, §4 invariants, §8 copy  ·  **Goal:** docs/goal.md\n**Persona:** Visitor on Scene 5\n**Promise:** \"Finishing is the same physical ritual as starting.\"\n\n## Scope\n### In Scope\n- Behaviour and exact copy defined for US-5 in docs/prd.md\n### Not In Scope\n- Real mobile app, physical NFC tags, accounts, fulfilment\n\n## Data Contract\nN/A — client-side demo state only (hooks/useDemoState.ts).\n\n## Frontend Interface\ndata-testids: `scene-5`, `nfc-tag`\n\n## Invariants Referenced\n- **INV-D2** — docs/prd.md §4 / docs/contracts/feature_demo.yml\n- **INV-D5** — docs/prd.md §4 / docs/contracts/feature_demo.yml\n\n## Acceptance Criteria (with verification status)\nStatuses are against the working tree at commit 41b6d95 and the captured Playwright run of 2026-09-27 (local dev server, projects: chromium + mobile/WebKit iPhone 13). A passing test case is not full journey coverage; only VERIFIED rows are proven.\n\n| AC | Criterion | Status |\n|---|---|---|\n| AC-US5-1 | Scene 5 shows \"Run complete. Tap out.\" with a glowing tag | VERIFIED — demo-flow.spec.ts:42; interactions.spec.ts:56 (data-glowing=\"true\") |\n| AC-US5-2 | Instruction reads exactly \"Tap the tag to finish →\" | DEVIATION — COPY.scene5.instruction = \"Tap the tag to finish.\" ; no assertion |\n| AC-US5-3 | Scene 5 does not advance without activating the tag | UNVERIFIED — interactions.spec.ts:48-62 taps immediately; no wait-without-tap check |\n| AC-US5-4 | Tag activation animates the iPhone to its success state and shows Scene 6 | PARTIAL — interactions.spec.ts:62; Scene 6 visibility asserted; success animation not |\n\n**Coverage:** 1 VERIFIED, 1 DEVIATION, 1 UNVERIFIED, 1 PARTIAL. Journey coverage incomplete — not done.\n\n## Gherkin Scenarios (PRD §5, verbatim)\n```gherkin\nFeature: User taps NFC tag to end run\n\nScenario: Successful tap out\n  Given I am on Scene 5 (Tap Out)\n  And the NFC tag is glowing/pulsing\n  When I click on the NFC tag\n  Then the iPhone screen should animate to success state\n  And I should see \"DAY 5\" with celebration animation\n  And the chain visual should show 5 checkmarks\n```\n\n## Journey (Definition of Done)\n- **J-ID:** J-DEMO-TAP\n- **Mapped specs:** see Status column; each VERIFIED/PARTIAL row names file:line\n\n## Simulation Findings (proposed)\nSource: docs/specs/runtag-stories-simulation.md\n- SIM-1\n\n## Definition of Done\n- [ ] Every AC is VERIFIED by an assertion in a mapped Playwright spec\n- [ ] Mapped specs pass on chromium and mobile projects\n- [ ] `npm run test:contracts` passes\n- [ ] Journey gate Tier 1 result posted to this issue\n",
+  "labels": [],
+  "comments": []
+ },
+ "freshness": {
+  "status": "current"
+ }
+}

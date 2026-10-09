@@ -1,0 +1,100 @@
+{
+ "issue": {
+  "body": "# Slice: Match shipped copy to PRD §8 (Scenes 1, 2, 5, 6, 7)\n\n**Parent stories:** US-1 (#2), US-2 (#3), US-5 (#6), US-6 (#7), US-7 (#8)\n**Priority:** P0 · **Persona:** first-time visitor · **Journey:** J-DEMO-COMPLETE, J-DEMO-A11Y\n**Promise:** \"Every line I read in the demo is the line the PRD wrote.\"\n\n## Scope\n\n### In Scope — exact copy changes (PRD §8 is canonical)\n| ID | Where | Current | Target (PRD §8) |\n|---|---|---|---|\n| CP-1 | Scene1Hook.tsx start button | `Try Interactive Demo →` (hard-coded) | `Try RunTag Demo →` via `COPY.scene1.cta` |\n| CP-2 | Scene1Hook.tsx `.hero-subhead` | `You spent £400 on metrics. You check your VO2 max. You compare your splits. You haven't run in three weeks.` | `You spent £400 on metrics. You haven't run in three weeks.` |\n| CP-3 | Scene 2 narrative | (absent) | add `Your RunTag is waiting.` after `It's 7am. You're at the edge of the woods.` |\n| CP-4 | Scene 2 instruction | `Tap the tag to start your run.` | `Tap the tag to start your run →` |\n| CP-5 | Scene 5 instruction | `Tap the tag to finish.` | `Tap the tag to finish →` |\n| CP-6 | Scene 6 second line | `Keep it going.` | `That's it. That's all that matters.` |\n| CP-7 | Scene 6 button | `Continue` | `See what's next →` |\n| CP-8 | Scene 7 lead line | (absent) | add `Bored of your usual loop?` before `Discover routes others have created.` |\n| CP-9 | Scene 7 subline | `Find new tags. Explore new paths.` | `Or plant your own tags for others to find.` |\n| CP-10 | Scene 7 button | `See How It Works` | `Get RunTag →` |\n\nAll strings live in `lib/constants.ts` `COPY`; components render from `COPY` (no hard-coded copy).\n\n### Not In Scope\n- **Scene 8 CTAs** (\"Join the Waitlist\" / \"Get Starter Kit - £19\"): the PRD's two-action layout needs a starter-kit destination — open product question 1 in docs/specs/runtag-stories-simulation.md. The £19 offer stays as shipped.\n- **Scene 6 auto-advance** (behaviour, not wording) — open question 3.\n- Scene 1 sections below the hero (manifesto, steps) — not specified in PRD §8.\n\n## Acceptance Criteria (acceptance-checks)\n| AC | Criterion | Check (Playwright, both projects) |\n|---|---|---|\n| AC-1 | Start button accessible name is exactly `Try RunTag Demo →` | `getByRole('button', { name: 'Try RunTag Demo →', exact: true })` visible; existing accessibility.spec.ts:33 passes |\n| AC-2 | Hero subhead text equals CP-2 target | `.hero-subhead` `toHaveText` exact |\n| AC-3 | Scene 2 shows both narrative lines and CP-4 instruction | `getByText(..., { exact: true })` for each |\n| AC-4 | Scene 5 instruction equals CP-5 | exact text |\n| AC-5 | Scene 6 shows `Day 5. Chain unbroken.` and CP-6 | exact text |\n| AC-6 | Scene 6 button is `See what's next →` and advances to Scene 7 | role button exact name, click, scene-7 visible |\n| AC-7 | Scene 7 shows CP-8, `Discover routes others have created.`, CP-9 | exact text |\n| AC-8 | Scene 7 button is `Get RunTag →` and advances to Scene 8 | role button exact name, click, scene-8 visible |\n| AC-9 | No stale labels remain in tests or source (`Continue`, `See How It Works`, `Try Interactive Demo`) | grep in contract test |\n| AC-10 | INV-D4 still holds and the Scene 1 manifesto is unchanged (only the hero subhead drops \"VO2 max\"/\"splits\") | existing: contract-enforcement INV-D4 + invariants.spec.ts INV-D4 pass. **planned:** assert the manifesto list still contains `Your lungs don't care about VO2 max` (Scene1Hook.tsx:137) so the subhead edit cannot remove it |\n| AC-11 | At 375×667, Scene 7's `Get RunTag →` button is within the viewport without scrolling | **planned:** `page.setViewportSize({ width: 375, height: 667 })`, reach Scene 7, assert the button's bounding box bottom ≤ 667 before any scroll |\n\nExisting vs planned: AC-1 reuses accessibility.spec.ts:33; AC-10 reuses the INV-D4 checks plus one planned manifesto assertion; AC-2..AC-9 and AC-11 are planned assertions added in the implementation slice.\n\nGates: `npm run test:contracts` (jest) and the full Playwright suite (chromium + mobile) must pass; the suite is currently 44/46 and AC-1 is expected to turn both failures green.\n\n## Persona walkthrough (paper)\n1. **First-time visitor (desktop):** lands → reads the two-sentence subhead (CP-2) → clicks \"Try RunTag Demo →\" → reads \"It's 7am…\" / \"Your RunTag is waiting.\" / \"Tap the tag to start your run →\" → taps → runs → \"Tap the tag to finish →\" → taps → \"Day 5. Chain unbroken.\" / \"That's it. That's all that matters.\" → clicks \"See what's next →\" → \"Bored of your usual loop?\" … → \"Get RunTag →\" → Scene 8 unchanged. No dead end; every button label names its destination.\n2. **Screen-reader user:** button accessible names change to CP-1/CP-7/CP-10 with the arrow glyph; arrows are read as \"right arrow\" by VoiceOver — acceptable and matches PRD. aria-live scene announcements are unchanged.\n3. **Phone user:** longer Scene 7 copy (one extra line) must not push the CTA below a 375×667 fold → AC-11.\n\n## Simulation (slice-level)\nReuses docs/specs/runtag-stories-simulation.md (personas P1–P5). Slice-relevant findings:\n- P1/P5: Scene 6 auto-advance still fires after 3 s, so a user may never click \"See what's next →\" — behaviour unchanged by this slice (open Q3); the label is still correct when clicked.\n- P2: renaming buttons breaks any test selecting by old name — AC-9 guards this.\n- No new gaps found that this slice can close without a product decision.\n\n## Pre-flight Findings\n### CRITICAL\n- none\n### P1\n- none\n### P2\n- Scene 6 auto-advance may preempt CP-7 (tracked as open Q3; out of scope).\n- Scene 8 remains off-PRD (tracked as open Q1; out of scope).\n\n## Definition of Done\n- [ ] CP-1..CP-10 shipped from `COPY`\n- [ ] AC-1..AC-10 asserted and passing on chromium + mobile\n- [ ] `npm run test:contracts` passes\n- [ ] Full Playwright suite passes (no known failures)\n",
+  "comments": [
+   {
+    "id": "IC_kwDOQ-8GhM8AAAABZ6o1Mg",
+    "author": {
+     "login": "Hulupeep"
+    },
+    "authorAssociation": "OWNER",
+    "body": "Acceptance IDs renamed `S-AC-n` → `AC-n` (identifier-only change for the Specflow duo-build index; criteria text unchanged).\n",
+    "createdAt": "2026-10-07T08:35:07Z",
+    "includesCreatedEdit": false,
+    "isMinimized": false,
+    "minimizedReason": "",
+    "reactionGroups": [],
+    "url": "https://github.com/Hulupeep/runtag/issues/12#issuecomment-6034175282",
+    "viewerDidAuthor": true
+   },
+   {
+    "id": "IC_kwDOQ-8GhM8AAAABZ6tRMg",
+    "author": {
+     "login": "Hulupeep"
+    },
+    "authorAssociation": "OWNER",
+    "body": "Added AC-11 (Scene 7 CTA above the 375×667 fold) and made AC-10's manifesto check explicit, per duo-build review F-2 (run 1791362130835-91f1a417). Existing vs planned checks are now distinguished.\n",
+    "createdAt": "2026-10-07T08:39:50Z",
+    "includesCreatedEdit": false,
+    "isMinimized": false,
+    "minimizedReason": "",
+    "reactionGroups": [],
+    "url": "https://github.com/Hulupeep/runtag/issues/12#issuecomment-6034247986",
+    "viewerDidAuthor": true
+   }
+  ],
+  "labels": [],
+  "number": 12,
+  "title": "Slice: match shipped copy to PRD §8 (Scenes 1, 2, 5, 6, 7)"
+ },
+ "source": {
+  "kind": "github",
+  "repo": "Hulupeep/runtag",
+  "number": 12
+ },
+ "freshness": {
+  "status": "current"
+ },
+ "profile": {
+  "ui": true,
+  "materialSeams": [],
+  "artifacts": [
+   {
+    "id": "slice-acceptance",
+    "role": "acceptance-checks",
+    "path": "docs/specs/slice-prd-copy.md",
+    "sha256": "084e34b3f046533bd6677c4d413b9242140ea1d037bbaa4bf2971a3e6580fcb8",
+    "justification": "S-AC table maps each PRD §8 string to an exact Playwright check"
+   },
+   {
+    "id": "slice-walkthrough",
+    "role": "persona-walkthrough",
+    "path": "docs/specs/slice-prd-copy.md",
+    "sha256": "084e34b3f046533bd6677c4d413b9242140ea1d037bbaa4bf2971a3e6580fcb8",
+    "justification": "Paper walkthrough for three personas in the same slice file"
+   },
+   {
+    "id": "story-simulation",
+    "role": "simulation",
+    "path": "docs/specs/runtag-stories-simulation.md",
+    "sha256": "d1b59faf6e7a3e7e2941f194dc2b574ffc0d72ed0573a80e0a10623c4b88aa39",
+    "reuse": true,
+    "shared": true
+   },
+   {
+    "id": "slice-simulation",
+    "role": "simulation",
+    "path": "docs/specs/slice-prd-copy.md",
+    "sha256": "084e34b3f046533bd6677c4d413b9242140ea1d037bbaa4bf2971a3e6580fcb8",
+    "justification": "Slice-level simulation section"
+   },
+   {
+    "id": "slice-preflight",
+    "role": "preflight",
+    "path": "docs/specs/slice-prd-copy.md",
+    "sha256": "084e34b3f046533bd6677c4d413b9242140ea1d037bbaa4bf2971a3e6580fcb8",
+    "justification": "Pre-flight findings: no CRITICAL/P1"
+   }
+  ],
+  "gates": [
+   {
+    "id": "contracts",
+    "command": [
+     "npx",
+     "jest",
+     "--json"
+    ]
+   }
+  ]
+ }
+}

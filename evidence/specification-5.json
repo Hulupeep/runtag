@@ -1,0 +1,17 @@
+{
+  "issue": {
+    "body": "# US-4: Run animation with no metrics\n\n**Priority:** P0  ·  **Journey criticality:** critical  ·  **Spec depth:** thin (no tier promotion yet)\n**Source:** docs/prd.md §5 US-4, §4 invariants, §8 copy  ·  **Goal:** docs/goal.md\n**Persona:** Visitor who has tapped in\n**Promise:** \"I feel the run without any number telling me how I did.\"\n\n## Scope\n### In Scope\n- Behaviour and exact copy defined for US-4 in docs/prd.md\n### Not In Scope\n- Real mobile app, physical NFC tags, accounts, fulfilment\n\n## Data Contract\nN/A — client-side demo state only (hooks/useDemoState.ts).\n\n## Frontend Interface\ndata-testids: `scene-4`, `runner-animation`\n\n## Invariants Referenced\n- **INV-D4** — docs/prd.md §4 / docs/contracts/feature_demo.yml\n\n## Acceptance Criteria (with verification status)\nStatuses are against the working tree at commit 41b6d95 and the captured Playwright run of 2026-09-27 (local dev server, projects: chromium + mobile/WebKit iPhone 13). A passing test case is not full journey coverage; only VERIFIED rows are proven.\n\n| AC | Criterion | Status |\n|---|---|---|\n| AC-US4-1 | Runner silhouette animates along a dotted path | PARTIAL — demo-flow.spec.ts:38; runner visible; path not asserted |\n| AC-US4-2 | Copy \"No pace to check. No watch to glance at.\" and \"Just you and the trail.\" visible | PARTIAL — demo-flow.spec.ts:37; only \"No pace to check.\" asserted |\n| AC-US4-3 | No pace, distance, time/duration, calories or heart rate rendered in Scenes 2–8 | PARTIAL — invariants.spec.ts:58-95 + contract-enforcement.test.js INV-D4; runtime check covers Scenes 2, 5, 6, 8 only — Scenes 3, 4, 7 unchecked |\n| AC-US4-4 | Scene 5 begins ~5 s after Scene 4 starts | PARTIAL — demo-flow.spec.ts:41; allows 10 s; lower bound not asserted |\n\n**Coverage:** 4 PARTIAL. Journey coverage incomplete — not done.\n\n## Gherkin Scenarios (PRD §5, verbatim)\n```gherkin\nFeature: Run sequence plays automatically\n\nScenario: Visual run narrative\n  Given I have tapped in (Scene 3 complete)\n  When Scene 4 (The Run) begins\n  Then I should see a runner silhouette animation\n  And I should see a dotted path being drawn\n  And I should NOT see any pace or time metrics\n  And Scene 5 should begin after 5 seconds\n```\n\n## Journey (Definition of Done)\n- **J-ID:** J-DEMO-COMPLETE\n- **Mapped specs:** see Status column; each VERIFIED/PARTIAL row names file:line\n\n## Simulation Findings (proposed)\nSource: docs/specs/runtag-stories-simulation.md\n- SIM-11\n\n## Definition of Done\n- [ ] Every AC is VERIFIED by an assertion in a mapped Playwright spec\n- [ ] Mapped specs pass on chromium and mobile projects\n- [ ] `npm run test:contracts` passes\n- [ ] Journey gate Tier 1 result posted to this issue\n",
+    "comments": [],
+    "labels": [],
+    "number": 5,
+    "title": "US-4: Run animation with no metrics"
+  },
+  "source": {
+    "kind": "github",
+    "repo": "Hulupeep/runtag",
+    "number": 5
+  },
+  "freshness": {
+    "status": "current"
+  }
+}

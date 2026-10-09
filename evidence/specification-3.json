@@ -1,0 +1,17 @@
+{
+  "issue": {
+    "body": "# US-2: Starting the demo — setup scene\n\n**Priority:** P0  ·  **Journey criticality:** critical  ·  **Spec depth:** thin (no tier promotion yet)\n**Source:** docs/prd.md §5 US-2, §4 invariants, §8 copy  ·  **Goal:** docs/goal.md\n**Persona:** Visitor who clicked the CTA\n**Promise:** \"I see where I am, my 4-day chain, and the tag to tap.\"\n\n## Scope\n### In Scope\n- Behaviour and exact copy defined for US-2 in docs/prd.md\n### Not In Scope\n- Real mobile app, physical NFC tags, accounts, fulfilment\n\n## Data Contract\nN/A — client-side demo state only (hooks/useDemoState.ts).\n\n## Frontend Interface\ndata-testids: `scene-2`, `iphone-mockup`, `tree-illustration`, `nfc-tag`, `scene-indicator`\n\n## Invariants Referenced\n- **INV-D1** — docs/prd.md §4 / docs/contracts/feature_demo.yml\n- **INV-D3** — docs/prd.md §4 / docs/contracts/feature_demo.yml\n\n## Acceptance Criteria (with verification status)\nStatuses are against the working tree at commit 41b6d95 and the captured Playwright run of 2026-09-27 (local dev server, projects: chromium + mobile/WebKit iPhone 13). A passing test case is not full journey coverage; only VERIFIED rows are proven.\n\n| AC | Criterion | Status |\n|---|---|---|\n| AC-US2-1 | Clicking \"Try RunTag Demo\" shows Scene 2 | PARTIAL — demo-flow.spec.ts:16-19; the transition via start-demo-button passes; the required button wording \"Try RunTag Demo →\" FAILS (accessibility.spec.ts:33, see AC-US1-3) |\n| AC-US2-2 | Narrative \"It's 7am. You're at the edge of the woods.\" is visible | VERIFIED — demo-flow.spec.ts:20 |\n| AC-US2-3 | Narrative \"Your RunTag is waiting.\" is visible (PRD §8) | NOT IMPLEMENTED — string absent from source |\n| AC-US2-4 | iPhone shows a 4-day chain | PARTIAL — demo-flow.spec.ts:26, invariants.spec.ts:42; assert hidden scene-indicator data-chain-count=\"4\", not the visible iPhone chain |\n| AC-US2-5 | Tree with a glowing/pulsing NFC tag is visible | PARTIAL — demo-flow.spec.ts:22; tree asserted; glow on Scene 2 not asserted |\n| AC-US2-6 | Instruction reads exactly \"Tap the tag to start your run →\" (PRD §8) | DEVIATION — lib/constants.ts COPY.scene2.instruction = \"Tap the tag to start your run.\" (period, no arrow); no assertion |\n\n**Coverage:** 3 PARTIAL, 1 VERIFIED, 1 NOT IMPLEMENTED, 1 DEVIATION. Journey coverage incomplete — not done.\n\n## Gherkin Scenarios (PRD §5, verbatim)\n```gherkin\nFeature: Demo begins with clear setup\n\nScenario: User enters the demo experience\n  Given I am on the landing section\n  When I click \"Try RunTag Demo\"\n  Then I should see Scene 2 (The Setup)\n  And I should see an iPhone showing \"4 day chain\"\n  And I should see a tree with an NFC tag\n  And I should see text \"Tap the tag to start your run\"\n```\n\n## Journey (Definition of Done)\n- **J-ID:** J-DEMO-COMPLETE\n- **Mapped specs:** see Status column; each VERIFIED/PARTIAL row names file:line\n\n## Simulation Findings (proposed)\nSource: docs/specs/runtag-stories-simulation.md\n- No additional findings beyond the AC table.\n\n## Definition of Done\n- [ ] Every AC is VERIFIED by an assertion in a mapped Playwright spec\n- [ ] Mapped specs pass on chromium and mobile projects\n- [ ] `npm run test:contracts` passes\n- [ ] Journey gate Tier 1 result posted to this issue\n",
+    "comments": [],
+    "labels": [],
+    "number": 3,
+    "title": "US-2: Starting the demo — setup scene"
+  },
+  "source": {
+    "kind": "github",
+    "repo": "Hulupeep/runtag",
+    "number": 3
+  },
+  "freshness": {
+    "status": "current"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "issue": {
+    "body": "# US-6: Chain celebration (4 → 5)\n\n**Priority:** P0  ·  **Journey criticality:** critical  ·  **Spec depth:** thin (no tier promotion yet)\n**Source:** docs/prd.md §5 US-6, §4 invariants, §8 copy  ·  **Goal:** docs/goal.md\n**Persona:** Visitor who just tapped out\n**Promise:** \"I see the one metric that matters grow.\"\n\n## Scope\n### In Scope\n- Behaviour and exact copy defined for US-6 in docs/prd.md\n### Not In Scope\n- Real mobile app, physical NFC tags, accounts, fulfilment\n\n## Data Contract\nN/A — client-side demo state only (hooks/useDemoState.ts).\n\n## Frontend Interface\ndata-testids: `scene-6`, `big-checkmark`, `chain-visual`\n\n## Invariants Referenced\n- **INV-D3** — docs/prd.md §4 / docs/contracts/feature_demo.yml\n\n## Acceptance Criteria (with verification status)\nStatuses are against the working tree at commit 41b6d95 and the captured Playwright run of 2026-09-27 (local dev server, projects: chromium + mobile/WebKit iPhone 13). A passing test case is not full journey coverage; only VERIFIED rows are proven.\n\n| AC | Criterion | Status |\n|---|---|---|\n| AC-US6-1 | Day counter animates from 4 to 5 | PARTIAL — demo-flow.spec.ts:53; final value 5 asserted; animation not |\n| AC-US6-2 | Exactly 5 checkmarks, appearing sequentially | PARTIAL — invariants.spec.ts:55 (data-count=\"5\"); sequence not asserted |\n| AC-US6-3 | Copy \"Day 5. Chain unbroken.\" and \"That's it. That's all that matters.\" visible | PARTIAL — demo-flow.spec.ts:49; second line NOT IMPLEMENTED (COPY.scene6.celebration = \"Keep it going.\") |\n| AC-US6-4 | CTA reads exactly \"See what's next →\" and the user clicks it to continue | DEVIATION — Scene6Chain.tsx:67 \"Continue\"; auto-advances after 3 s (Scene6Chain.tsx:16) |\n\n**Coverage:** 3 PARTIAL, 1 DEVIATION. Journey coverage incomplete — not done.\n\n## Gherkin Scenarios (PRD §5, verbatim)\n```gherkin\nFeature: Chain growth is celebrated\n\nScenario: Day counter increments\n  Given I have just tapped out\n  When the success animation plays\n  Then the day counter should animate from 4 to 5\n  And each chain checkmark should appear sequentially\n  And I should see text \"Day 5. Chain unbroken.\"\n```\n\n## Journey (Definition of Done)\n- **J-ID:** J-DEMO-COMPLETE\n- **Mapped specs:** see Status column; each VERIFIED/PARTIAL row names file:line\n\n## Simulation Findings (proposed)\nSource: docs/specs/runtag-stories-simulation.md\n- SIM-2\n- SIM-5 (open question 3)\n\n## Definition of Done\n- [ ] Every AC is VERIFIED by an assertion in a mapped Playwright spec\n- [ ] Mapped specs pass on chromium and mobile projects\n- [ ] `npm run test:contracts` passes\n- [ ] Journey gate Tier 1 result posted to this issue\n",
+    "comments": [],
+    "labels": [],
+    "number": 7,
+    "title": "US-6: Chain celebration (4 → 5)"
+  },
+  "source": {
+    "kind": "github",
+    "repo": "Hulupeep/runtag",
+    "number": 7
+  },
+  "freshness": {
+    "status": "current"
+  }
+}

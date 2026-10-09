@@ -1,0 +1,17 @@
+{
+  "issue": {
+    "body": "# US-9: Restart the demo\n\n**Priority:** P1  ·  **Journey criticality:** critical  ·  **Spec depth:** thin (no tier promotion yet)\n**Source:** docs/prd.md §5 US-9, §4 invariants, §8 copy  ·  **Goal:** docs/goal.md\n**Persona:** Visitor replaying or presenting\n**Promise:** \"I can start over at any time with a clean state.\"\n\n## Scope\n### In Scope\n- Behaviour and exact copy defined for US-9 in docs/prd.md\n### Not In Scope\n- Real mobile app, physical NFC tags, accounts, fulfilment\n\n## Data Contract\nN/A — client-side demo state only (hooks/useDemoState.ts).\n\n## Frontend Interface\ndata-testids: `restart-button`\n\n## Invariants Referenced\n- **INV-D1** — docs/prd.md §4 / docs/contracts/feature_demo.yml\n- **INV-D3** — docs/prd.md §4 / docs/contracts/feature_demo.yml\n\n## Acceptance Criteria (with verification status)\nStatuses are against the working tree at commit 41b6d95 and the captured Playwright run of 2026-09-27 (local dev server, projects: chromium + mobile/WebKit iPhone 13). A passing test case is not full journey coverage; only VERIFIED rows are proven.\n\n| AC | Criterion | Status |\n|---|---|---|\n| AC-US9-1 | \"Restart Demo\" is available on every scene after Scene 1 | NOT IMPLEMENTED — restart-button exists only in Scene8CTA.tsx:117 |\n| AC-US9-2 | Restart returns to Scene 1 | VERIFIED — demo-flow.spec.ts:86-88 (from Scene 8 only) |\n| AC-US9-3 | All state resets (chain = 4, hasTappedIn/hasTappedOut/isAnimating false) | PARTIAL — demo-flow.spec.ts:89 (from Scene 8 only); only chain count asserted |\n| AC-US9-4 | Restart during Scenes 3/4/6 cancels pending auto-advance timers | UNVERIFIED — no spec; depends on AC-1 (SIM-4) |\n\n**Coverage:** 1 NOT IMPLEMENTED, 1 VERIFIED, 1 PARTIAL, 1 UNVERIFIED. Journey coverage incomplete — not done.\n\n## Gherkin Scenarios (PRD §5, verbatim)\n```gherkin\nFeature: User can restart demo\n\nScenario: Restart from any point\n  Given I am on any scene after Scene 1\n  When I click the \"Restart Demo\" button\n  Then I should return to Scene 1\n  And all state should be reset\n```\n\n## Journey (Definition of Done)\n- **J-ID:** J-DEMO-COMPLETE\n- **Mapped specs:** see Status column; each VERIFIED/PARTIAL row names file:line\n\n## Simulation Findings (proposed)\nSource: docs/specs/runtag-stories-simulation.md\n- SIM-3\n- SIM-4\n\n## Definition of Done\n- [ ] Every AC is VERIFIED by an assertion in a mapped Playwright spec\n- [ ] Mapped specs pass on chromium and mobile projects\n- [ ] `npm run test:contracts` passes\n- [ ] Journey gate Tier 1 result posted to this issue\n",
+    "comments": [],
+    "labels": [],
+    "number": 10,
+    "title": "US-9: Restart the demo"
+  },
+  "source": {
+    "kind": "github",
+    "repo": "Hulupeep/runtag",
+    "number": 10
+  },
+  "freshness": {
+    "status": "current"
+  }
+}

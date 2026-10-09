@@ -1,0 +1,19 @@
+run_contract:
+  loop: spec-build
+  goal: US-1..US-10 exist as Specflow issues with honest AC-to-assertion journey mapping
+  input_artifact: docs/prd.md
+  path: QA/loops/spec-build.yaml (driven via duo-build run 1790519263393-5b176555)
+  current_stage_or_rail: tickets
+  tier: thin   # stories are prepared, not promoted; no contracted/build-ready claim
+  next_gate: issues created through scripts/specflow-publication.cjs; tier records imported per issue
+  durable_evidence:
+    stories: docs/specs/runtag-stories/
+    simulation: docs/specs/runtag-stories-simulation.md
+    duo_run: .specflow/duo/1790519263393-5b176555/
+    tier_records: evidence/specification-<issue>.json (after issue creation)
+  simulation_required: false   # specflow-simulate ran: docs/specs/runtag-stories-simulation.md
+  stop_condition: 10 issues published + tier inspections recorded; implementation deferred to feature-build per issue
+  never_without_human:
+    - create issues from a DO_NOT_SHIP PRD
+    - fabricate a green verdict
+    - git push

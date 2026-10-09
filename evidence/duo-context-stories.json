@@ -1,0 +1,121 @@
+{
+  "workKind": "preparation",
+  "goal": "docs/goal.md",
+  "task": "evidence/task-stories.md",
+  "references": [
+    "docs/prd.md",
+    "docs/specs/runtag-stories-simulation.md"
+  ],
+  "objective": "US-1..US-10 exist as Specflow-compliant GitHub issues with journeys mapped to executed Playwright specs (successor of ceased duo run 1790519263393-5b176555; peer-failure root cause codex-cli 0.157.1 empty output, fixed in 0.160.0)",
+  "finish": "All ten stories drafted, simulated, reviewed and created as issues; no open findings",
+  "criteria": [
+    {
+      "id": "US-1",
+      "source": "docs/prd.md",
+      "anchor": "### US-1: First-time Visitor Hook",
+      "kind": "acceptance"
+    },
+    {
+      "id": "US-2",
+      "source": "docs/prd.md",
+      "anchor": "### US-2: Starting the Demo",
+      "kind": "acceptance"
+    },
+    {
+      "id": "US-3",
+      "source": "docs/prd.md",
+      "anchor": "### US-3: Tap In Interaction",
+      "kind": "acceptance"
+    },
+    {
+      "id": "US-4",
+      "source": "docs/prd.md",
+      "anchor": "### US-4: Run Animation",
+      "kind": "acceptance"
+    },
+    {
+      "id": "US-5",
+      "source": "docs/prd.md",
+      "anchor": "### US-5: Tap Out Interaction",
+      "kind": "acceptance"
+    },
+    {
+      "id": "US-6",
+      "source": "docs/prd.md",
+      "anchor": "### US-6: Chain Celebration",
+      "kind": "acceptance"
+    },
+    {
+      "id": "US-7",
+      "source": "docs/prd.md",
+      "anchor": "### US-7: Discovery Tease",
+      "kind": "acceptance"
+    },
+    {
+      "id": "US-8",
+      "source": "docs/prd.md",
+      "anchor": "### US-8: Conversion CTA",
+      "kind": "acceptance"
+    },
+    {
+      "id": "US-9",
+      "source": "docs/prd.md",
+      "anchor": "### US-9: Demo Restart",
+      "kind": "acceptance"
+    },
+    {
+      "id": "US-10",
+      "source": "docs/prd.md",
+      "anchor": "### US-10: Mobile Experience",
+      "kind": "acceptance"
+    },
+    {
+      "id": "TASK-ISSUES",
+      "source": "evidence/task-stories.md",
+      "anchor": "TASK-ISSUES: Create one GitHub issue per PRD user story US-1..US-10",
+      "kind": "acceptance"
+    },
+    {
+      "id": "TASK-HONEST",
+      "source": "evidence/task-stories.md",
+      "anchor": "TASK-HONEST: Each issue states current verified status from executed tests",
+      "kind": "acceptance"
+    },
+    {
+      "id": "GATE-SIM",
+      "source": ".claude/skills/specflow-loop-selector/SKILL.md",
+      "anchor": "A ticket/story is not ready for `feature-build` if simulation is missing, stale, skipped, or only mentioned in chat.",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-JOURNEY",
+      "source": ".claude/skills/specflow-audit/SKILL.md",
+      "anchor": "no Playwright spec mapped to the `J-id`",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-CONTRACTS",
+      "source": "CLAUDE.md",
+      "anchor": "npm test -- contracts    # Must pass",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-RUNCONTRACT",
+      "source": "AGENTS.md",
+      "anchor": "First select the loop, then emit a concrete `run_contract`",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-TIER",
+      "source": "SPECIFICATION.md",
+      "anchor": "All entry points use `scripts/specflow-tier.cjs`. Inspect the selected ticket's",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-PUBLICATION",
+      "source": ".claude/skills/duo-build/SKILL.md",
+      "anchor": "Before publishing any review summary or linked evidence to an issue, use",
+      "kind": "gate"
+    }
+  ]
+}

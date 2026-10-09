@@ -10,6 +10,7 @@ journey_meta:
   status: failing
   last_verified: "2026-09-27"
   owner: "@hulupeep"
+  coverage: partial
 
 preconditions:
   - description: "None - fresh page load, keyboard only"

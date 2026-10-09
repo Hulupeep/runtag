@@ -1,0 +1,90 @@
+{
+  "workKind": "preparation",
+  "specification": {
+    "record": "evidence/specification-12.json",
+    "targetTier": "build-ready",
+    "reviewerModel": "gpt-6-astra"
+  },
+  "goal": "docs/goal.md",
+  "task": "docs/specs/slice-prd-copy.md",
+  "references": [
+    "docs/prd.md",
+    "docs/specs/runtag-stories-simulation.md"
+  ],
+  "objective": "Slice #12 is build-ready: PRD §8 copy changes CP-1..CP-10 have exact acceptance checks, walkthrough, simulation and pre-flight",
+  "finish": "Scoped independent review passes for build-ready preparation; promotion succeeds",
+  "criteria": [
+    {
+      "id": "AC-1",
+      "source": "docs/specs/slice-prd-copy.md",
+      "anchor": "| AC-1 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-2",
+      "source": "docs/specs/slice-prd-copy.md",
+      "anchor": "| AC-2 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-3",
+      "source": "docs/specs/slice-prd-copy.md",
+      "anchor": "| AC-3 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-4",
+      "source": "docs/specs/slice-prd-copy.md",
+      "anchor": "| AC-4 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-5",
+      "source": "docs/specs/slice-prd-copy.md",
+      "anchor": "| AC-5 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-6",
+      "source": "docs/specs/slice-prd-copy.md",
+      "anchor": "| AC-6 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-7",
+      "source": "docs/specs/slice-prd-copy.md",
+      "anchor": "| AC-7 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-8",
+      "source": "docs/specs/slice-prd-copy.md",
+      "anchor": "| AC-8 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-9",
+      "source": "docs/specs/slice-prd-copy.md",
+      "anchor": "| AC-9 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-10",
+      "source": "docs/specs/slice-prd-copy.md",
+      "anchor": "| AC-10 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "GATE-BUILD-READY",
+      "source": "SPECIFICATION.md",
+      "anchor": "Build-ready also references acceptance-checks, simulation and preflight;",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-CONTRACTS",
+      "source": "CLAUDE.md",
+      "anchor": "npm test -- contracts    # Must pass",
+      "kind": "gate"
+    }
+  ]
+}

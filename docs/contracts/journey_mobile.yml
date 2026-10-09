@@ -8,6 +8,8 @@ journey_meta:
   status: passing
   last_verified: "2026-09-27"
   owner: "@hulupeep"
+  # status = mapped spec cases pass; coverage partial: 16 px body text and landscape unasserted
+  coverage: partial
 
 preconditions:
   - description: "Viewport < 768px (tests use 375x667 and iPhone 13)"

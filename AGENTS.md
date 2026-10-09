@@ -56,3 +56,7 @@ Rules:
   advancing state.
 - Never perform actions listed in `never_without_human`; a provider suggesting
   or attempting one blocks the run.
+
+## Progressive specification policy
+
+Read SPECIFICATION.md before creating, simulating, auditing or building tickets. The installed tier helper determines applicable depth. Reconcile legacy universal simulation instructions explicitly; a label alone never proves readiness.

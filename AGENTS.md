@@ -1,3 +1,44 @@
+<!-- specflow:work-routing:start -->
+## Specflow Work Routing
+
+Scale ceremony to the ask’s size, uncertainty and risk. Use the installed
+`specflow-loop-selector` skill to choose the lightest sufficient work weight
+before deciding whether a loop is needed: Tweak, Bug, UI feature without schema
+change, Schema/RPC change, New concept/behaviour change, or Multi-slice epic.
+The skill contains the decision table and risk modifiers. Consulting it does
+not start a loop or require a run contract. State the weight, reason and checks
+briefly in the existing task/response; do not manufacture a triage artifact.
+
+Raise verification for database/data writes, auth/security, relied-on gestures,
+hard-to-undo data, billing and cross-repo seams. Display-only scope, reversibility,
+a feature flag or owner testing within a day can reduce ceremony, but cannot
+waive required checks. Bugs need a failing test before the fix. Schema/RPC changes
+need the full ticket, Gate C replay/rollback/pgTAP and CI migration-replay. New
+concepts or changed gestures need simulation before building; new concepts also
+need a kill check. Epics retain waves, journey gates and Gate D.
+
+Required UI journeys must actually execute; server-state journeys must use a real
+seeded backend and exercise the relevant auth/API/persistence paths. Mocks,
+screenshots alone and unexecuted specs do not prove them. Preserve the journey
+ID, steps, success criteria, spec path and run evidence. Missing backend access
+blocks verification. A missing, skipped or never-run required journey is CRITICAL;
+a linked deferral records a gap, never a pass. Feature flags and owner testing
+cannot replace this evidence.
+
+This managed section supersedes older guidance that automatically sends every
+ask into a full loop. Work weight is not a specification-depth label or a new
+runner mode. Existing contracts, explicit project requirements and CI/release
+gates still apply. Formal Specflow stories retain their prescribed simulation,
+audit and pre-flight path; selected full-loop build-ready work still uses the
+shared tier helper and its required evidence. Never claim compliance with
+CRITICAL/P1 findings. Report requirements that conflict with a lighter route;
+do not silently waive them.
+
+Only selected loops require a run contract, runtime routing and model
+confirmation. Explicit audit/simulation requests use their own workflows without
+automatically starting a build loop. Report checks actually run and remaining gaps.
+<!-- specflow:work-routing:end -->
+
 # AGENTS.md
 
 Use this file for Codex, K2.7, and other agents that read repository-level agent instructions.

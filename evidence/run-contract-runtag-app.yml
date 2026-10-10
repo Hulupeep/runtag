@@ -1,0 +1,24 @@
+run_contract:
+  loop: spec-build            # then feature-build per ready ticket
+  goal: RunTag works as a phone web app with real NFC tags (tap in, tap out, chain) on runtag.vercel.app
+  input_artifact: docs/prd.md + docs/specs/runtag-stories/ + owner decisions 2026-10-10
+  path: QA/loops/spec-build.yaml -> QA/loops/feature-build.yaml (duo-build reviews)
+  current_stage_or_rail: discover
+  next_gate: grounding written; problem + real-data-it-must-satisfy stated
+  durable_evidence:
+    grounding: PRDs/runtag-app-grounding.md
+    prd: PRDs/runtag-app-prd.md
+    verdict: PRDs/runtag-app-verdict.md
+    falsification: PRDs/runtag-app-falsification.md
+    hops: PRDs/runtag-app-hops.md
+  simulation_required: true until specflow-simulate/B.5 runs on the selected slice
+  owner_authority_2026-10-10:
+    storage: on-device only (no backend, no login)
+    issues_after_SHIP: pre-approved
+    push_pr_merge_deploy: pre-approved (merge to main == Vercel production deploy)
+    on_unfixable_failure: skip ticket, record, continue independent tickets
+  stop_condition: owner can run with physical tags from their phone on runtag.vercel.app; all selected tickets' journeys pass
+  never_without_human:
+    - create issues from a DO_NOT_SHIP PRD
+    - fabricate a green verdict
+    - new paid services or deleting user data

@@ -5,7 +5,16 @@ Specflow records three planning depths: `spec:thin`, `spec:contracted` and
 scope, behaviour acceptance, dependencies and unknowns. Choose the next useful
 decision or slice before adding detail; future work stays thin.
 
-All entry points use `scripts/specflow-tier.cjs`. Inspect the selected ticket's
+Work weight is selected first by `specflow-loop-selector`: it determines which
+parts and checks the ask needs and whether a loop is warranted. It is separate
+from these planning-depth labels. A display-only tweak or bounded bug does not
+need a tier record solely for triage. Formal specification and loop entry points
+use the shared policy below; weight never overrides their evidence requirements.
+In particular, build-ready loop work still requires scoped simulation. Required
+server-state journeys must execute against a real seeded backend; mocked success,
+a skipped test or owner testing alone does not establish completion.
+
+All specification entry points use `scripts/specflow-tier.cjs`. Inspect the selected ticket's
 record with `node scripts/specflow-tier.cjs inspect <record.json> <route> inspect`.
 Use the exact route name: `specflow-loop-selector`, `spec-build`,
 `specflow-simulate`, `specflow-audit`, `specflow-uplifter`, `specflow-writer`,
@@ -83,7 +92,14 @@ user does not copy review messages or run three separate workflows.
    Codex model; its explicit CLI selection is recorded separately from served
    model telemetry. No automatic model selection is introduced.
 6. Fix evidenced findings and re-review within the initial-plus-one-repair
-   allowance. Then run `node scripts/specflow-specification.cjs promote RECORD
+   allowance. Invalid native peer responses are retained as `protocol_failed`
+   and do not consume this substantive allowance or establish acceptance. Three
+   consecutive protocol failures block the issue/tier across hosts and run names;
+   a validated scoped review clears that streak. Correcting a rejected response
+   may retry the same scope. A substantive re-review still needs changed evidence.
+   A fully verified preparation peer returns `complete` with no next steps:
+   `finish` and promotion are subsequent builder actions, not repair instructions.
+   Then run `node scripts/specflow-specification.cjs promote RECORD
    build-ready "why this slice is needed now"` (or `contracted`). Promotion
    checks the current source, dependencies, review and the same raw gates,
    records the transaction, and updates only this issue's depth label. It does
@@ -97,6 +113,11 @@ After verifying the process ended, record it with `review-failed RECORD TIER
 "observed interruption and evidence location"`; this retains previous findings,
 never resets the budget and never supplies acceptance. A lock whose process
 status cannot be established stays blocked for explicit recovery.
+Legacy failed reservations remain charged: absence of a validated result alone
+does not prove a protocol rejection. This change neither rewrites past allowances
+nor upgrades an active run's pinned runtime. Preserve exhausted runs and escalate
+their retained records; do not rename a run, edit its ledger or start a replacement
+to bypass a limit. A live independent pass is still required for promotion.
 
 ## Learn before deepening
 

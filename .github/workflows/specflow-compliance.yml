@@ -61,7 +61,7 @@ jobs:
           fi
 
           # Extract violation count
-          VIOLATIONS=$(echo "$RESULTS" | grep -c "CONTRACT VIOLATION" || echo "0")
+          VIOLATIONS=$(echo "$RESULTS" | grep -c "CONTRACT VIOLATION" || true)
 
           # Build the comment body
           cat > /tmp/comment-body.md << 'COMMENT_EOF'

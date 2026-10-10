@@ -1,0 +1,33 @@
+[
+ {
+  "id": "APP-SHELL",
+  "writes": [
+   "components/scenes/Scene1Hook.tsx",
+   "components/scenes/Scene8CTA.tsx",
+   "/app",
+   "/t/",
+   "/app/tags",
+   "/app/settings",
+   "/app?tapped=",
+   "app/(shell)/",
+   "lib/app/store.ts",
+   "lib/app/chain.ts",
+   "lib/app/route.ts",
+   "lib/app/nav.ts",
+   "lib/app/origin.ts",
+   "scripts/sw/",
+   "public/manifest.webmanifest",
+   "public/icons/",
+   "next.config.mjs",
+   "package.json",
+   ".gitignore",
+   "docs/contracts/feature_app.yml",
+   "docs/contracts/feature_app_defaults.yml",
+   "docs/contracts/journey_app_offline.yml",
+   "tests/e2e/journey_app_offline.spec.ts"
+  ],
+  "reads": [
+   "lib/constants.ts"
+  ]
+ }
+]

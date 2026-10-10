@@ -1,0 +1,1 @@
+Identifier case normalisation: AC-1b, AC-5b, AC-6b, AC-8b → AC-1B, AC-5B, AC-6B, AC-8B. Case-only; made before any review, promotion or baseline; required by the duo-build criterion ID format `^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$`. No criterion text changed.

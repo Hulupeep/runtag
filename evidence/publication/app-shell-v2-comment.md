@@ -1,0 +1,1 @@
+v2: folded Gate B.5 pre-flight (docs/specs/app/APP-SHELL-preflight.md) — CRITICAL C1 host redirect vs localhost, C2 build-ID service worker, C3 Turbopack precache completeness; P1-1…P1-8 and P2-1…P2-14. Gate A stipulations 1–9 now fully folded.

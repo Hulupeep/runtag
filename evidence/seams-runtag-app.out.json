@@ -1,0 +1,270 @@
+{
+  "seams": [
+    {
+      "surface": "/app",
+      "writers": [
+        "APP-CHAIN",
+        "APP-DURABLE",
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-LINK"
+      ],
+      "pairs": [
+        [
+          "APP-CHAIN",
+          "APP-DURABLE"
+        ],
+        [
+          "APP-CHAIN",
+          "APP-SHELL"
+        ],
+        [
+          "APP-CHAIN",
+          "APP-LINK"
+        ],
+        [
+          "APP-DURABLE",
+          "APP-SHELL"
+        ],
+        [
+          "APP-DURABLE",
+          "APP-LINK"
+        ],
+        [
+          "APP-SHELL",
+          "APP-LINK"
+        ]
+      ],
+      "kind": "mixed"
+    },
+    {
+      "surface": "/app?tapped=",
+      "writers": [
+        "APP-SHELL",
+        "APP-TAP"
+      ],
+      "readers": [],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-TAP"
+        ]
+      ],
+      "kind": "writer-writer"
+    },
+    {
+      "surface": "/app/settings",
+      "writers": [
+        "APP-DURABLE",
+        "APP-SHELL"
+      ],
+      "readers": [],
+      "pairs": [
+        [
+          "APP-DURABLE",
+          "APP-SHELL"
+        ]
+      ],
+      "kind": "writer-writer"
+    },
+    {
+      "surface": "/app/tags",
+      "writers": [
+        "APP-SHELL",
+        "APP-TAGS"
+      ],
+      "readers": [],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-TAGS"
+        ]
+      ],
+      "kind": "writer-writer"
+    },
+    {
+      "surface": "/t/",
+      "writers": [
+        "APP-SHELL",
+        "APP-TAP"
+      ],
+      "readers": [],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-TAP"
+        ]
+      ],
+      "kind": "writer-writer"
+    },
+    {
+      "surface": "components/scenes/Scene8CTA.tsx",
+      "writers": [
+        "APP-LINK",
+        "APP-SHELL"
+      ],
+      "readers": [],
+      "pairs": [
+        [
+          "APP-LINK",
+          "APP-SHELL"
+        ]
+      ],
+      "kind": "writer-writer"
+    },
+    {
+      "surface": "lib/app/origin.ts",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-TAGS",
+        "APP-TAP"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-TAGS"
+        ],
+        [
+          "APP-SHELL",
+          "APP-TAP"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "lib/app/store.ts",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-CHAIN",
+        "APP-DURABLE",
+        "APP-TAGS",
+        "APP-TAP"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-CHAIN"
+        ],
+        [
+          "APP-SHELL",
+          "APP-DURABLE"
+        ],
+        [
+          "APP-SHELL",
+          "APP-TAGS"
+        ],
+        [
+          "APP-SHELL",
+          "APP-TAP"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "runs",
+      "writers": [
+        "APP-DURABLE",
+        "APP-TAP"
+      ],
+      "readers": [
+        "APP-CHAIN"
+      ],
+      "pairs": [
+        [
+          "APP-DURABLE",
+          "APP-TAP"
+        ],
+        [
+          "APP-DURABLE",
+          "APP-CHAIN"
+        ],
+        [
+          "APP-TAP",
+          "APP-CHAIN"
+        ]
+      ],
+      "kind": "mixed"
+    },
+    {
+      "surface": "tags",
+      "writers": [
+        "APP-DURABLE",
+        "APP-TAGS",
+        "APP-TAP"
+      ],
+      "readers": [],
+      "pairs": [
+        [
+          "APP-DURABLE",
+          "APP-TAGS"
+        ],
+        [
+          "APP-DURABLE",
+          "APP-TAP"
+        ],
+        [
+          "APP-TAGS",
+          "APP-TAP"
+        ]
+      ],
+      "kind": "writer-writer"
+    }
+  ],
+  "derivedHops": [
+    {
+      "surface": "/app",
+      "why": "seam (mixed) between APP-CHAIN, APP-DURABLE, APP-SHELL, APP-LINK",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "/app?tapped=",
+      "why": "seam (writer-writer) between APP-SHELL, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "/app/settings",
+      "why": "seam (writer-writer) between APP-DURABLE, APP-SHELL",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "/app/tags",
+      "why": "seam (writer-writer) between APP-SHELL, APP-TAGS",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "/t/",
+      "why": "seam (writer-writer) between APP-SHELL, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "components/scenes/Scene8CTA.tsx",
+      "why": "seam (writer-writer) between APP-LINK, APP-SHELL",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "lib/app/origin.ts",
+      "why": "seam (writer-reader) between APP-SHELL, APP-TAGS, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "lib/app/store.ts",
+      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-DURABLE, APP-TAGS, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "runs",
+      "why": "seam (mixed) between APP-DURABLE, APP-TAP, APP-CHAIN",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "tags",
+      "why": "seam (writer-writer) between APP-DURABLE, APP-TAGS, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    }
+  ]
+}

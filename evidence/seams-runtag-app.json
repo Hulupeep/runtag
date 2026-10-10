@@ -1,0 +1,91 @@
+[
+ {
+  "id": "APP-SHELL",
+  "writes": [
+   "components/scenes/Scene1Hook.tsx",
+   "components/scenes/Scene8CTA.tsx",
+   "/app",
+   "/t/",
+   "/app/tags",
+   "/app/settings",
+   "/app?tapped=",
+   "app/(shell)/",
+   "lib/app/store.ts",
+   "lib/app/chain.ts",
+   "lib/app/route.ts",
+   "lib/app/nav.ts",
+   "lib/app/origin.ts",
+   "scripts/sw/",
+   "public/manifest.webmanifest",
+   "public/icons/",
+   "next.config.mjs",
+   "package.json",
+   ".gitignore",
+   "docs/contracts/feature_app.yml",
+   "docs/contracts/feature_app_defaults.yml",
+   "docs/contracts/journey_app_offline.yml",
+   "tests/e2e/journey_app_offline.spec.ts"
+  ],
+  "reads": [
+   "lib/constants.ts"
+  ]
+ },
+ {
+  "id": "APP-TAP",
+  "writes": [
+   "/t/",
+   "/app?tapped=",
+   "runs",
+   "tags"
+  ],
+  "reads": [
+   "lib/app/store.ts",
+   "lib/app/origin.ts",
+   "public/sw.js"
+  ]
+ },
+ {
+  "id": "APP-CHAIN",
+  "writes": [
+   "/app"
+  ],
+  "reads": [
+   "lib/app/store.ts",
+   "runs",
+   "components/ChainVisual.tsx"
+  ]
+ },
+ {
+  "id": "APP-TAGS",
+  "writes": [
+   "/app/tags",
+   "tags"
+  ],
+  "reads": [
+   "lib/app/origin.ts",
+   "lib/app/store.ts"
+  ]
+ },
+ {
+  "id": "APP-DURABLE",
+  "writes": [
+   "/app/settings",
+   "tags",
+   "runs",
+   "meta",
+   "/app"
+  ],
+  "reads": [
+   "lib/app/store.ts"
+  ]
+ },
+ {
+  "id": "APP-LINK",
+  "writes": [
+   "components/scenes/Scene8CTA.tsx"
+  ],
+  "reads": [
+   "/app"
+  ]
+ }
+]

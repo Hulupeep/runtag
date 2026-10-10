@@ -1,0 +1,11 @@
+seam-lite: 10 seam(s) across 6 tickets
+  ⚠ /app — mixed: APP-CHAIN↔APP-DURABLE, APP-CHAIN↔APP-SHELL, APP-CHAIN↔APP-LINK, APP-DURABLE↔APP-SHELL, APP-DURABLE↔APP-LINK, APP-SHELL↔APP-LINK
+  ⚠ /app?tapped= — writer-writer: APP-SHELL↔APP-TAP
+  ⚠ /app/settings — writer-writer: APP-DURABLE↔APP-SHELL
+  ⚠ /app/tags — writer-writer: APP-SHELL↔APP-TAGS
+  ⚠ /t/ — writer-writer: APP-SHELL↔APP-TAP
+  ⚠ components/scenes/Scene8CTA.tsx — writer-writer: APP-LINK↔APP-SHELL
+  ⚠ lib/app/origin.ts — writer-reader: APP-SHELL↔APP-TAGS, APP-SHELL↔APP-TAP
+  ⚠ lib/app/store.ts — writer-reader: APP-SHELL↔APP-CHAIN, APP-SHELL↔APP-DURABLE, APP-SHELL↔APP-TAGS, APP-SHELL↔APP-TAP
+  ⚠ runs — mixed: APP-DURABLE↔APP-TAP, APP-DURABLE↔APP-CHAIN, APP-TAP↔APP-CHAIN
+  ⚠ tags — writer-writer: APP-DURABLE↔APP-TAGS, APP-DURABLE↔APP-TAP, APP-TAGS↔APP-TAP

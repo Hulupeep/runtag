@@ -1,0 +1,183 @@
+{
+  "workKind": "preparation",
+  "specification": {
+    "record": "evidence/specification-16.json",
+    "targetTier": "build-ready",
+    "reviewerModel": "gpt-6-astra"
+  },
+  "goal": "docs/goal.md",
+  "task": "docs/specs/app/APP-SHELL.md",
+  "references": [
+    "PRDs/runtag-app-prd.md",
+    "PRDs/runtag-app-verdict.md",
+    "PRDs/runtag-app-hops.md",
+    "docs/specs/app/APP-SHELL-preflight.md",
+    ".specflow/duo/1791621592510-28c16ad0/round-001/review.json"
+  ],
+  "objective": "APP-SHELL (#16) v3 is build-ready (linked successor of ceased run 1791621592510-28c16ad0; reviewer-directed repairs F-1..F-6 under owner standing authority): every AC has an executable re-read oracle, Gate A stipulations and B.5 findings are folded, the store contract is stable for APP-TAP/CHAIN/TAGS/DURABLE",
+  "finish": "Scoped independent review passes for build-ready preparation; promotion succeeds",
+  "criteria": [
+    {
+      "id": "AC-1",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-1 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "SUBAC-1B",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-1b |",
+      "kind": "gate"
+    },
+    {
+      "id": "AC-2",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-2 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-3",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-3 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-4",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-4 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-5",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-5 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "SUBAC-5B",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-5b |",
+      "kind": "gate"
+    },
+    {
+      "id": "AC-6",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-6 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "SUBAC-6B",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-6b |",
+      "kind": "gate"
+    },
+    {
+      "id": "AC-7",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-7 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-8",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-8 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "SUBAC-8B",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-8b |",
+      "kind": "gate"
+    },
+    {
+      "id": "AC-9",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-9 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-10",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-10 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-11",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-11 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-12",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-12 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-13",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-13 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-14",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-14 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-17",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-17 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-18",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-18 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-15",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-15 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-16",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-16 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "GATE-A-STIPULATIONS",
+      "source": "PRDs/runtag-app-verdict.md",
+      "anchor": "### APP-SHELL (W1)",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-B5",
+      "source": "QA/loops/spec-build.yaml",
+      "anchor": "gate: no CRITICAL design gap survives",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-BUILD-READY",
+      "source": "SPECIFICATION.md",
+      "anchor": "Build-ready also references acceptance-checks, simulation and preflight;",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-CONTRACTS",
+      "source": "CLAUDE.md",
+      "anchor": "npm test -- contracts    # Must pass",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-B",
+      "source": "QA/loops/spec-build.yaml",
+      "anchor": "requirement→journey→test→issue complete; no orphans; no duplicate IDs;",
+      "kind": "gate"
+    }
+  ]
+}

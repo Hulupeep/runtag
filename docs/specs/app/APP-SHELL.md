@@ -4,6 +4,7 @@
 **Persona:** owner-runner on iPhone or Android · **Promise:** "Open `/app` once, and RunTag works at the trailhead even with no signal."
 **Gate A:** SHIP_WITH_STIPULATIONS — verdict §7 APP-SHELL items 1–9 folded below.
 **B.5 pre-flight:** docs/specs/app/APP-SHELL-preflight.md — C1–C3, P1-1…P1-8, P2-1…P2-14 folded below (v2).
+**v8 (D24-SEAM-FILE-SURFACES):** Gate B surfaces are routes/testids; files listed separately; clean-tree seam command.
 **v4 (this ticket):** v3 content + F-7 + AC-SHELL-18 commit-ordering oracle (#21 review round 1), (seam input synced to these exact declarations; dated hops amendment G1/G2; post-build seam command scoped to this slice).
 **v3:** duo preparation review run 1791621592510-28c16ad0 round 1 — F-1 path-preserving redirects, F-2 transaction semantics, F-3 full S-10 coverage (no waiver), F-6 Gate B reconciliation. Sub-criterion IDs AC-SHELL-1B/5b/6b/8b are the original v2 identifiers (an interim upper-casing was reverted).
 **Covers:** APP-001, APP-008, APP-010, APP-011, APP-020, APP-102 (+ verdict S-3, S-5, S-7, S-8, S-9, S-10, S-14, T12, M-7, M-9)
@@ -122,16 +123,18 @@ Feature: App shell
 ## Journey (Definition of Done)
 J-APP-OFFLINE (`tests/e2e/journey_app_offline.spec.ts`, contract `docs/contracts/journey_app_offline.yml`) + `tests/e2e/app_shell.spec.ts` + `tests/e2e/app_logic.spec.ts`. Local run: stop any dev server, `npm run build && PW_PROD=1 npx playwright test`; specs assert `GET /sw.js` contains `.next/BUILD_ID` (P2-11). Clock: `page.clock.install()` before first navigation; app time via `Date.now()` only; SW timing measured Node-side (P2-2). Chromium-only ACs use `test.skip(browserName !== 'chromium', 'SW interception is Chromium-only in Playwright')` (P2-3).
 
-## Declarations (Gate B seams — P2-13)
-writes: [`components/scenes/Scene1Hook.tsx`, `components/scenes/Scene8CTA.tsx`, `/app`, `/t/`, `/app/tags`, `/app/settings`, `/app?tapped=`, `app/(shell)/`, `lib/app/store.ts`, `lib/app/chain.ts`, `lib/app/route.ts`, `lib/app/nav.ts`, `lib/app/origin.ts`, `scripts/sw/`, `public/manifest.webmanifest`, `public/icons/`, `next.config.mjs`, `package.json`, `.gitignore`, `docs/contracts/feature_app.yml`, `docs/contracts/feature_app_defaults.yml`, `docs/contracts/journey_app_offline.yml`, `tests/e2e/journey_app_offline.spec.ts`]
-reads: [`lib/constants.ts`]
+## Declarations (Gate B seams — P2-13; surfaces corrected by discovery D24-SEAM-FILE-SURFACES)
+Surfaces are route literals and `data-testid` values exactly as they appear in code (what `verify-seams` resolves); touched files are listed separately and checked for existence.
+writes: [`/app`, `/t/`, `/app/tags`, `/app/settings`, `/app?tapped=`, `view`, `tap-tag-id`, `tapped-run`, `ready-offline`, `store-error`, `chain-value`, `nav-chain`, `nav-tags`, `nav-settings`]
+reads: []
+files: [`components/scenes/Scene1Hook.tsx`, `components/scenes/Scene8CTA.tsx`, `app/(shell)/`, `lib/app/store.ts`, `lib/app/chain.ts`, `lib/app/route.ts`, `lib/app/nav.ts`, `lib/app/origin.ts`, `scripts/sw/`, `public/manifest.webmanifest`, `public/icons/`, `next.config.mjs`, `package.json`, `.gitignore`, `docs/contracts/feature_app.yml`, `docs/contracts/feature_app_defaults.yml`, `docs/contracts/journey_app_offline.yml`, `tests/e2e/journey_app_offline.spec.ts`, `lib/constants.ts`]
 reuses: [`components/ChainVisual.tsx` (APP-CHAIN)]
 adrNone: "repo has no ADR folder"
 
-**Gate B reconciliation (F-6):** the declared `writes` are surfaces this slice creates, so pre-build seam computation ran with `--no-resolve` (PRDs/runtag-app-hops.md, evidence/seams-runtag-app.out.json). Implementation-time obligation (DoD): after this slice is built, `node scripts/verify-seams.cjs evidence/seams-app-shell.json --repo-root .` must exit 0. That file holds exactly this ticket's complete declarations (all `writes` and `reads` above, mirrored in the APP-SHELL entry of `evidence/seams-runtag-app.json`); future slices' surfaces stay unresolved until they are built (progressive specification). Shared-surface checks G1 (`/app?tapped=`, with APP-TAP) and G2 (`Scene8CTA.tsx`, with APP-LINK) are pinned in the dated amendment of PRDs/runtag-app-hops.md. requirement→journey→test→issue for this slice: APP-001/008/010/011/020/102 → J-APP-OFFLINE → tests/e2e/journey_app_offline.spec.ts, app_shell.spec.ts, app_logic.spec.ts → #16.
+**Gate B reconciliation (F-6):** the declared `writes` are surfaces this slice creates, so pre-build seam computation ran with `--no-resolve` (PRDs/runtag-app-hops.md, evidence/seams-runtag-app.out.json). Implementation-time obligation (DoD): after this slice is built, `bash evidence/seams-check.sh` must exit 0: it copies tracked + non-ignored files to a clean tree (so `.specflow/duo` snapshots cannot produce false matches), runs `verify-seams` on `evidence/seams-app-shell.json` (exactly the surfaces above, mirrored in the APP-SHELL entry of `evidence/seams-runtag-app.json`) and checks every `files:` entry exists; future slices' surfaces stay unresolved until they are built (progressive specification). Shared-surface checks G1 (`/app?tapped=`, with APP-TAP) and G2 (`Scene8CTA.tsx`, with APP-LINK) are pinned in the dated amendment of PRDs/runtag-app-hops.md. requirement→journey→test→issue for this slice: APP-001/008/010/011/020/102 → J-APP-OFFLINE → tests/e2e/journey_app_offline.spec.ts, app_shell.spec.ts, app_logic.spec.ts → #16.
 
 ## Definition of Done
 - [ ] Every criterion in the Acceptance Criteria table asserted; `npm run test:contracts` + full Playwright (chromium + mobile) green on CI (Gate C)
 - [ ] provenance: asserted values re-read from IndexedDB / caches / HTTP; no literals copied into implementation; code says "placeholder", not "stub"/"fake" (P2-9)
 - [ ] slice < 1000 hand-written lines (generated `public/sw.js` excluded)
-- [ ] `node scripts/verify-seams.cjs evidence/seams-app-shell.json --repo-root .` exits 0 after build
+- [ ] `bash evidence/seams-check.sh` exits 0 after build

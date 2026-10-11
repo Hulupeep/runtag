@@ -2,13 +2,25 @@
  {
   "id": "APP-SHELL",
   "writes": [
-   "components/scenes/Scene1Hook.tsx",
-   "components/scenes/Scene8CTA.tsx",
    "/app",
    "/t/",
    "/app/tags",
    "/app/settings",
    "/app?tapped=",
+   "view",
+   "tap-tag-id",
+   "tapped-run",
+   "ready-offline",
+   "store-error",
+   "chain-value",
+   "nav-chain",
+   "nav-tags",
+   "nav-settings"
+  ],
+  "reads": [],
+  "files": [
+   "components/scenes/Scene1Hook.tsx",
+   "components/scenes/Scene8CTA.tsx",
    "app/(shell)/",
    "lib/app/store.ts",
    "lib/app/chain.ts",
@@ -24,9 +36,7 @@
    "docs/contracts/feature_app.yml",
    "docs/contracts/feature_app_defaults.yml",
    "docs/contracts/journey_app_offline.yml",
-   "tests/e2e/journey_app_offline.spec.ts"
-  ],
-  "reads": [
+   "tests/e2e/journey_app_offline.spec.ts",
    "lib/constants.ts"
   ]
  },

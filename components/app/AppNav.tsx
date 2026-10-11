@@ -3,9 +3,9 @@
 import { shellNavigate } from '@/lib/app/nav'
 
 const LINKS = [
-  { href: '/app', label: 'Chain' },
-  { href: '/app/tags', label: 'Tags' },
-  { href: '/app/settings', label: 'Settings' },
+  { href: '/app', label: 'Chain', testId: 'nav-chain' },
+  { href: '/app/tags', label: 'Tags', testId: 'nav-tags' },
+  { href: '/app/settings', label: 'Settings', testId: 'nav-settings' },
 ]
 
 export function AppNav() {
@@ -15,7 +15,7 @@ export function AppNav() {
         <a
           key={l.href}
           href={l.href}
-          data-testid={`nav-${l.label.toLowerCase()}`}
+          data-testid={l.testId}
           onClick={(e) => {
             e.preventDefault()
             shellNavigate(l.href)

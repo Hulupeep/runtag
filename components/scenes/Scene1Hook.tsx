@@ -46,6 +46,7 @@ function WaitlistForm() {
     <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto">
       <input
         type="email"
+        aria-label="Email address"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="your@email.com"

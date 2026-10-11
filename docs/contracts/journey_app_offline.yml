@@ -1,0 +1,37 @@
+# J-APP-OFFLINE — the app works at a trailhead with no signal (APP-011, APP-SHELL #24)
+journey_meta:
+  id: J-APP-OFFLINE
+  from_spec: "PRDs/runtag-app-prd.md"
+  covers_reqs: [APP-011, APP-001, AC-SHELL-6, AC-SHELL-6B, AC-SHELL-7]
+  type: "e2e"
+  dod_criticality: critical
+  status: not_tested
+  owner: "@hulupeep"
+
+preconditions:
+  - description: "One online visit to /app with the service worker activated (production build)"
+    setup_hint: "goto('/app'); await navigator.serviceWorker.ready; wait for [data-testid=ready-offline]"
+
+timing:
+  offline_view_ms: 1000   # AC-SHELL-6, measured Node-side
+
+steps:
+  - step: 1
+    name: "Online /app shows Ready offline once every precache entry is cached"
+    required_elements:
+      - selector: "[data-testid='ready-offline']"
+  - step: 2
+    name: "Offline never-loaded /t/{idA} renders the tap view with its own id, served by the SW"
+    required_elements:
+      - selector: "[data-testid='tap-tag-id']"
+  - step: 3
+    name: "Offline never-loaded /t/{idB} renders its own id (no cached-param bleed)"
+    required_elements:
+      - selector: "[data-testid='tap-tag-id']"
+  - step: 4
+    name: "Offline in-shell navigation /app -> /app/tags renders the tags view"
+    required_elements:
+      - selector: "[data-testid='view'][data-view='tags']"
+
+test_hooks:
+  e2e_test_file: "tests/e2e/journey_app_offline.spec.ts"

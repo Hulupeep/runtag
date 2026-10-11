@@ -67,11 +67,11 @@ export function Scene8CTA({ onRestart }: Scene8CTAProps) {
           >
             <input
               type="email"
+              aria-label="Email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={COPY.scene8.emailPlaceholder}
               className="email-input"
-              aria-label="Email address"
               disabled={isLoading}
               required
             />

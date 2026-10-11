@@ -99,3 +99,10 @@ test.describe('AC-SHELL-8 / AC-SHELL-8B service worker build', () => {
     expect(b).toContain("const BUILD_ID = 'buildB'")
   })
 })
+
+test('service worker matches build assets ignoring the ?dpl= deployment query (Vercel skew protection)', () => {
+  const template = fs.readFileSync(path.join(__dirname, '..', '..', 'scripts/sw/sw.template.js'), 'utf8')
+  const assets = template.slice(template.indexOf('// Build assets'), template.indexOf("self.addEventListener('message'"))
+  expect(assets).toContain('ignoreSearch: true')
+})
+

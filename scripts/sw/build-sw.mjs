@@ -30,7 +30,8 @@ export function build(nextDir = path.join(root, '.next')) {
   if (!fs.existsSync(shellHtml)) throw new Error(`shell not prerendered: ${shellHtml}`)
   const precache = [...STATIC_EXTRA, ...listStatic(nextDir)]
   const html = fs.readFileSync(shellHtml, 'utf8')
-  const referenced = [...new Set(html.match(/\/_next\/static\/[^"'\s)\\]+/g) || [])]
+  // Vercel/Next append ?dpl=<deployment> to asset URLs (skew protection); the SW matches ignoring the query.
+  const referenced = [...new Set((html.match(/\/_next\/static\/[^"'\s)\\]+/g) || []).map((u) => u.split('?')[0]))]
   const missing = referenced.filter((u) => !precache.includes(u))
   if (missing.length) throw new Error(`shell references assets missing from precache: ${missing.join(', ')}`)
   const template = fs.readFileSync(path.join(root, 'scripts/sw/sw.template.js'), 'utf8')

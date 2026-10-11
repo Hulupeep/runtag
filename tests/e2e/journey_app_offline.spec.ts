@@ -26,7 +26,7 @@ test.describe('J-APP-OFFLINE', () => {
       const shell = await (await cache.match('/shell'))!.text()
       const referenced = [...new Set(shell.match(/\/_next\/static\/[^"'\s)\\]+/g) || [])]
       const unreferenced: string[] = []
-      for (const u of referenced) if (!(await cache.match(u))) unreferenced.push(u)
+      for (const u of referenced) if (!(await cache.match(u, { ignoreSearch: true }))) unreferenced.push(u) // ?dpl= on Vercel
       const keys = (await cache.keys()).map((r) => new URL(r.url).pathname)
       return { buildId, total: precache.length, missing, unreferenced, tKeys: keys.filter((k) => k.startsWith('/t/')) }
     }, sw)

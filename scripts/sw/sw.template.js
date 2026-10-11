@@ -34,9 +34,11 @@ self.addEventListener('fetch', (event) => {
     )
     return
   }
-  // Build assets: cache-first from this build's cache.
+  // Build assets: cache-first from this build's cache. ignoreSearch: Next/Vercel append ?dpl=<deployment>.
   if (url.pathname.startsWith('/_next/static/') || PRECACHE.includes(url.pathname)) {
-    event.respondWith(caches.open(CACHE).then((cache) => cache.match(req).then((hit) => hit || fetch(req))))
+    event.respondWith(
+      caches.open(CACHE).then((cache) => cache.match(req, { ignoreSearch: true }).then((hit) => hit || fetch(req))),
+    )
   }
 })
 

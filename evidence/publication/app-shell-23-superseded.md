@@ -1,0 +1,1 @@
+Superseded by #24 before review. Its Specflow volume baseline was captured at import before the record profile existed, pooling the B.5 report and sibling tickets' AC bullets, which would block promotion permanently. #24 has identical criteria and its profile was created before import (baseline verified clean). History retained.

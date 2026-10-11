@@ -22,3 +22,9 @@ run_contract:
     - create issues from a DO_NOT_SHIP PRD
     - fabricate a green verdict
     - new paid services or deleting user data
+  owner_decisions_2026-10-11:
+    app_shell_review_limit: >
+      #16 build-ready scoped review allowance exhausted (initial + one regrade; 25/27 verified, F-7 fixed after).
+      Owner chose: superseding APP-SHELL ticket carrying the v3 spec + F-7 amendment, linked to #16's history;
+      #16 closed as superseded. Not a silent rename: escalation outcome decided by the owner.
+    rigor: full Specflow rigor for every remaining ticket (build-ready prep review + implementation review + CI)

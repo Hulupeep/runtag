@@ -216,6 +216,17 @@ test('AC-SHELL-13 manifest and icons; demo head has no manifest link', async ({ 
 test.describe('production build only', () => {
   test.skip(!PROD, 'redirects and the generated service worker exist only in production builds (run with PW_PROD=1 after npm run build)')
 
+  test('AC-SHELL-8 generated public/sw.js: build-ID cache, no skipWaiting on install, SKIP_WAITING handled', async ({ request }) => {
+    const buildId = fs.readFileSync(path.join(ROOT, '.next/BUILD_ID'), 'utf8').trim()
+    const sw = await (await request.get('/sw.js')).text()
+    expect(sw).toBe(fs.readFileSync(path.join(ROOT, 'public/sw.js'), 'utf8')) // the served file is the generated one
+    expect(sw).toContain(`const BUILD_ID = '${buildId}'`)
+    expect(sw).toContain('`runtag-shell-${BUILD_ID}`')
+    const install = sw.slice(sw.indexOf("addEventListener('install'"), sw.indexOf("addEventListener('activate'"))
+    expect(install).not.toContain('skipWaiting')
+    expect(sw).toMatch(/msg\.type === 'SKIP_WAITING'[\s\S]*self\.skipWaiting\(\)/)
+  })
+
   test('AC-SHELL-8B GET /sw.js carries the current BUILD_ID', async ({ request }) => {
     const buildId = fs.readFileSync(path.join(ROOT, '.next/BUILD_ID'), 'utf8').trim()
     const sw = await (await request.get('/sw.js')).text()

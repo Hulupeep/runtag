@@ -39,11 +39,13 @@ test.describe('J-APP-OFFLINE', () => {
     expect(audit.missing).toEqual([])
     expect(audit.unreferenced).toEqual([])
 
-    // Converse: remove one entry and the indicator must not claim readiness.
+    // Converse, without reloading: losing one cached entry must hide the indicator on the mounted page.
     await page.evaluate(async (buildId) => {
       const cache = await caches.open(`runtag-shell-${buildId}`)
       await cache.delete('/manifest.webmanifest')
     }, audit.buildId)
+    await expect(page.getByTestId('ready-offline')).toHaveCount(0, { timeout: 6_000 })
+    // ...and it stays hidden after a reload.
     await page.reload()
     await expect(page.getByTestId('view')).toHaveAttribute('data-view', 'home')
     await page.waitForTimeout(4_500) // two STATUS polls

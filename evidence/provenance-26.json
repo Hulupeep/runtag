@@ -1,0 +1,68 @@
+{
+ "issue": 26,
+ "slice": "APP-SHELL",
+ "head": "feat/24-app-shell",
+ "result": "pass",
+ "source_provenance": [
+  {
+   "claim": "Run row fields after tap-in (AC-SHELL-3)",
+   "source": "startRunIfNoneOpen(tagId, Date.now()) in lib/app/store.ts writes IndexedDB runtag.runs; Date.now() pinned by page.clock.setFixedTime",
+   "verification": "app_shell.spec.ts re-reads listRuns() after reload and deep-equals the run returned by the write"
+  },
+  {
+   "claim": "Exactly one open run under concurrency (AC-SHELL-5)",
+   "source": "two pages call the real startRunIfNoneOpen; IndexedDB serialises overlapping readwrite transactions",
+   "verification": "re-read: runs with status open counted from listRuns() = 1; created flags [false,true]"
+  },
+  {
+   "claim": "Rollback and commit ordering (AC-SHELL-17, AC-SHELL-18)",
+   "source": "withTxn over a real IDBTransaction; complete/abort events from the browser",
+   "verification": "re-read: runs count 0 after reload on abort; complete listener observed before withTxn settles; listRuns() contains the run"
+  },
+  {
+   "claim": "Quota failure (AC-SHELL-15)",
+   "source": "real IDBObjectStore.put/add wrapped by an init script and armed after the store opens (ticket-mandated injection, S-14)",
+   "verification": "re-read: StoreError kind quota and runs count 0"
+  },
+  {
+   "claim": "Newer schema (AC-SHELL-16)",
+   "source": "IndexedDB version 2 created by the test; openStore requests v1 -> VersionError",
+   "verification": "re-read: store-error visible; tags/runs counts and DB version re-read via raw IndexedDB"
+  },
+  {
+   "claim": "Chain value (AC-SHELL-4, home view)",
+   "source": "computeChain(listRuns(), localDayOf(Date.now())) over stored localDay values",
+   "verification": "app_logic.spec.ts computes from Run rows; rendered chain-value is derived from the same function"
+  },
+  {
+   "claim": "Tag id on tap view (AC-SHELL-2, AC-SHELL-6)",
+   "source": "window.location.pathname -> resolveRoute (lib/app/route.ts) -> data-tag-id attribute",
+   "verification": "re-read attribute equals the URL segment for two ids; offline response.fromServiceWorker() true; cache keys re-read contain no /t/"
+  },
+  {
+   "claim": "Ready offline (AC-SHELL-7)",
+   "source": "SW STATUS reply computed from Cache Storage cache.match for every PRECACHE entry",
+   "verification": "test re-reads Cache Storage independently using PRECACHE parsed from served /sw.js; deleting an entry hides the indicator on the mounted page"
+  },
+  {
+   "claim": "Build ID in service worker (AC-SHELL-8, AC-SHELL-8B)",
+   "source": ".next/BUILD_ID -> scripts/sw/build-sw.mjs -> public/sw.js -> GET /sw.js",
+   "verification": "test reads .next/BUILD_ID from disk and compares to the served and generated file"
+  },
+  {
+   "claim": "Canonical redirects (AC-SHELL-10)",
+   "source": "next.config.mjs redirects with missing host conditions",
+   "verification": "node http request re-reads status 308 and exact Location for three paths; 200 for localhost"
+  },
+  {
+   "claim": "Tag URL origin (AC-SHELL-9)",
+   "source": "TAG_ORIGIN in lib/app/origin.ts is the product origin defined by APP-001 (PRD), not a test value",
+   "verification": "tagUrl output compared; contract APP-ORIGIN forbids location-derived URLs"
+  },
+  {
+   "claim": "Manifest (AC-SHELL-13)",
+   "source": "public/manifest.webmanifest served by Next",
+   "verification": "HTTP JSON re-read; icons fetched with status 200"
+  }
+ ]
+}

@@ -4,7 +4,6 @@
       "surface": "/app",
       "writers": [
         "APP-CHAIN",
-        "APP-DURABLE",
         "APP-SHELL"
       ],
       "readers": [
@@ -13,22 +12,10 @@
       "pairs": [
         [
           "APP-CHAIN",
-          "APP-DURABLE"
-        ],
-        [
-          "APP-CHAIN",
           "APP-SHELL"
         ],
         [
           "APP-CHAIN",
-          "APP-LINK"
-        ],
-        [
-          "APP-DURABLE",
-          "APP-SHELL"
-        ],
-        [
-          "APP-DURABLE",
           "APP-LINK"
         ],
         [
@@ -99,33 +86,86 @@
       "kind": "writer-writer"
     },
     {
-      "surface": "components/scenes/Scene8CTA.tsx",
+      "surface": "chain-value",
       "writers": [
-        "APP-LINK",
+        "APP-CHAIN",
         "APP-SHELL"
       ],
       "readers": [],
       "pairs": [
         [
-          "APP-LINK",
+          "APP-CHAIN",
           "APP-SHELL"
         ]
       ],
       "kind": "writer-writer"
     },
     {
-      "surface": "lib/app/origin.ts",
+      "surface": "computeChain",
       "writers": [
         "APP-SHELL"
       ],
       "readers": [
-        "APP-TAGS",
+        "APP-CHAIN",
+        "APP-DURABLE"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-CHAIN"
+        ],
+        [
+          "APP-SHELL",
+          "APP-DURABLE"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "Email address",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-LINK"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-LINK"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "getOpenRunIn",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
         "APP-TAP"
       ],
       "pairs": [
         [
           "APP-SHELL",
-          "APP-TAGS"
+          "APP-TAP"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "localDayOf",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-CHAIN",
+        "APP-TAP"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-CHAIN"
         ],
         [
           "APP-SHELL",
@@ -135,7 +175,202 @@
       "kind": "writer-reader"
     },
     {
-      "surface": "lib/app/store.ts",
+      "surface": "nav-settings",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-DURABLE"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-DURABLE"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "nav-tags",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-TAGS"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-TAGS"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "newTagId",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-TAGS"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-TAGS"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "ready-offline",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-CHAIN"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-CHAIN"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "resolveRoute",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-TAP"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-TAP"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "startRunIfNoneOpenIn",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-TAP"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-TAP"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "StoreError",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-DURABLE",
+        "APP-TAP"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-DURABLE"
+        ],
+        [
+          "APP-SHELL",
+          "APP-TAP"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "TAG_ORIGIN",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-TAGS"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-TAGS"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "tagUrl",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-TAGS"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-TAGS"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "tap-tag-id",
+      "writers": [
+        "APP-SHELL",
+        "APP-TAP"
+      ],
+      "readers": [],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-TAP"
+        ]
+      ],
+      "kind": "writer-writer"
+    },
+    {
+      "surface": "TAPPED_PREFIX",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-TAP"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-TAP"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "tapped-run",
+      "writers": [
+        "APP-SHELL",
+        "APP-TAP"
+      ],
+      "readers": [],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-TAP"
+        ]
+      ],
+      "kind": "writer-writer"
+    },
+    {
+      "surface": "withTxn",
       "writers": [
         "APP-SHELL"
       ],
@@ -164,61 +399,12 @@
         ]
       ],
       "kind": "writer-reader"
-    },
-    {
-      "surface": "runs",
-      "writers": [
-        "APP-DURABLE",
-        "APP-TAP"
-      ],
-      "readers": [
-        "APP-CHAIN"
-      ],
-      "pairs": [
-        [
-          "APP-DURABLE",
-          "APP-TAP"
-        ],
-        [
-          "APP-DURABLE",
-          "APP-CHAIN"
-        ],
-        [
-          "APP-TAP",
-          "APP-CHAIN"
-        ]
-      ],
-      "kind": "mixed"
-    },
-    {
-      "surface": "tags",
-      "writers": [
-        "APP-DURABLE",
-        "APP-TAGS",
-        "APP-TAP"
-      ],
-      "readers": [],
-      "pairs": [
-        [
-          "APP-DURABLE",
-          "APP-TAGS"
-        ],
-        [
-          "APP-DURABLE",
-          "APP-TAP"
-        ],
-        [
-          "APP-TAGS",
-          "APP-TAP"
-        ]
-      ],
-      "kind": "writer-writer"
     }
   ],
   "derivedHops": [
     {
       "surface": "/app",
-      "why": "seam (mixed) between APP-CHAIN, APP-DURABLE, APP-SHELL, APP-LINK",
+      "why": "seam (mixed) between APP-CHAIN, APP-SHELL, APP-LINK",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
@@ -242,28 +428,93 @@
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
-      "surface": "components/scenes/Scene8CTA.tsx",
-      "why": "seam (writer-writer) between APP-LINK, APP-SHELL",
+      "surface": "chain-value",
+      "why": "seam (writer-writer) between APP-CHAIN, APP-SHELL",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
-      "surface": "lib/app/origin.ts",
-      "why": "seam (writer-reader) between APP-SHELL, APP-TAGS, APP-TAP",
+      "surface": "computeChain",
+      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-DURABLE",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
-      "surface": "lib/app/store.ts",
+      "surface": "Email address",
+      "why": "seam (writer-reader) between APP-SHELL, APP-LINK",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "getOpenRunIn",
+      "why": "seam (writer-reader) between APP-SHELL, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "localDayOf",
+      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "nav-settings",
+      "why": "seam (writer-reader) between APP-SHELL, APP-DURABLE",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "nav-tags",
+      "why": "seam (writer-reader) between APP-SHELL, APP-TAGS",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "newTagId",
+      "why": "seam (writer-reader) between APP-SHELL, APP-TAGS",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "ready-offline",
+      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "resolveRoute",
+      "why": "seam (writer-reader) between APP-SHELL, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "startRunIfNoneOpenIn",
+      "why": "seam (writer-reader) between APP-SHELL, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "StoreError",
+      "why": "seam (writer-reader) between APP-SHELL, APP-DURABLE, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "TAG_ORIGIN",
+      "why": "seam (writer-reader) between APP-SHELL, APP-TAGS",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "tagUrl",
+      "why": "seam (writer-reader) between APP-SHELL, APP-TAGS",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "tap-tag-id",
+      "why": "seam (writer-writer) between APP-SHELL, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "TAPPED_PREFIX",
+      "why": "seam (writer-reader) between APP-SHELL, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "tapped-run",
+      "why": "seam (writer-writer) between APP-SHELL, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "withTxn",
       "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-DURABLE, APP-TAGS, APP-TAP",
-      "assert": "re-read value on the merged tree — not element presence"
-    },
-    {
-      "surface": "runs",
-      "why": "seam (mixed) between APP-DURABLE, APP-TAP, APP-CHAIN",
-      "assert": "re-read value on the merged tree — not element presence"
-    },
-    {
-      "surface": "tags",
-      "why": "seam (writer-writer) between APP-DURABLE, APP-TAGS, APP-TAP",
       "assert": "re-read value on the merged tree — not element presence"
     }
   ]

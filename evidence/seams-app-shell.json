@@ -15,7 +15,20 @@
    "chain-value",
    "nav-chain",
    "nav-tags",
-   "nav-settings"
+   "nav-settings",
+   "Email address",
+   "withTxn",
+   "startRunIfNoneOpenIn",
+   "getOpenRunIn",
+   "StoreError",
+   "computeChain",
+   "localDayOf",
+   "newTagId",
+   "TAG_ORIGIN",
+   "tagUrl",
+   "resolveRoute",
+   "TAPPED_PREFIX",
+   "shellNavigate"
   ],
   "reads": [],
   "files": [

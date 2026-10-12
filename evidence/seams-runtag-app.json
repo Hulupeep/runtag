@@ -15,7 +15,20 @@
    "chain-value",
    "nav-chain",
    "nav-tags",
-   "nav-settings"
+   "nav-settings",
+   "Email address",
+   "withTxn",
+   "startRunIfNoneOpenIn",
+   "getOpenRunIn",
+   "StoreError",
+   "computeChain",
+   "localDayOf",
+   "newTagId",
+   "TAG_ORIGIN",
+   "tagUrl",
+   "resolveRoute",
+   "TAPPED_PREFIX",
+   "shellNavigate"
   ],
   "reads": [],
   "files": [
@@ -45,57 +58,65 @@
   "writes": [
    "/t/",
    "/app?tapped=",
-   "runs",
-   "tags"
+   "tap-tag-id",
+   "tapped-run"
   ],
   "reads": [
-   "lib/app/store.ts",
-   "lib/app/origin.ts",
-   "public/sw.js"
+   "withTxn",
+   "startRunIfNoneOpenIn",
+   "getOpenRunIn",
+   "StoreError",
+   "localDayOf",
+   "TAPPED_PREFIX",
+   "resolveRoute"
   ]
  },
  {
   "id": "APP-CHAIN",
   "writes": [
-   "/app"
+   "/app",
+   "chain-value"
   ],
   "reads": [
-   "lib/app/store.ts",
-   "runs",
-   "components/ChainVisual.tsx"
+   "computeChain",
+   "localDayOf",
+   "ready-offline",
+   "withTxn"
   ]
  },
  {
   "id": "APP-TAGS",
   "writes": [
-   "/app/tags",
-   "tags"
+   "/app/tags"
   ],
   "reads": [
-   "lib/app/origin.ts",
-   "lib/app/store.ts"
+   "tagUrl",
+   "TAG_ORIGIN",
+   "newTagId",
+   "withTxn",
+   "nav-tags"
   ]
  },
  {
   "id": "APP-DURABLE",
   "writes": [
-   "/app/settings",
-   "tags",
-   "runs",
-   "meta",
-   "/app"
+   "/app/settings"
   ],
   "reads": [
-   "lib/app/store.ts"
+   "withTxn",
+   "StoreError",
+   "computeChain",
+   "nav-settings"
   ]
  },
  {
   "id": "APP-LINK",
   "writes": [
-   "components/scenes/Scene8CTA.tsx"
+   "start-for-real"
   ],
   "reads": [
-   "/app"
+   "/app",
+   "Email address"
   ]
  }
 ]

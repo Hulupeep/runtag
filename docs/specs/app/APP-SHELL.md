@@ -1,9 +1,10 @@
 # APP-SHELL: app shell, on-device store, offline service worker
 
-**Supersedes:** #23, #22, #21, #16 (owner escalation path 2026-10-11). Same criteria as #22 (which passed scoped review 27/27) with IDs namespaced with a SHELL prefix (1:1, e.g. AC-6b becomes AC-SHELL-6B). #23 was retired before review because its Specflow volume baseline was captured at import before the record profile existed, pooling the B.5 report and sibling tickets; this ticket's record profile is created before import (procedure verified on a local replay). Full history on #23, #22, #21, #16.
+**Supersedes:** #24, #23, #22, #21, #16 (owner decisions 2026-10-11/12). Criteria unchanged from #24/#22 (which passed scoped review). #24's regrade escalated on F-SEAM-GRAPH after discovery D24-SEAM-FILE-SURFACES; this ticket models seams as route literals, data-testids and exported API identifiers so both the epic graph and slice resolution are derivable. Full history on #24, #23, #22, #21, #16.
 **Persona:** owner-runner on iPhone or Android · **Promise:** "Open `/app` once, and RunTag works at the trailhead even with no signal."
 **Gate A:** SHIP_WITH_STIPULATIONS — verdict §7 APP-SHELL items 1–9 folded below.
 **B.5 pre-flight:** docs/specs/app/APP-SHELL-preflight.md — C1–C3, P1-1…P1-8, P2-1…P2-14 folded below (v2).
+**v9 (F-SEAM-GRAPH):** API identifiers added as surfaces; epic seam graph regenerated (dated hops amendment).
 **v8 (D24-SEAM-FILE-SURFACES):** Gate B surfaces are routes/testids; files listed separately; clean-tree seam command.
 **v4 (this ticket):** v3 content + F-7 + AC-SHELL-18 commit-ordering oracle (#21 review round 1), (seam input synced to these exact declarations; dated hops amendment G1/G2; post-build seam command scoped to this slice).
 **v3:** duo preparation review run 1791621592510-28c16ad0 round 1 — F-1 path-preserving redirects, F-2 transaction semantics, F-3 full S-10 coverage (no waiver), F-6 Gate B reconciliation. Sub-criterion IDs AC-SHELL-1B/5b/6b/8b are the original v2 identifiers (an interim upper-casing was reverted).
@@ -124,8 +125,8 @@ Feature: App shell
 J-APP-OFFLINE (`tests/e2e/journey_app_offline.spec.ts`, contract `docs/contracts/journey_app_offline.yml`) + `tests/e2e/app_shell.spec.ts` + `tests/e2e/app_logic.spec.ts`. Local run: stop any dev server, `npm run build && PW_PROD=1 npx playwright test`; specs assert `GET /sw.js` contains `.next/BUILD_ID` (P2-11). Clock: `page.clock.install()` before first navigation; app time via `Date.now()` only; SW timing measured Node-side (P2-2). Chromium-only ACs use `test.skip(browserName !== 'chromium', 'SW interception is Chromium-only in Playwright')` (P2-3).
 
 ## Declarations (Gate B seams — P2-13; surfaces corrected by discovery D24-SEAM-FILE-SURFACES)
-Surfaces are route literals and `data-testid` values exactly as they appear in code (what `verify-seams` resolves); touched files are listed separately and checked for existence.
-writes: [`/app`, `/t/`, `/app/tags`, `/app/settings`, `/app?tapped=`, `view`, `tap-tag-id`, `tapped-run`, `ready-offline`, `store-error`, `chain-value`, `nav-chain`, `nav-tags`, `nav-settings`]
+Surfaces are route literals, `data-testid` values and exported API identifiers exactly as they appear in code (what `verify-seams` resolves); the API identifiers carry the shared store/origin/route contract that APP-TAP, APP-CHAIN, APP-TAGS and APP-DURABLE read. Touched files are listed separately and checked for existence.
+writes: [`/app`, `/t/`, `/app/tags`, `/app/settings`, `/app?tapped=`, `view`, `tap-tag-id`, `tapped-run`, `ready-offline`, `store-error`, `chain-value`, `nav-chain`, `nav-tags`, `nav-settings`, `Email address`, `withTxn`, `startRunIfNoneOpenIn`, `getOpenRunIn`, `StoreError`, `computeChain`, `localDayOf`, `newTagId`, `TAG_ORIGIN`, `tagUrl`, `resolveRoute`, `TAPPED_PREFIX`, `shellNavigate`]
 reads: []
 files: [`components/scenes/Scene1Hook.tsx`, `components/scenes/Scene8CTA.tsx`, `app/(shell)/`, `lib/app/store.ts`, `lib/app/chain.ts`, `lib/app/route.ts`, `lib/app/nav.ts`, `lib/app/origin.ts`, `scripts/sw/`, `public/manifest.webmanifest`, `public/icons/`, `next.config.mjs`, `package.json`, `.gitignore`, `docs/contracts/feature_app.yml`, `docs/contracts/feature_app_defaults.yml`, `docs/contracts/journey_app_offline.yml`, `tests/e2e/journey_app_offline.spec.ts`, `lib/constants.ts`]
 reuses: [`components/ChainVisual.tsx` (APP-CHAIN)]

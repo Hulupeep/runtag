@@ -13,7 +13,7 @@
     "PRDs/runtag-app-hops.md",
     "docs/specs/app/APP-SHELL-preflight.md"
   ],
-  "objective": "APP-SHELL #24 (supersedes #23/#22/#21/#16; criteria identical to #22 which passed scoped review, IDs namespaced AC-SHELL-n) is build-ready: every AC has an executable re-read oracle, Gate A stipulations, B.5 findings and prior review findings are folded, the store contract is stable for APP-TAP/CHAIN/TAGS/DURABLE",
+  "objective": "APP-SHELL #24 v8 regrade after accepted discovery D24-SEAM-FILE-SURFACES (Gate B surfaces now routes/testids, files listed separately, clean-tree seam command): every AC has an executable re-read oracle, Gate A/B.5/prior findings folded, store contract stable for APP-TAP/CHAIN/TAGS/DURABLE",
   "finish": "Scoped independent review passes for build-ready preparation; promotion succeeds",
   "criteria": [
     {

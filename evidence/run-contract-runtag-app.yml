@@ -28,3 +28,8 @@ run_contract:
       Owner chose: superseding APP-SHELL ticket carrying the v3 spec + F-7 amendment, linked to #16's history;
       #16 closed as superseded. Not a silent rename: escalation outcome decided by the owner.
     rigor: full Specflow rigor for every remaining ticket (build-ready prep review + implementation review + CI)
+  owner_decision_2026-10-12:
+    app_shell_24_escalated: >
+      #24 regrade escalated (F-SEAM-GRAPH: moving file paths out of seam declarations dropped shared
+      store/origin relationships from the epic graph). Owner chose: supersede once more; seams modelled
+      as route literals, data-testids and exported API identifiers; full epic graph regenerated.

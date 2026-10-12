@@ -143,3 +143,21 @@ Reason: APP-SHELL v3 declarations grew (P2-13); the seam input `evidence/seams-r
 | G2 | `components/scenes/Scene8CTA.tsx` (APP-SHELL ↔ APP-LINK, writer-writer) | `/` → complete demo → scene 8 | email input; "Start for real" link (APP-LINK) | email input accessible name re-read = `Email address` (APP-SHELL aria-label) AND, after APP-LINK, the £19 CTA text and waitlist form still present with "Start for real" `href` = `/app` | APP-SHELL AC-12, APP-LINK AC-1 / M-8 |
 
 Post-build resolution for the selected slice (Gate B DoD): `node scripts/verify-seams.cjs evidence/seams-app-shell.json --repo-root .` must exit 0 — that file is the APP-SHELL entry only, identical to the ticket's complete declarations (23 writes, 1 read). Future slices resolve when they are built.
+
+## Amendment 2026-10-12 (Gate B, F-SEAM-GRAPH; supersedes the 2026-10-10 seam inputs, not the pinned hops)
+Reason: `verify-seams` resolves surfaces as text in code, so seams are now declared as route literals, `data-testid` values and **exported API identifiers** (the shared store/origin/route contract). Pinned hops I1–I17, A1–A14, L1–L10, G1 and G2 above are unchanged; G2's Scene8CTA seam is now carried by the `Email address` surface (APP-SHELL writes, APP-LINK reads).
+
+**Two distinct computations**
+1. *Epic graph* — `node scripts/verify-seams.cjs evidence/seams-runtag-app.json --no-resolve` over all six tickets (future slices' surfaces do not exist yet, so no resolution): 23 seams → `evidence/seams-runtag-app.out.json`.
+2. *Selected-slice resolution* — `bash evidence/seams-check.sh`: APP-SHELL's own declarations (`evidence/seams-app-shell.json`) resolve in a clean tree and every declared file exists. Each later slice adds its own resolution when it is built.
+
+**Shared-contract hops added (re-read values, asserted when the reading slice is built)**
+| Hop | Seam | Reader | EXPECTED VALUE (re-read) |
+|---|---|---|---|
+| S1 | `withTxn` (APP-SHELL → TAP, CHAIN, TAGS, DURABLE) | each reader's journey | rows written by the reader's flow are present after reload; a forced failure leaves row counts unchanged |
+| S2 | `startRunIfNoneOpenIn`, `getOpenRunIn` (→ TAP) | J-APP-RUN | after tap-in, exactly one `status:'open'` run row whose `tagInId` equals the URL id |
+| S3 | `computeChain`, `localDayOf` (→ CHAIN, DURABLE, TAP) | J-APP-CHAIN | rendered chain after reload equals `computeChain(listRuns(), localDayOf(now))` re-read in the page |
+| S4 | `tagUrl`, `TAG_ORIGIN`, `newTagId` (→ TAGS) | J-APP-PLANT | displayed/copied URL after reload equals `https://runtag.vercel.app/t/` + the stored tag id |
+| S5 | `StoreError` (→ TAP, DURABLE) | J-APP-RUN, J-APP-BACKUP | storage failure shows the failure screen and store counts are unchanged |
+| S6 | `resolveRoute`, `TAPPED_PREFIX`, `tapped-run` (→ TAP) | J-APP-RUN | after reload of `/app?tapped={runId}`, `data-run-id` equals the stored run id |
+| S7 | `ready-offline` (→ CHAIN) | J-APP-CHAIN | the replaced home view still shows "Ready offline ✓" iff all precache entries are cached |

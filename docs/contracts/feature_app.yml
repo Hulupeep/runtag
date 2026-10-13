@@ -1,0 +1,93 @@
+contract_meta:
+  id: feature_app
+  version: 1
+  created_from_spec: "docs/specs/app/APP-SHELL.md (#24) — APP-001, APP-008, S-3, S-7, M-9, P1-1, P1-3"
+  covers_reqs:
+    - APP-001
+    - APP-008
+    - AC-SHELL-9
+    - AC-SHELL-11
+  owner: "@hulupeep"
+
+llm_policy:
+  enforce: true
+  llm_may_modify_non_negotiables: false
+  override_phrase: "override_contract: feature_app"
+
+rules:
+  non_negotiable:
+    - id: APP-SHELL-NAV
+      title: "Shell views switch on the address bar only — no Next router hooks or next/link in the shell"
+      scope:
+        - "app/(shell)/**/*.{ts,tsx}"
+        - "components/app/**/*.{ts,tsx}"
+        - "lib/app/**/*.ts"
+      behavior:
+        forbidden_patterns:
+          - pattern: /from\s+['"]next\/link['"]/
+            message: "next/link does not remount the shell and only works offline via error fallback — use shellNavigate()"
+          - pattern: /\b(usePathname|useParams|useSearchParams)\s*\(/
+            message: "Route params come from the cached shell HTML, not the URL — read window.location via resolveRoute()"
+        example_violation: |
+          import Link from 'next/link'; const p = usePathname()
+        example_compliant: |
+          shellNavigate('/app/tags')
+
+    - id: APP-ORIGIN
+      title: "Tag URLs only from TAG_ORIGIN (never the current host)"
+      scope:
+        - "app/(shell)/**/*.{ts,tsx}"
+        - "components/app/**/*.{ts,tsx}"
+        - "lib/app/**/*.ts"
+      behavior:
+        forbidden_patterns:
+          - pattern: /location\.(origin|host|hostname|href)\b/
+            message: "Alias hosts have separate storage; build tag URLs with tagUrl() from lib/app/origin.ts"
+          - pattern: /new URL\([^)]*\/t\//
+            message: "Build tag URLs with tagUrl(), not relative to the current page"
+        example_violation: |
+          const url = `${window.location.origin}/t/${id}`
+        example_compliant: |
+          const url = tagUrl(id)
+
+    - id: APP-GLOBALS
+      title: "The only window global is the webdriver-gated __runtagStore"
+      scope:
+        - "app/(shell)/**/*.{ts,tsx}"
+        - "components/app/**/*.{ts,tsx}"
+        - "lib/app/**/*.ts"
+      behavior:
+        forbidden_patterns:
+          - pattern: /window\.__(?!runtagStore\b)\w+\s*=/
+            message: "Do not expose app internals on window"
+        example_violation: |
+          window.__debugRuns = runs
+        example_compliant: |
+          if (navigator.webdriver === true) window.__runtagStore = { listRuns }
+
+    - id: APP-NO-METRIC-COPY
+      title: "App screens never reuse demo copy that names metrics (S-5)"
+      scope:
+        - "app/(shell)/**/*.{ts,tsx}"
+        - "components/app/**/*.{ts,tsx}"
+      behavior:
+        forbidden_patterns:
+          - pattern: /COPY\.scene[14]\b/
+            message: "COPY.scene1/scene4 mention pace/VO2 max — not allowed on app screens"
+        example_violation: |
+          <p>{COPY.scene4.narrative}</p>
+        example_compliant: |
+          <p>You're in. Now go.</p>
+
+    - id: APP-SW-UPDATE
+      title: "The service worker never skips waiting on install (M-9)"
+      scope:
+        - "scripts/sw/sw.template.js"
+      behavior:
+        forbidden_patterns:
+          - pattern: /addEventListener\(\s*['"]install['"][\s\S]{0,400}?skipWaiting/
+            message: "skipWaiting only on a SKIP_WAITING message from the idle home view"
+        example_violation: |
+          self.addEventListener('install', (e) => { self.skipWaiting() })
+        example_compliant: |
+          self.addEventListener('message', (e) => { if (e.data.type === 'SKIP_WAITING') self.skipWaiting() })

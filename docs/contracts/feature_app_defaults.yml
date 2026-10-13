@@ -1,0 +1,476 @@
+# Generated mirror of Specflow default rules onto app/, components/, lib/, hooks/ (AC-SHELL-12).
+# Defaults are not edited (llm_policy); each rule names its source in `mirrors`.
+contract_meta:
+  id: feature_app_defaults
+  version: 1
+  created_from_spec: "docs/specs/app/APP-SHELL.md AC-SHELL-12 (Gate A S-10): default rules scope src/**, which does not exist here"
+  covers_reqs:
+    - AC-SHELL-12
+  owner: "@hulupeep"
+llm_policy:
+  enforce: true
+  llm_may_modify_non_negotiables: false
+  override_phrase: "override_contract: feature_app_defaults"
+rules:
+  non_negotiable:
+    - id: APPD-SEC-001
+      title: No hardcoded secrets in source code (mirror of SEC-001 onto real directories)
+      mirrors: SEC-001
+      scope:
+        - app/**/*.{ts,js,tsx,jsx}
+        - components/**/*.{ts,js,tsx,jsx}
+        - lib/**/*.{ts,js,tsx,jsx}
+        - hooks/**/*.{ts,js,tsx,jsx}
+      behavior:
+        forbidden_patterns:
+          - pattern: /(password|secret|api_key|apikey|token)\s*[:=]\s*['"][^'"]{8,}['"]/i
+            message: Hardcoded secret detected — use environment variable
+          - pattern: /sk_live_[a-zA-Z0-9]{20,}/
+            message: Stripe live key hardcoded — use env var STRIPE_SECRET_KEY
+          - pattern: /sk_test_[a-zA-Z0-9]{20,}/
+            message: Stripe test key hardcoded — use env var STRIPE_SECRET_KEY
+          - pattern: /-----BEGIN (RSA |EC )?PRIVATE KEY-----/
+            message: Private key in source code — use secrets manager
+          - pattern: /ghp_[a-zA-Z0-9]{36}/
+            message: GitHub personal access token hardcoded
+          - pattern: /xoxb-[0-9]{10,}-[a-zA-Z0-9]{20,}/
+            message: Slack bot token hardcoded
+        example_violation: |
+          const API_KEY = "sk_live_abc123def456ghi789"
+        example_compliant: |
+          const API_KEY = process.env.STRIPE_SECRET_KEY
+    - id: APPD-SEC-002
+      title: No raw SQL string concatenation (mirror of SEC-002 onto real directories)
+      mirrors: SEC-002
+      scope:
+        - app/**/*.{ts,js}
+        - components/**/*.{ts,js}
+        - lib/**/*.{ts,js}
+        - hooks/**/*.{ts,js}
+      behavior:
+        forbidden_patterns:
+          - pattern: /query\s*\(\s*['"`].*\$\{/
+            message: SQL injection risk — use parameterized queries
+          - pattern: /query\s*\(\s*['"`].*\+\s*\w/
+            message: SQL string concatenation — use parameterized queries
+          - pattern: /execute\s*\(\s*['"`].*\$\{/
+            message: SQL injection via execute() — use parameterized queries
+        example_violation: |
+          db.query(`SELECT * FROM users WHERE id = '${userId}'`)
+        example_compliant: |
+          db.query('SELECT * FROM users WHERE id = $1', [userId])
+    - id: APPD-SEC-003
+      title: No innerHTML with unsanitized dynamic content (mirror of SEC-003 onto real directories)
+      mirrors: SEC-003
+      scope:
+        - app/**/*.{tsx,jsx}
+        - components/**/*.{tsx,jsx}
+        - lib/**/*.{tsx,jsx}
+        - hooks/**/*.{tsx,jsx}
+      behavior:
+        forbidden_patterns:
+          - pattern: /dangerouslySetInnerHTML\s*=\s*\{\s*\{\s*__html:(?!\s*(sanitize|DOMPurify|purify))/
+            message: XSS risk — sanitize HTML before dangerouslySetInnerHTML
+          - pattern: /\.innerHTML\s*=(?!\s*['"`]<)/
+            message: XSS risk — use textContent or sanitize input
+        example_violation: |
+          <div dangerouslySetInnerHTML={{ __html: userInput }} />
+        example_compliant: |
+          <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(userInput) }} />
+    - id: APPD-SEC-004
+      title: No eval or Function constructor with dynamic input (mirror of SEC-004 onto real directories)
+      mirrors: SEC-004
+      scope:
+        - app/**/*.{ts,js,tsx,jsx}
+        - components/**/*.{ts,js,tsx,jsx}
+        - lib/**/*.{ts,js,tsx,jsx}
+        - hooks/**/*.{ts,js,tsx,jsx}
+      behavior:
+        forbidden_patterns:
+          - pattern: /\beval\s*\(/
+            message: eval() is a code injection risk — use JSON.parse or safe alternatives
+          - pattern: /new\s+Function\s*\(/
+            message: Function constructor is equivalent to eval — avoid dynamic code execution
+        example_violation: |
+          const result = eval(userExpression)
+        example_compliant: |
+          const result = JSON.parse(userInput)
+    - id: APPD-SEC-005
+      title: No path traversal in file operations (mirror of SEC-005 onto real directories)
+      mirrors: SEC-005
+      scope:
+        - app/**/*.{ts,js}
+        - components/**/*.{ts,js}
+        - lib/**/*.{ts,js}
+        - hooks/**/*.{ts,js}
+      behavior:
+        forbidden_patterns:
+          - pattern: /readFile(Sync)?\s*\(\s*(?!path\.join|path\.resolve|__dirname)/
+            message: Use path.join/resolve to prevent path traversal attacks
+          - pattern: /writeFile(Sync)?\s*\(\s*(?!path\.join|path\.resolve|__dirname)/
+            message: Use path.join/resolve to prevent path traversal attacks
+        example_violation: |
+          fs.readFileSync(req.params.filename)
+        example_compliant: |
+          fs.readFileSync(path.join(__dirname, 'safe-dir', path.basename(req.params.filename)))
+    - id: APPD-A11Y-001
+      title: Images must have alt text (mirror of A11Y-001 onto real directories)
+      mirrors: A11Y-001
+      scope:
+        - app/**/*.{tsx,jsx}
+        - components/**/*.{tsx,jsx}
+        - lib/**/*.{tsx,jsx}
+        - hooks/**/*.{tsx,jsx}
+      behavior:
+        forbidden_patterns:
+          - pattern: /<img\s+(?![^>]*\balt\s*=)[^>]*\/?>/
+            message: Image missing alt attribute — add alt text for screen readers
+        example_violation: |
+          <img src="/avatar.png" />
+        example_compliant: |
+          <img src="/avatar.png" alt="User avatar" />
+    - id: APPD-A11Y-002
+      title: Buttons must have accessible labels (mirror of A11Y-002 onto real directories)
+      mirrors: A11Y-002
+      scope:
+        - app/**/*.{tsx,jsx}
+        - components/**/*.{tsx,jsx}
+        - lib/**/*.{tsx,jsx}
+        - hooks/**/*.{tsx,jsx}
+      behavior:
+        forbidden_patterns:
+          - pattern: /<button(?![^>]*aria-label)[^>]*>\s*<(?:svg|img|[A-Z]\w*)[^>]*\/?\s*>\s*<\/button>/
+            message: Icon-only button needs aria-label for screen readers
+        example_violation: |
+          <button><TrashIcon /></button>
+        example_compliant: |
+          <button aria-label="Delete item"><TrashIcon /></button>
+    - id: APPD-A11Y-003
+      title: Form inputs must have associated labels (mirror of A11Y-003 onto real directories)
+      mirrors: A11Y-003
+      scope:
+        - app/**/*.{tsx,jsx}
+        - components/**/*.{tsx,jsx}
+        - lib/**/*.{tsx,jsx}
+        - hooks/**/*.{tsx,jsx}
+      behavior:
+        forbidden_patterns:
+          - pattern: /<input(?![^>]*(?:aria-label|aria-labelledby|id\s*=))[^>]*>/
+            message: Input missing label association — add aria-label, aria-labelledby, or id with matching <label>
+        example_violation: |
+          <input type="email" placeholder="Email" />
+        example_compliant: |
+          <input type="email" aria-label="Email address" placeholder="Email" />
+    - id: APPD-A11Y-004
+      title: No positive tabindex values (mirror of A11Y-004 onto real directories)
+      mirrors: A11Y-004
+      scope:
+        - app/**/*.{tsx,jsx}
+        - components/**/*.{tsx,jsx}
+        - lib/**/*.{tsx,jsx}
+        - hooks/**/*.{tsx,jsx}
+      behavior:
+        forbidden_patterns:
+          - pattern: /tabIndex\s*=\s*\{?\s*[1-9]/
+            message: Positive tabindex disrupts natural tab order — use 0 or -1
+        example_violation: |
+          <div tabIndex={5}>Important</div>
+        example_compliant: |
+          <div tabIndex={0}>Important</div>
+    - id: APPD-PROD-001
+      title: No demo or mock data in production code (mirror of PROD-001 onto real directories)
+      mirrors: PROD-001
+      scope:
+        - app/**/*.{ts,js,tsx,jsx}
+        - components/**/*.{ts,js,tsx,jsx}
+        - lib/**/*.{ts,js,tsx,jsx}
+        - hooks/**/*.{ts,js,tsx,jsx}
+      behavior:
+        forbidden_patterns:
+          - pattern: /DEMO_USER/
+            message: Demo user reference in production code — remove or gate behind feature flag
+          - pattern: /DEMO_PLAN/
+            message: Demo plan reference in production code — remove or gate behind feature flag
+          - pattern: /MOCK_[A-Z_]{3,}/
+            message: Mock constant in production code — use real values or environment variables
+          - pattern: /['"]demo[@.].*['"]/i
+            message: Demo email or domain in production code — use environment-configured values
+          - pattern: /['"]test_user['"]/i
+            message: Test user reference in production code — remove or gate behind feature flag
+          - pattern: /fake(User|Data|Account|Email|Name)/i
+            message: Fake data reference in production code — use real values
+          - pattern: /seed(User|Data|Account)s?\s*=/i
+            message: Seed data assignment in production code — move to seed scripts
+        example_violation: |
+          const DEFAULT_USER = DEMO_USER
+          const plan = DEMO_PLAN
+          const email = "demo@example.com"
+        example_compliant: |
+          const DEFAULT_USER = process.env.DEFAULT_USER_ID
+          const plan = await getPlanFromDatabase(userId)
+          const email = user.email
+    - id: APPD-PROD-002
+      title: Domain allowlist enforcement (mirror of PROD-002 onto real directories)
+      mirrors: PROD-002
+      scope:
+        - app/**/*.{ts,js,tsx,jsx}
+        - components/**/*.{ts,js,tsx,jsx}
+        - lib/**/*.{ts,js,tsx,jsx}
+        - hooks/**/*.{ts,js,tsx,jsx}
+      behavior:
+        forbidden_patterns:
+          - pattern: /https?:\/\/example\.com/
+            message: Placeholder domain example.com in production code — use real domain
+          - pattern: /https?:\/\/localhost[:\/"']/
+            message: Localhost reference in production code — use environment variable for base URL
+          - pattern: /https?:\/\/127\.0\.0\.1/
+            message: Loopback address in production code — use environment variable for base URL
+          - pattern: /https?:\/\/placeholder\./i
+            message: Placeholder domain in production code — use real domain
+          - pattern: /https?:\/\/todo\./i
+            message: TODO domain in production code — replace with actual domain
+          - pattern: /https?:\/\/changeme\./i
+            message: Changeme domain in production code — replace with actual domain
+        example_violation: |
+          const API_URL = "https://example.com/api"
+          const BASE_URL = "http://localhost:3000"
+        example_compliant: |
+          const API_URL = process.env.API_URL
+          const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
+    - id: APPD-PROD-003
+      title: No hardcoded IDs in production code (mirror of PROD-003 onto real directories)
+      mirrors: PROD-003
+      scope:
+        - app/**/*.{ts,js,tsx,jsx}
+        - components/**/*.{ts,js,tsx,jsx}
+        - lib/**/*.{ts,js,tsx,jsx}
+        - hooks/**/*.{ts,js,tsx,jsx}
+      behavior:
+        forbidden_patterns:
+          - pattern: /['"][0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}['"]/
+            message: Hardcoded UUID in production code — use configuration or database lookup
+          - pattern: /user_id\s*[:=]\s*['"][a-zA-Z0-9_-]{10,}['"]/
+            message: Hardcoded user ID in production code — use authenticated session or lookup
+          - pattern: /tenant_id\s*[:=]\s*['"][a-zA-Z0-9_-]{10,}['"]/
+            message: Hardcoded tenant ID in production code — use session context or lookup
+          - pattern: /org_id\s*[:=]\s*['"][a-zA-Z0-9_-]{10,}['"]/
+            message: Hardcoded org ID in production code — use session context or lookup
+        example_violation: |
+          const adminUser = "550e8400-e29b-41d4-a716-446655440000"
+          const tenant_id = "acme_corp_12345"
+        example_compliant: |
+          const adminUser = await getAdminUser(orgId)
+          const tenant_id = session.tenantId
+    - id: APPD-TEST-003
+      title: No silent test anti-patterns (mirror of TEST-003 onto real directories)
+      mirrors: TEST-003
+      scope:
+        - app/**/*.{ts,js}
+        - components/**/*.{ts,js}
+        - lib/**/*.{ts,js}
+        - hooks/**/*.{ts,js}
+      behavior:
+        forbidden_patterns:
+          - pattern: /\.catch\s*\(\s*\(\s*\)\s*=>\s*(false|null|undefined|{})\s*\)/
+            message: Swallowed error — test will silently pass on failure
+          - pattern: /test\.skip\s*\(\s*true\s*\)/
+            message: "Unconditional skip — use test.fixme('Blocked by #XXX') with tracking issue"
+          - pattern: /expect\(\w+\)\.toHaveLength\(\d+\)\s*(\/\/.*)?$/m
+            message: Suspicious test — only checks array length, not content
+          - pattern: /\/\/\s*(placeholder|will be enhanced|todo.*later)/i
+            message: Placeholder test — implement real assertions or remove
+        example_violation: |
+          test('loads data', async () => {
+            const data = await fetch('/api').catch(() => false)
+            expect(data).toBeTruthy() // passes even on network error
+          })
+        example_compliant: |
+          test('loads data', async () => {
+            const response = await fetch('/api')
+            expect(response.ok).toBe(true)
+            const data = await response.json()
+            expect(data.users).toEqual(expect.arrayContaining([
+              expect.objectContaining({ name: expect.any(String) })
+            ]))
+          })
+    - id: APPD-TEST-004
+      title: No suspicious test patterns (mirror of TEST-004 onto real directories)
+      mirrors: TEST-004
+      scope:
+        - app/**/*.{ts,js}
+        - components/**/*.{ts,js}
+        - lib/**/*.{ts,js}
+        - hooks/**/*.{ts,js}
+      behavior:
+        forbidden_patterns:
+          - pattern: /expect\(\w+\)\.toHaveLength\(\d+\)\s*(\/\/.*)?$/m
+            message: Suspicious test — only checks array length, not content. Verify array contents with toEqual or toContain.
+          - pattern: /expect\(\w+\)\.toBe\(\d{2,}\)\s*(\/\/.*)?$/m
+            message: Suspicious test — hardcoded expected value with no visible setup. Ensure expected values come from test fixtures or documented constants.
+          - pattern: /expect\(\w+\)\.toEqual\(\[\]\)\s*(\/\/.*)?$/m
+            message: Suspicious test — asserts empty array. Verify this is intentional and not masking missing data.
+          - pattern: /expect\(\w+\)\.toBeDefined\(\)\s*(\/\/.*)?$/m
+            message: Weak assertion — only checks existence, not correctness. Add specific value checks.
+        example_violation: |
+          test('loads users', async () => {
+            const users = await getUsers()
+            expect(users).toHaveLength(3)  // Only checks count, not content
+          })
+        example_compliant: |
+          test('loads users', async () => {
+            const users = await getUsers()
+            expect(users).toEqual(expect.arrayContaining([
+              expect.objectContaining({ name: 'Alice', role: 'admin' })
+            ]))
+          })
+    - id: APPD-TEST-005
+      title: No placeholder test markers (mirror of TEST-005 onto real directories)
+      mirrors: TEST-005
+      scope:
+        - app/**/*.{ts,js}
+        - components/**/*.{ts,js}
+        - lib/**/*.{ts,js}
+        - hooks/**/*.{ts,js}
+      behavior:
+        forbidden_patterns:
+          - pattern: /\/\/\s*placeholder/i
+            message: Placeholder test — implement real assertions or remove
+          - pattern: /\/\/\s*will be enhanced/i
+            message: Deferred test — implement now or create a tracking issue
+          - pattern: /\/\/\s*TODO:?\s*real test/i
+            message: TODO marker for test — implement the real test before merging
+          - pattern: /\/\/\s*TODO:?\s*add (more )?assertions/i
+            message: Missing assertions — add them before merging
+          - pattern: /\/\/\s*FIXME:?\s*test/i
+            message: FIXME in test — resolve before merging
+          - pattern: /test\(['"].*placeholder.*['"]/i
+            message: Test name indicates placeholder — implement real test or remove
+        example_violation: |
+          test('user registration', async () => {
+            // placeholder — will be enhanced later
+            expect(true).toBe(true)
+          })
+        example_compliant: |
+          test('user registration', async () => {
+            const response = await register({ email: 'test@example.com', password: 'secure123' })
+            expect(response.status).toBe(201)
+            expect(response.body.user.email).toBe('test@example.com')
+          })
+    - id: APPD-COMP-001
+      title: UI imports must come from /components/ui/ — not external libraries (mirror of COMP-001 onto real directories)
+      mirrors: COMP-001
+      scope:
+        - app/app/**/*.{tsx,jsx}
+        - components/app/**/*.{tsx,jsx}
+        - lib/app/**/*.{tsx,jsx}
+        - hooks/app/**/*.{tsx,jsx}
+        - app/pages/**/*.{tsx,jsx}
+        - components/pages/**/*.{tsx,jsx}
+        - lib/pages/**/*.{tsx,jsx}
+        - hooks/pages/**/*.{tsx,jsx}
+      behavior:
+        forbidden_patterns:
+          - pattern: /import\s+.*from\s+['"]@radix-ui\//
+            message: Import from @/components/ui/ instead of @radix-ui directly (COMP-001)
+          - pattern: /import\s+.*from\s+['"]@headlessui\//
+            message: Import from @/components/ui/ instead of @headlessui directly (COMP-001)
+          - pattern: /import\s+.*from\s+['"]@chakra-ui\//
+            message: Import from @/components/ui/ instead of @chakra-ui directly (COMP-001)
+          - pattern: /import\s+.*from\s+['"]@mui\//
+            message: Import from @/components/ui/ instead of @mui directly (COMP-001)
+          - pattern: /import\s+.*from\s+['"]@mantine\//
+            message: Import from @/components/ui/ instead of @mantine directly (COMP-001)
+          - pattern: /import\s+.*from\s+['"]antd/
+            message: Import from @/components/ui/ instead of antd directly (COMP-001)
+          - pattern: /import\s+.*from\s+['"]react-bootstrap/
+            message: Import from @/components/ui/ instead of react-bootstrap directly (COMP-001)
+        example_violation: |
+          // In a page file:
+          import { Dialog } from '@radix-ui/react-dialog'
+          import { Button } from '@chakra-ui/react'
+          import { Switch } from '@headlessui/react'
+        example_compliant: |
+          // In a page file:
+          import { Dialog } from '@/components/ui/dialog'
+          import { Button } from '@/components/ui/button'
+          import { Switch } from '@/components/ui/switch'
+    - id: APPD-COMP-002
+      title: No direct shadcn/registry imports in pages — pull into library first (mirror of COMP-002 onto real directories)
+      mirrors: COMP-002
+      scope:
+        - app/app/**/*.{tsx,jsx}
+        - components/app/**/*.{tsx,jsx}
+        - lib/app/**/*.{tsx,jsx}
+        - hooks/app/**/*.{tsx,jsx}
+        - app/pages/**/*.{tsx,jsx}
+        - components/pages/**/*.{tsx,jsx}
+        - lib/pages/**/*.{tsx,jsx}
+        - hooks/pages/**/*.{tsx,jsx}
+      behavior:
+        forbidden_patterns:
+          - pattern: /import\s+.*from\s+['"]@shadcn\//
+            message: Pull shadcn component into /components/ui/ first, then import from there (COMP-002)
+        example_violation: |
+          import { Button } from '@shadcn/ui/button'
+        example_compliant: |
+          // First: npx shadcn@latest add button
+          // Then in your page:
+          import { Button } from '@/components/ui/button'
+    - id: APPD-COMP-003
+      title: No hardcoded color values — use design tokens only (mirror of COMP-003 onto real directories)
+      mirrors: COMP-003
+      scope:
+        - app/**/*.{tsx,jsx,ts}
+        - components/**/*.{tsx,jsx,ts}
+        - lib/**/*.{tsx,jsx,ts}
+        - hooks/**/*.{tsx,jsx,ts}
+      behavior:
+        forbidden_patterns:
+          - pattern: /style\s*=\s*\{\s*\{[^}]*color\s*:\s*['"]#[0-9a-fA-F]{3,8}['"]/
+            message: Hardcoded hex color in inline style — use Tailwind token class (COMP-003)
+          - pattern: /style\s*=\s*\{\s*\{[^}]*color\s*:\s*['"]rgb/
+            message: Hardcoded rgb() color in inline style — use Tailwind token class (COMP-003)
+          - pattern: /style\s*=\s*\{\s*\{[^}]*color\s*:\s*['"]hsl/
+            message: Hardcoded hsl() color in inline style — use Tailwind token class (COMP-003)
+          - pattern: /style\s*=\s*\{\s*\{[^}]*background\s*:\s*['"]#[0-9a-fA-F]{3,8}['"]/
+            message: Hardcoded hex background in inline style — use Tailwind token class (COMP-003)
+          - pattern: /className="[^"]*(?:text|bg|border|ring|fill|stroke)-\[#[0-9a-fA-F]{3,8}\]/
+            message: Arbitrary Tailwind color value — use token class like bg-primary, text-muted-foreground (COMP-003)
+        example_violation: |
+          <div style={{ color: '#3B82F6' }}>Hello</div>
+          <div style={{ backgroundColor: 'rgb(59, 130, 246)' }}>Hello</div>
+          <p className="text-[#3B82F6]">Hello</p>
+          <div className="bg-[#F3F4F6]">Card</div>
+        example_compliant: |
+          <div className="text-primary">Hello</div>
+          <div className="bg-muted">Card</div>
+          <p className="text-muted-foreground">Hello</p>
+          <div className="bg-destructive text-destructive-foreground">Error</div>
+    - id: APPD-COMP-004
+      title: No hardcoded spacing, font-size, or radius — use Tailwind scale and tokens (mirror of COMP-004 onto real directories)
+      mirrors: COMP-004
+      scope:
+        - app/**/*.{tsx,jsx,ts}
+        - components/**/*.{tsx,jsx,ts}
+        - lib/**/*.{tsx,jsx,ts}
+        - hooks/**/*.{tsx,jsx,ts}
+      behavior:
+        forbidden_patterns:
+          - pattern: /style\s*=\s*\{\s*\{[^}]*(?:padding|margin)\s*:\s*['"]?\d+px/
+            message: Hardcoded px spacing in inline style — use Tailwind class like p-4, m-2 (COMP-004)
+          - pattern: /style\s*=\s*\{\s*\{[^}]*fontSize\s*:\s*['"]?\d+px/
+            message: Hardcoded px font-size in inline style — use Tailwind class like text-sm, text-lg (COMP-004)
+          - pattern: /style\s*=\s*\{\s*\{[^}]*borderRadius\s*:\s*['"]?\d+px/
+            message: Hardcoded px border-radius — use Tailwind class like rounded-md or token --radius (COMP-004)
+          - pattern: /className="[^"]*(?:p|m|px|py|mx|my|mt|mb|ml|mr|pt|pb|pl|pr|gap)-\[\d+px\]/
+            message: Arbitrary Tailwind spacing — use scale value like p-4, gap-2 instead of p-[17px] (COMP-004)
+          - pattern: /className="[^"]*text-\[\d+px\]/
+            message: Arbitrary Tailwind font-size — use text-sm, text-base, text-lg etc. (COMP-004)
+          - pattern: /className="[^"]*rounded-\[\d+px\]/
+            message: Arbitrary Tailwind radius — use rounded-md, rounded-lg or token --radius (COMP-004)
+        example_violation: |
+          <div style={{ padding: '17px', fontSize: '13px' }}>Content</div>
+          <div className="p-[37px] text-[13px] rounded-[7px]">Content</div>
+        example_compliant: |
+          <div className="p-4 text-sm rounded-md">Content</div>
+          <div className="mt-6 gap-4 text-base rounded-lg">Content</div>

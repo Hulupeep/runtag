@@ -1,0 +1,1 @@
+Superseded by #21 (owner decision 2026-10-11). This issue exhausted its Specflow scoped review allowance for build-ready (initial + one regrade; 25/27 verified, final finding F-7 fixed afterwards). The full v3 spec plus the F-7 fix continues on #21 with a fresh review. History and findings here are retained.

@@ -1,0 +1,173 @@
+{
+  "workKind": "implementation",
+  "specification": {
+    "record": "evidence/specification-26.json"
+  },
+  "goal": "docs/goal.md",
+  "task": "docs/specs/app/APP-SHELL.md",
+  "references": [
+    "PRDs/runtag-app-prd.md",
+    "PRDs/runtag-app-hops.md",
+    "PRDs/runtag-app-verdict.md"
+  ],
+  "objective": "Implement APP-SHELL #26: single static client shell, typed IndexedDB store with commit-bound transactions, build-ID service worker with complete precache, canonical redirects, contracts and journeys — all AC-SHELL criteria asserted and green on CI",
+  "finish": "Every AC-SHELL criterion asserted by an executed test; contracts and full Playwright green on branch CI (Gate C); provenance evidence complete; post-build seam resolution exits 0",
+  "criteria": [
+    {
+      "id": "AC-SHELL-1",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-1 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-1B",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-1B |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-2",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-2 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-3",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-3 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-4",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-4 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-5",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-5 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-5B",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-5B |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-6",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-6 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-6B",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-6B |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-7",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-7 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-8",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-8 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-8B",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-8B |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-9",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-9 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-10",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-10 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-11",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-11 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-12",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-12 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-13",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-13 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-14",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-14 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-17",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-17 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-18",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-18 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-15",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-15 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-SHELL-16",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "| AC-SHELL-16 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "GATE-CONTRACTS",
+      "source": "CLAUDE.md",
+      "anchor": "npm test -- contracts    # Must pass",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-C",
+      "source": "QA/loops/feature-build.yaml",
+      "anchor": "contract + journey tests green on branch-protected CI vs real seeded backend",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-PROVENANCE",
+      "source": "QA/loops/feature-build.yaml",
+      "anchor": "every value-bearing output/assertion is source-proven after implementation:",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-SEAMS",
+      "source": "docs/specs/app/APP-SHELL.md",
+      "anchor": "`node scripts/verify-seams.cjs evidence/seams-app-shell.json --repo-root .` exits 0 after build",
+      "kind": "gate"
+    }
+  ]
+}

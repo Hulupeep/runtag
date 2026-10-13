@@ -10,7 +10,8 @@
     "test": "npm run test:contracts && npm run test:e2e",
     "test:ui": "playwright test --ui",
     "test:e2e": "playwright test",
-    "test:contracts": "jest"
+    "test:contracts": "jest",
+    "postbuild": "node scripts/sw/build-sw.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

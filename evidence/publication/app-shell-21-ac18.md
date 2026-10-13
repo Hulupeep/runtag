@@ -1,0 +1,1 @@
+AC-18 amended per duo preparation review round 1 (run 1791750829550-e8c319e8, I-R1-S1): the oracle now observes the real transaction `complete` event inside the callback and asserts it fired before `withTxn` resolved, then keeps the persisted-row re-read. No other criterion changed.

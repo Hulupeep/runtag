@@ -59,7 +59,29 @@
    "/t/",
    "/app?tapped=",
    "tap-tag-id",
-   "tapped-run"
+   "tapped-run",
+   "plant-name",
+   "plant-save-start",
+   "plant-just-save",
+   "plant-save-tapout",
+   "tap-result",
+   "tap-undo",
+   "tap-primary",
+   "tap-guard",
+   "stale-notice",
+   "tap-failed",
+   "tapAtTag",
+   "plantTag",
+   "undoTap",
+   "finishOpenRun",
+   "startRunExplicit",
+   "abandonStaleIn",
+   "shellReplace",
+   "lastTransition",
+   "STALE_MS",
+   "GUARD_MS",
+   "UNDO_MS",
+   "TapOutcome"
   ],
   "reads": [
    "withTxn",
@@ -67,21 +89,59 @@
    "getOpenRunIn",
    "StoreError",
    "localDayOf",
+   "computeChain",
    "TAPPED_PREFIX",
-   "resolveRoute"
+   "resolveRoute",
+   "graceUntil",
+   "SETUP_GRACE_MS",
+   "chain-value",
+   "shellNavigate",
+   "subscribeLocation"
+  ],
+  "files": [
+   "lib/app/tap.ts",
+   "lib/app/store.ts",
+   "lib/app/nav.ts",
+   "lib/app/route.ts",
+   "components/app/Shell.tsx",
+   "components/app/views/tap.tsx",
+   "components/app/views/tapped.tsx",
+   "components/app/views/plant.tsx",
+   "tests/e2e/journey_app_run.spec.ts",
+   "tests/e2e/journey_app_plant.spec.ts",
+   "docs/contracts/journey_app_run.yml",
+   "docs/contracts/journey_app_plant.yml"
   ]
  },
  {
   "id": "APP-CHAIN",
   "writes": [
    "/app",
-   "chain-value"
+   "chain-value",
+   "chain-visual",
+   "history-day",
+   "at-risk",
+   "open-run-banner",
+   "empty-state",
+   "backup-status",
+   "ChainHome",
+   "buildHistory"
   ],
   "reads": [
    "computeChain",
    "localDayOf",
+   "previousDay",
+   "withTxn",
+   "abandonStaleIn",
    "ready-offline",
-   "withTxn"
+   "ChainVisual"
+  ],
+  "files": [
+   "components/app/views/home.tsx",
+   "lib/app/history.ts",
+   "tests/e2e/journey_app_chain.spec.ts",
+   "docs/contracts/journey_app_chain.yml",
+   "docs/contracts/feature_app.yml"
   ]
  },
  {

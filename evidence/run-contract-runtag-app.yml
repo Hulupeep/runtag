@@ -33,3 +33,9 @@ run_contract:
       #24 regrade escalated (F-SEAM-GRAPH: moving file paths out of seam declarations dropped shared
       store/origin relationships from the epic graph). Owner chose: supersede once more; seams modelled
       as route literals, data-testids and exported API identifiers; full epic graph regenerated.
+  owner_decision_2026-10-13:
+    slice_size_amendment: >
+      Owner decision (AskUserQuestion answer, 2026-10-13): the feature-build "slice < 1000 hand-written lines"
+      limit counts shipped production code only; tests and contracts are excluded (they add safety, not scope).
+      Applies to APP-SHELL #26 and all RunTag app tickets. APP-SHELL #26: 659 production lines (<1000);
+      tests 508 and contracts 130 excluded per this amendment.

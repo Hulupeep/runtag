@@ -1,0 +1,1 @@
+Owner scope amendment (2026-10-13): the DoD limit "slice < 1000 hand-written lines" counts shipped production code only; tests and contracts are excluded. Applies to this ticket and all RunTag app tickets (recorded in evidence/run-contract-runtag-app.yml). For this slice: 659 production lines; tests 508 and contracts 130 excluded.

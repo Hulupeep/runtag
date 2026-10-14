@@ -52,7 +52,7 @@
   {
    "claim": "Ready offline and no metrics (AC-CHAIN-10, AC-CHAIN-11)",
    "source": "ReadyOffline kept on the chain home; rendered copy in components/app/views/home.tsx",
-   "verification": "cache audit both ways on chromium; body innerText of every seeded view matches no time/duration regex or forbidden term; contract APP-CHAIN-SOURCE"
+   "verification": "cache audit both ways on chromium; noMetrics (body innerText vs the APP-SHELL time/duration regexes and forbidden terms) runs on every loaded view of the journey: each chain, history (a)-(e), at-risk, stale-notice and post-notice, open-run, empty, both New York clocks, DST, late-night, ready-offline and cache-incomplete, failed-load and recovered views; contract APP-CHAIN-SOURCE"
   }
  ]
 }

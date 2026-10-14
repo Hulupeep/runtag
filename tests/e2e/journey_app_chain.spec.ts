@@ -79,6 +79,7 @@ test.describe('AC-CHAIN-1 the rendered chain is computeChain over the stored run
     await page.goto('/app')
     await reloadHome(page)
     await expectChain(page, 3)
+    await noMetrics(page, 'app-produced run')
   })
 })
 
@@ -103,6 +104,7 @@ test.describe('AC-CHAIN-3 the 14-day history follows the precedence rule', () =>
     await openApp(page)
     await reloadHome(page)
     expect(await states(page)).toEqual(window14().map((d, i) => [d, [...n(13), 'today-pending'][i]]))
+    await noMetrics(page, 'history (a)')
   })
 
   test('(b) first done run on day −2, nothing on −1', async ({ page }) => {
@@ -110,6 +112,7 @@ test.describe('AC-CHAIN-3 the 14-day history follows the precedence rule', () =>
     await seed(page, [doneRun(day(-2))])
     await reloadHome(page)
     expect(await states(page)).toEqual(window14().map((d, i) => [d, [...n(11), 'done', 'missed', 'today-pending'][i]]))
+    await noMetrics(page, 'history (b)')
   })
 
   test('(c) a done run dated after today is ignored', async ({ page }) => {
@@ -117,6 +120,7 @@ test.describe('AC-CHAIN-3 the 14-day history follows the precedence rule', () =>
     await seed(page, [doneRun(day(1))])
     await reloadHome(page)
     expect(await states(page)).toEqual(window14().map((d, i) => [d, [...n(13), 'today-pending'][i]]))
+    await noMetrics(page, 'history (c)')
   })
 
   test('(d) a day with only an abandoned run is missed', async ({ page }) => {
@@ -125,6 +129,7 @@ test.describe('AC-CHAIN-3 the 14-day history follows the precedence rule', () =>
     await seed(page, [doneRun(day(-3)), abandoned])
     await reloadHome(page)
     expect(await states(page)).toEqual(window14().map((d, i) => [d, [...n(10), 'done', 'missed', 'missed', 'today-pending'][i]]))
+    await noMetrics(page, 'history (d)')
   })
 
   test('(e) across the DST change every day appears once', async ({ page }) => {
@@ -133,6 +138,7 @@ test.describe('AC-CHAIN-3 the 14-day history follows the precedence rule', () =>
     const days = (await states(page)).map(([d]) => d)
     expect(days).toEqual(window14('2026-10-25'))
     expect(new Set(days).size).toBe(14)
+    await noMetrics(page, 'history (e) DST')
   })
 })
 
@@ -173,11 +179,13 @@ test.describe('AC-CHAIN-5 stale open runs are abandoned on /app and never count'
       await expect(page.getByTestId('chain-value')).toHaveText('2')
       await expect(page.getByTestId('open-run-banner')).toHaveCount(0)
       await expect(page.getByTestId('stale-notice')).toHaveText("Your last run wasn't tapped out, so it didn't count.")
+      await noMetrics(page, `${name} stale notice`)
       await reloadHome(page) // same clock: still within the minute
       await expect(page.getByTestId('stale-notice')).toBeVisible()
       await page.clock.setFixedTime(T0 + 61_000)
       await reloadHome(page)
       await expect(page.getByTestId('stale-notice')).toHaveCount(0)
+      await noMetrics(page, `${name} after the notice`)
       expect((await runs(page)).find((r) => r.id === run.id)).toEqual({ ...run, status: 'abandoned', abandonedAt: T0 })
     })
   }
@@ -225,6 +233,7 @@ test('AC-CHAIN-7 time-zone travel keeps the chain and the stored days', async ({
   await reloadHome(p)
   await expect(p.getByTestId('chain-value')).toHaveText('3')
   expect(await p.getByTestId('history-day').last().getAttribute('aria-label')).toMatch(/^Monday 12 October/)
+  await noMetrics(p, 'New York, same date')
 
   // 21:30 in New York is already 13 October in London: today is the device's date, not the stored offset's.
   await p.clock.setFixedTime(Date.parse('2026-10-12T21:30:00-04:00'))
@@ -233,6 +242,7 @@ test('AC-CHAIN-7 time-zone travel keeps the chain and the stored days', async ({
   await expect(p.getByTestId('history-day').last()).toHaveAttribute('data-state', 'done')
   await expect(p.getByTestId('chain-value')).toHaveText('3')
   await expect(p.getByTestId('at-risk')).toHaveCount(0)
+  await noMetrics(p, 'New York, London already next day')
   await ny.close()
 })
 
@@ -242,6 +252,7 @@ test('AC-CHAIN-8 DST: days 24, 25 and 26 October are a chain of 3', async ({ pag
   await reloadHome(page)
   await expect(page.getByTestId('chain-value')).toHaveText('3')
   expect(await chainInPage(page)).toBe(3)
+  await noMetrics(page, 'DST chain')
 })
 
 test('AC-CHAIN-9 a run tapped in at 23:55 and out at 00:20 counts for the day it started', async ({ page }) => {
@@ -261,6 +272,7 @@ test('AC-CHAIN-9 a run tapped in at 23:55 and out at 00:20 counts for the day it
   await expect(page.locator('[data-testid=history-day][data-day="2026-10-12"]')).toHaveAttribute('data-state', 'today-pending')
   await expect(page.getByTestId('at-risk')).toBeVisible()
   await expect(page.getByTestId('chain-value')).toHaveText('1')
+  await noMetrics(page, 'late-night run')
 })
 
 test.describe('AC-CHAIN-10 the chain home keeps Ready offline (production service worker)', () => {
@@ -282,8 +294,10 @@ test.describe('AC-CHAIN-10 the chain home keeps Ready offline (production servic
     })
     expect(audit.total).toBeGreaterThan(4)
     expect(audit.missing).toEqual([])
+    await noMetrics(page, 'ready offline')
     await page.evaluate(async (id) => (await caches.open(`runtag-shell-${id}`)).delete('/manifest.webmanifest'), audit.buildId)
     await expect(page.getByTestId('ready-offline')).toHaveCount(0, { timeout: 6_000 })
+    await noMetrics(page, 'cache incomplete')
   })
 })
 
@@ -305,10 +319,12 @@ test('AC-CHAIN-13 a failed home load writes nothing and shows the store error', 
   await expect(page.getByTestId('store-error')).toContainText('quota')
   await expect(page.getByTestId('chain-value')).toHaveCount(0)
   await expect(page.getByTestId('stale-notice')).toHaveCount(0)
+  await noMetrics(page, 'failed load')
   expect((await runs(page)).sort((a, b) => a.id.localeCompare(b.id))).toEqual([...seeded].sort((a, b) => a.id.localeCompare(b.id)))
 
   await page.evaluate(() => sessionStorage.removeItem('runtag-fail-writes'))
   await reloadHome(page)
   expect((await runs(page)).find((r) => r.id === 'r9')).toMatchObject({ status: 'abandoned', abandonedAt: T0 })
   await expect(page.getByTestId('chain-value')).toHaveText('2')
+  await noMetrics(page, 'recovered load')
 })

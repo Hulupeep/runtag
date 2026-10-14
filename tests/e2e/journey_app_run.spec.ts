@@ -479,6 +479,8 @@ test.describe('AC-TAP-22 AC-TAP-23 explicit actions after another screen changed
     await seedTag(page1, B)
     const r1 = await tapIn(page1)
     await tap(page1, B, T0 + 10_000)
+    // The clock is context-wide: let page 1 settle on its guard view before page 2 moves it on.
+    await expectPath(page1, `${TAPPED}${r1.id}&again=1&tag=${B}`)
     await tap(page2, A, T0 + 2 * MIN)
     await expect(page2.getByText('Day 1. Chain unbroken.')).toBeVisible()
     const r1Done = await byId(page2, r1.id)

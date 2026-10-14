@@ -81,7 +81,11 @@
    "STALE_MS",
    "GUARD_MS",
    "UNDO_MS",
-   "TapOutcome"
+   "TapOutcome",
+   "scannedTagId",
+   "plant-changed",
+   "plant-already-open",
+   "other-open"
   ],
   "reads": [
    "withTxn",

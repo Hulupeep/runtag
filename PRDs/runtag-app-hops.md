@@ -161,3 +161,20 @@ Reason: `verify-seams` resolves surfaces as text in code, so seams are now decla
 | S5 | `StoreError` (→ TAP, DURABLE) | J-APP-RUN, J-APP-BACKUP | storage failure shows the failure screen and store counts are unchanged |
 | S6 | `resolveRoute`, `TAPPED_PREFIX`, `tapped-run` (→ TAP) | J-APP-RUN | after reload of `/app?tapped={runId}`, `data-run-id` equals the stored run id |
 | S7 | `ready-offline` (→ CHAIN) | J-APP-CHAIN | the replaced home view still shows "Ready offline ✓" iff all precache entries are cached |
+
+## Amendment 2026-10-14 (Gate B, APP-TAP scoped review F-HOPS-RECONCILIATION; pinned hop IDs unchanged)
+Reason: APP-TAP's B.5 pre-flight and scoped review corrected how several pinned hops must be exercised. The expected values above are unchanged; only the harness that reaches them is reconciled, so the ticket and this oracle prescribe compatible checks.
+
+| Hop | Reconciled harness |
+|---|---|
+| I12 | Failure injection is armed through a `sessionStorage` flag read by an init script **after** the database exists (arming in the previous page is lost on the new document); "rows unchanged" is re-read in the **same** context, never a fresh one (a fresh context is trivially empty). |
+| A8 | `document.prerendering` is a **configurable getter** flipped before dispatching `prerenderingchange`; the bfcache half is replaced by the once-per-document rule (Playwright Chromium runs with the back/forward cache disabled): a reload or in-shell Back to `/t/` records nothing (APP-TAP AC-TAP-19). |
+| I4–I11, L1–L10, A3–A7 | Time via `page.clock.setFixedTime()` per step (never `clock.install` with `pauseAt`/`runFor`: `withTxn` settles on a real `setTimeout`); journeys pinned to `timezoneId: 'Europe/London'`; latency (A3, A6) measured Node-side between `goto` resolving and the result becoming visible. |
+| I7, I9 | Guard URLs carry the scanned tag (`&tag=`); cross-tag variants: tap in at A, scan B, reload, "Finish run" → `tagOutId` = B; tap out at A, scan B, reload, "Start another run" → `tagInId` = B. |
+
+**New seam hop S8 — `abandonStaleIn` (writer APP-TAP, reader APP-CHAIN)**
+| Step | From → URL | Control | EXPECTED VALUE (re-read) | Owner |
+|---|---|---|---|---|
+| S8.1 | seed via the real store: open run R0 with `startedAt` = now − 7 h; tag A planted > 10 min ago | — | `R0.status` = `'open'` | fixture |
+| S8.2 | `/t/<A>` | none (auto tap) | after reload: `R0` = `{status:'abandoned', abandonedAt: now}` with all other fields unchanged; exactly one new open run with `tagInId` = A; stale notice visible | APP-TAP (AC-TAP-11) |
+| S8.3 | seed a second stale open run R9 (`startedAt` = now − 7 h, no tap); open `/app` | none | after reload: `R9.status` = `'abandoned'`, `abandonedAt` set; `chain-value` unchanged; no open-run banner for R9 | APP-CHAIN (AC-CHAIN-5) |

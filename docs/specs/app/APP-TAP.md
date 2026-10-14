@@ -3,6 +3,7 @@
 **Epic:** RunTag App v1 (PRDs/runtag-app-prd.md @ f6c230c7…) · **Wave:** W2 · **Priority:** P0 · **Depends on:** APP-SHELL #26 (merged, live)
 **Persona:** owner-runner (iPhone via Safari banner, Android via Chrome) · **Promise:** "Tap the tag, see TAGGED, go. Tap again at the end and see the chain grow."
 **Gate A:** SHIP_WITH_STIPULATIONS — verdict §7 APP-TAP items 1–5 (S-1, S-2, S-4, S-13, M-6) folded. **B.5:** docs/specs/app/APP-TAP-preflight.md — C1, C2, P1-1…P1-11, P2-1…P2-9 folded (v2).
+**v3 (scoped review round 1 of #27):** F-UNDO-OPEN, F-PLANT-TARGET, F-GUARD-TAG, F-HOPS-RECONCILIATION folded (reload-safe scanned tag, plant/undo race contracts, hops amendment 2026-10-14).
 **Pinned hops covered:** I3–I12, A3, A4, A6, A7, A8, L1–L10 (I13 belongs to APP-CHAIN, A5 to APP-TAGS).
 **Covers:** APP-002, APP-003, APP-004, APP-005, APP-006 (on tap), APP-016, APP-017, APP-018, APP-019, APP-020, APP-021, APP-023 (new)
 
@@ -19,10 +20,11 @@ The tap decision runs at most once per document, and only when (a) the view moun
 | Outcome | URL after `shellReplace` |
 |---|---|
 | tap-in / tap-out | `/app?tapped={runId}` |
-| guard (after tap-in or tap-out) | `/app?tapped={runId}&again=1` |
-| grace with an open run | `/app?tapped={openRunId}&grace={tagId}` |
+| guard (after tap-in or tap-out) | `/app?tapped={runId}&again=1&tag={tagId}` (scanned tag, reload-safe) |
+| grace with an open run | `/app?tapped={openRunId}&grace={tagId}` (the grace tag is the scanned tag) |
 | grace without an open run | `/app?grace={tagId}` |
-| plant buttons | `/app?tapped={runId}` (start / tap-out) or `/app` (just save) |
+| plant buttons | `/app?tapped={runId}` (start / tap-out ok), `/app` (just save), see plant race outcomes below |
+**Scanned tag (F-GUARD-TAG):** guard and grace actions take the tag from the URL (`tag` or `grace` param), never from memory, so a reload keeps it. It must match `^[a-z0-9]{10}$` and be a known tag; otherwise the action buttons are hidden and the view shows `Tap your tag again.` with primary **Go** (safe fallback: no state change is possible without a scanned tag).
 `shellReplace(path)` = `window.history.replaceState(null, '', path)` + the `runtag:navigate` event; it is called only after an awaited store call, never synchronously in a mount effect (P2-1).
 
 ## Decision order (APP-023, S-2, C1) — first match wins, inside one readwrite transaction
@@ -39,7 +41,7 @@ The tap decision runs at most once per document, and only when (a) the view moun
 ```ts
 // lib/app/store.ts (additive): Run.lastTransition?: 'in' | 'out'; startRunIfNoneOpenIn sets lastTransition:'in'.
 //   Every write that changes lastTapAt also sets lastTransition. A missing lastTransition is treated as "changed" by Undo.
-// lib/app/route.ts (additive): View adds 'grace'; Route adds again?: boolean, graceTagId?: string.
+// lib/app/route.ts (additive): View adds 'grace'; Route adds again?: boolean, graceTagId?: string, scannedTagId?: string (from `tag`), notice?: 'plant-changed' | 'plant-already-open'.
 // lib/app/nav.ts (additive): shellReplace(path)
 // lib/app/tap.ts
 export const STALE_MS = 21_600_000, GUARD_MS = 60_000, UNDO_MS = 60_000
@@ -49,16 +51,19 @@ export type TapOutcome =
   | { kind: 'guard'; run: Run }
   | { kind: 'in' | 'out'; run: Run }
 export function tapAtTag(tagId: string, now: number): Promise<TapOutcome>
-export function plantTag(tagId: string, name: string, action: 'start' | 'save' | 'tap-out', now: number): Promise<{ tag: Tag; run?: Run; result: 'ok' | 'changed' }>
-//   inside one txn: abandonStaleIn first; never overwrites an existing tag; 'start' -> startRunIfNoneOpenIn; 'tap-out' -> finishes the
-//   current non-stale open run or returns result 'changed' if none is open any more.
-export function finishOpenRun(runId: string, tagId: string, now: number): Promise<Run | 'changed'>   // explicit "Finish run"
+export function plantTag(tagId: string, name: string, action: 'start' | 'save' | 'tap-out', now: number, displayedOpenRunId?: string):
+  Promise<{ tag: Tag; run?: Run; openRunId?: string; result: 'ok' | 'changed' | 'already-open' }>
+//   inside one txn: abandonStaleIn first; saves the tag unless it exists (never overwrites); then
+//   'start'   -> if ANY run is open: result 'already-open' (no new run, no 'Run started' feedback), else startRunIfNoneOpenIn;
+//   'tap-out' -> only if the open run's id === displayedOpenRunId (the run shown when the plant view rendered) and it is not stale:
+//                finish it with tagOutId = tagId; otherwise result 'changed' (no run fields touched).
+export function finishOpenRun(runId: string, tagId: string, now: number): Promise<Run | 'changed'>   // explicit "Finish run"; tagId = scanned tag from the URL; finishes only if runId is still the open, non-stale run
 export function startRunExplicit(tagId: string, now: number): Promise<Run | 'already-open'>        // explicit "Start run"/"Start another run"
 //   both: abandonStaleIn first, bypass grace and guard, one txn each; buttons are disabled while pending.
-export function undoTap(runId: string, expectedLastTapAt: number, now: number): Promise<'undone' | 'changed' | 'expired' | 'too-late'>
+export function undoTap(runId: string, expectedLastTapAt: number, now: number): Promise<'undone' | 'changed' | 'expired' | 'too-late' | 'other-open'>
 export function abandonStaleIn(s: Stores, now: number): Promise<boolean>
 ```
-**Undo** (APP-018, S-13, T8) is offered while `0 ≤ now − lastTapAt < UNDO_MS` (derived from the stored value; the mounted view re-checks every second and hides it when the window passes) on the in/out result views **and** on guard views (for the original transition). It is a compare-and-set in one readwrite transaction: tap-in undo deletes the run only if still `open`, `lastTransition:'in'`, `lastTapAt === expected`; tap-out undo reopens (`status:'open'`, removes `endedAt`/`tagOutId`, `lastTapAt = startedAt`, `lastTransition:'in'`) only if still `done`, `lastTransition:'out'`, `lastTapAt === expected`, and is refused with `Too late to undo.` when `now − startedAt ≥ STALE_MS`. Otherwise `Can't undo — something changed.`; window passed → `Undo window has passed.` Abandoned runs stay abandoned. After an Undo the guard does not apply (accepted, honour system).
+**Undo** (APP-018, S-13, T8) is offered while `0 ≤ now − lastTapAt < UNDO_MS` (derived from the stored value; the mounted view re-checks every second and hides it when the window passes) on the in/out result views **and** on guard views (for the original transition). It is a compare-and-set in one readwrite transaction: tap-in undo deletes the run only if still `open`, `lastTransition:'in'`, `lastTapAt === expected`; tap-out undo reopens (`status:'open'`, removes `endedAt`/`tagOutId`, `lastTapAt = startedAt`, `lastTransition:'in'`) only if still `done`, `lastTransition:'out'`, `lastTapAt === expected` **and no other run is open** (checked in the same transaction; otherwise `Can't undo — another run is in progress.`, outcome `other-open`, nothing changes, so at most one run is ever open — APP-004), and is refused with `Too late to undo.` when `now − startedAt ≥ STALE_MS`. Otherwise `Can't undo — something changed.`; window passed → `Undo window has passed.` Abandoned runs stay abandoned. After an Undo the guard does not apply (accepted, honour system).
 
 ## Views and copy (M-6: no countdowns or durations anywhere)
 Every view on `/t/` keeps `[data-testid=tap-tag-id][data-tag-id]` (APP-SHELL tests). Every view has exactly one primary action: `<button data-testid="tap-primary" data-primary>`; navigation uses `shellNavigate`, never `<a>`.
@@ -71,6 +76,9 @@ Every view on `/t/` keeps `[data-testid=tap-tag-id][data-tag-id]` (APP-SHELL tes
 | grace (run open) | `Tag works ✓` | **Finish run** | — |
 | grace (no run) | `Tag works ✓` | **Start run** | — |
 | plant | `Plant this tag`, name (1–40 chars, default `My tag`) | Save and start run / Save and tap out here | Just save, restore link |
+| plant tap-out race: displayed run no longer open (`changed`) | `Tag saved. Your run changed on another screen, so nothing was tapped out.` — URL `/app?tapped={openRunId}&grace={tagId}&notice=plant-changed` if another run is open, else `/app?grace={tagId}&notice=plant-changed` | the grace primary (**Finish run** / **Start run**) | — |
+| plant start race: a run is already open (`already-open`) | `Tag saved. A run is already in progress.` (never `TAGGED`/`Run started`) — URL `/app?tapped={openRunId}&again=1&tag={tagId}&notice=plant-already-open` | **Finish run** (with this scanned tag) | — |
+| guard/grace without a valid scanned tag | `Tap your tag again.` | **Go** | — |
 | `/app?tapped=` unknown or deleted id | `This tap was undone or isn't on this phone.` | **Go** | — |
 | `/app?tapped=` abandoned run | `Your last run wasn't tapped out, so it didn't count.` | **Go** | — |
 | failure (quota / tx-aborted) | `This tap wasn't saved` | **Retry** (re-runs the same action with a fresh `Date.now()`, incl. plant with the typed name) | — |
@@ -83,15 +91,15 @@ Every view on `/t/` keeps `[data-testid=tap-tag-id][data-tag-id]` (APP-SHELL tes
 | AC-TAP-1 | Unknown tag, no open run → plant view: name field, primary "Save and start run", "Just save", restore link; no "Save and tap out here"; `tap-tag-id` present | buttons present/absent; tags count 0 before save (I3, L8) |
 | AC-TAP-2 | "Save and start run" → tag `{id, name, createdAt, graceUntil: createdAt + 600000}` and exactly one open run with `tagInId` = id, `lastTransition:'in'`; URL `TAPPED_PREFIX + runId` | rows re-read after reload (I3) |
 | AC-TAP-3 | "Just save" → tag stored, zero runs, URL `/app` | rows re-read (I5 setup) |
-| AC-TAP-4 | Unknown tag while a non-stale run is open → primary "Save and tap out here" stores the tag and completes that run with `tagOutId` = new id; if that run was finished meanwhile → `changed`, tag still stored | rows re-read (L6) |
+| AC-TAP-4 | Unknown tag while a non-stale run R1 is open → primary "Save and tap out here" stores the tag and completes R1 with `tagOutId` = new id. Race: page 1 shows the plant view for R1; page 2 finishes R1 and starts R2; page 1 presses "Save and tap out here" → tag stored, R1 fields unchanged (still `done` with page 2's `tagOutId`), R2 still the only open run, URL `/app?tapped={R2}&grace={tag}&notice=plant-changed`, no `Run started` | rows re-read for R1, R2 and the tag; URL and copy (L6, F-PLANT-TARGET) |
 | AC-TAP-5 | Grace: a load within `graceUntil` changes nothing and lands on the grace URL with "Tag works ✓" + "Finish run" (run open) or "Start run" | run rows incl. `lastTapAt` unchanged (I4, L7) |
 | AC-TAP-6 | Tap-in on a known tag outside grace/guard (Europe/London zone): exactly `TAPPED_PREFIX + R[0].id`; `R[0]` = `{status:'open', tagInId, localDay:'2026-10-12', lastTransition:'in'}`; `TAGGED` only after commit (AC-TAP-13 is the negative control) | URL + rows re-read (I5) |
 | AC-TAP-7 | Reload of `/app?tapped={runId}` never re-taps; result from IndexedDB; Undo visible iff `0 ≤ now − lastTapAt < 60000` | rows unchanged after reload; `data-run-id` = stored id (I6) |
-| AC-TAP-8 | Guard after tap-in: no change, URL `…&again=1`, "Finish run"; pressing it completes that run | `lastTapAt` unchanged before press; `status:'done'` after (I7) |
+| AC-TAP-8 | Guard after tap-in: no change, URL `…&again=1&tag={scanned}`, "Finish run". Cross-tag: tap in at A, scan B within 60 s, **reload**, press "Finish run" → `tagOutId` = B; missing/invalid `tag` param → "Tap your tag again." and no action | `lastTapAt` unchanged before press; `{status:'done', tagOutId:B}` after (I7, F-GUARD-TAG) |
 | AC-TAP-9 | Tap-out (same or another known tag) → `{status:'done', endedAt, tagOutId, lastTransition:'out'}`; text `Day N. Chain unbroken.` with N equal to in-page `computeChain(listRuns(), localDayOf(Date.now()))`; after `goto('/app')` + reload `chain-value` = N | rows + rendered N + chain re-read (I8, L2) |
-| AC-TAP-10 | Guard after tap-out: no new run, URL `…&again=1`, "Start another run" | runs count unchanged, no open run (I9, L3) |
+| AC-TAP-10 | Guard after tap-out: no new run, URL `…&again=1&tag={scanned}`, "Start another run". Cross-tag: tap out at A, scan B within 60 s, **reload**, press "Start another run" → new run `tagInId` = B | runs count unchanged before press; new open run `tagInId:B` after (I9, L3, F-GUARD-TAG) |
 | AC-TAP-11 | Stale: open run aged ≥ 6 h, or with `startedAt > now`, is abandoned on the next tap; a done run with future `lastTapAt` never guards; the tap then proceeds; stale notice shown | rows re-read for both future-dated fixtures and the 7 h fixture (L8) |
-| AC-TAP-12 | Undo: tap-in → run deleted; tap-out → reopened, chain back after reload; changed → "Can't undo — something changed."; window passed → Undo hidden and "Undo window has passed." on a late press; tap-out undo with run aged ≥ 6 h → "Too late to undo."; guard views offer Undo for the original transition | rows + `chain-value` re-read after reload (I11, L4, L9, L10) |
+| AC-TAP-12 | Undo: tap-in → run deleted; tap-out → reopened, chain back after reload; changed → "Can't undo — something changed."; window passed → Undo hidden and "Undo window has passed." on a late press; tap-out undo with run aged ≥ 6 h → "Too late to undo."; guard views offer Undo for the original transition; two pages: page 1 taps out R1, page 2 starts R2, page 1 presses Undo → "Can't undo — another run is in progress.", R1 stays `done`, R2 the only open run | rows + `chain-value` re-read after reload (I11, L4, L9, L10) |
 | AC-TAP-13 | Storage failure (armed via `sessionStorage` flag read by the init script, after the DB exists) → "This tap wasn't saved" + Retry, no `TAGGED`, rows unchanged in the same context; Retry after disarming records the tap | rows re-read (I12) |
 | AC-TAP-14 | Two pages loading the same tag URL at once → exactly one open run; one page lands on `TAPPED_PREFIX + id`, the other on `…&again=1` | open rows = 1 + both URLs (A7) — chromium + mobile |
 | AC-TAP-15 | Prerendering (configurable `document.prerendering` getter + `prerenderingchange`) → no run until the event; a reload, an in-shell Back to `/t/`, or a non-`navigate` navigation never decides | runs count before/after (A8, C2) |
@@ -100,6 +108,7 @@ Every view on `/t/` keeps `[data-testid=tap-tag-id][data-tag-id]` (APP-SHELL tes
 | AC-TAP-18 | Every view shows exactly one `[data-testid=tap-primary][data-primary]` button | count = 1 per view |
 | AC-TAP-19 | Restoring or reloading a guard, grace or result URL after 40 minutes records nothing; Back from `/app/settings` to a former `/t/` entry records nothing | rows unchanged (C2) |
 | AC-TAP-20 | Online with navigations delayed 30 s: a tap still commits and shows `TAGGED` < 1000 ms (cache-first shell, no network wait) | open rows = 1; timing Node-side (A6) — chromium only |
+| AC-TAP-21 | Plant start race: page 1 shows the plant view (no run open); page 2 starts R2 at another tag; page 1 presses "Save and start run" → tag stored, no new run, R2 unchanged and the only open run, no `TAGGED`/`Run started`, URL `/app?tapped={R2}&again=1&tag={tag}&notice=plant-already-open` | rows + URL + absent copy (F-PLANT-TARGET) |
 
 ## Gherkin (PRD §5 Plant/Run, T1-corrected)
 ```gherkin
@@ -143,11 +152,12 @@ Feature: Run
 ```
 
 ## Journeys (Definition of Done)
+Hop harnesses follow the 2026-10-14 amendment in PRDs/runtag-app-hops.md (failure arming, prerender getter, setFixedTime + Europe/London, Node-side latency) and include hop S8 (`abandonStaleIn`, TAP → CHAIN).
 J-APP-RUN (`tests/e2e/journey_app_run.spec.ts`, `docs/contracts/journey_app_run.yml`) and the tap part of J-APP-PLANT (`tests/e2e/journey_app_plant.spec.ts`, `docs/contracts/journey_app_plant.yml`). `test.use({ timezoneId: 'Europe/London' })`; time only via `page.clock.setFixedTime()` (never `install` + `pauseAt`/`runFor`: `withTxn` settles on a real `setTimeout`; the clock is context-wide). After each tap-out and each Undo: `goto('/app')`, reload, re-read `chain-value` against in-page `computeChain(listRuns(), localDayOf(Date.now()))`. Run against `npm run build && PW_PROD=1 npx playwright test`; offline/slow-network ACs Chromium-only with a stated reason.
 
 ## Declarations (Gate B)
 Surfaces are route literals, `data-testid` values and exported API identifiers as they appear in code (`/t/` resolves vacuously; `tap-tag-id` carries that surface).
-writes: [`/t/`, `/app?tapped=`, `tap-tag-id`, `tapped-run`, `plant-name`, `plant-save-start`, `plant-just-save`, `plant-save-tapout`, `tap-result`, `tap-undo`, `tap-primary`, `tap-guard`, `stale-notice`, `tap-failed`, `tapAtTag`, `plantTag`, `undoTap`, `finishOpenRun`, `startRunExplicit`, `abandonStaleIn`, `shellReplace`, `lastTransition`, `STALE_MS`, `GUARD_MS`, `UNDO_MS`, `TapOutcome`]
+writes: [`/t/`, `/app?tapped=`, `tap-tag-id`, `tapped-run`, `plant-name`, `plant-save-start`, `plant-just-save`, `plant-save-tapout`, `tap-result`, `tap-undo`, `tap-primary`, `tap-guard`, `stale-notice`, `tap-failed`, `tapAtTag`, `plantTag`, `undoTap`, `finishOpenRun`, `startRunExplicit`, `abandonStaleIn`, `shellReplace`, `lastTransition`, `STALE_MS`, `GUARD_MS`, `UNDO_MS`, `TapOutcome`, `scannedTagId`, `plant-changed`, `plant-already-open`, `other-open`]
 reads: [`withTxn`, `startRunIfNoneOpenIn`, `getOpenRunIn`, `StoreError`, `localDayOf`, `computeChain`, `TAPPED_PREFIX`, `resolveRoute`, `graceUntil`, `SETUP_GRACE_MS`, `chain-value`, `shellNavigate`, `subscribeLocation`]
 files: [`lib/app/tap.ts`, `lib/app/store.ts`, `lib/app/nav.ts`, `lib/app/route.ts`, `components/app/Shell.tsx`, `components/app/views/tap.tsx`, `components/app/views/tapped.tsx`, `components/app/views/plant.tsx`, `tests/e2e/journey_app_run.spec.ts`, `tests/e2e/journey_app_plant.spec.ts`, `docs/contracts/journey_app_run.yml`, `docs/contracts/journey_app_plant.yml`]
 adrNone: "repo has no ADR folder"

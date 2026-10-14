@@ -14,6 +14,8 @@ export interface Run {
   localDay: string
   tzOffsetMin: number
   lastTapAt: number
+  /** Set by every write that changes lastTapAt; Undo treats a missing value as "changed" (S-13). */
+  lastTransition?: 'in' | 'out'
 }
 export interface Meta { schemaVersion: 1; persistResult?: boolean; lastExportAt?: number; backupNudgeDismissedUntil?: number }
 export interface ExportFile { schemaVersion: 1; exportedAt: number; tags: Tag[]; runs: Run[]; meta: Meta }
@@ -131,6 +133,7 @@ export async function startRunIfNoneOpenIn(s: Stores, tagId: string, now: number
     localDay: localDayOf(now),
     tzOffsetMin: tzOffsetOf(now),
     lastTapAt: now,
+    lastTransition: 'in',
   }
   await req(s.runs.add(run))
   return { run, created: true }

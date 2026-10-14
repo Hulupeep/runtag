@@ -1,0 +1,36 @@
+# J-APP-PLANT (tap part) — first scan of a tag on this phone (APP-TAP #27; tag creation UI is APP-TAGS)
+journey_meta:
+  id: J-APP-PLANT
+  from_spec: "PRDs/runtag-app-prd.md"
+  covers_reqs: [APP-002, APP-017, AC-TAP-1, AC-TAP-2, AC-TAP-3, AC-TAP-4, AC-TAP-5, AC-TAP-11, AC-TAP-21]
+  type: "e2e"
+  dod_criticality: critical
+  status: not_tested
+  owner: "@hulupeep"
+
+preconditions:
+  - description: "The tag id is unknown on this device; Europe/London zone; time only via page.clock.setFixedTime"
+    setup_hint: "goto('/app') so the database exists; test.use({ timezoneId: 'Europe/London' })"
+
+steps:
+  - step: 1
+    name: "Open /t/{unknownId}: plant view with name field, one primary, Just save and Restore from backup"
+    required_elements:
+      - selector: "[data-testid='tap-plant']"
+      - selector: "[data-testid='plant-name']"
+      - selector: "[data-testid='plant-just-save']"
+  - step: 2
+    name: "Save and start run: tag stored with graceUntil = createdAt + 600000 and exactly one open run at it"
+    required_elements:
+      - selector: "[data-testid='plant-save-start']"
+  - step: 3
+    name: "With a non-stale run open, Save and tap out here finishes the displayed run at the new tag"
+    required_elements:
+      - selector: "[data-testid='plant-save-tapout']"
+  - step: 4
+    name: "Next page load inside setup grace: Tag works ✓, nothing changes"
+    required_elements:
+      - selector: "[data-testid='tap-result'][data-state='grace']"
+
+test_hooks:
+  e2e_test_file: "tests/e2e/journey_app_plant.spec.ts"

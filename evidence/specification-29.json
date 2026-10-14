@@ -11,14 +11,14 @@
         "id": "chain-acceptance",
         "role": "acceptance-checks",
         "path": "docs/specs/app/APP-CHAIN.md",
-        "sha256": "ad17cb895cc9928e3bd9766236641c1c66617f97b75446f01209999e758ddb67",
+        "sha256": "62064bc38fd6c6e876a49ad1c63ef7ce7aa0425c83798ad72928053c1c1af961",
         "justification": "AC-CHAIN criteria with re-read oracles"
       },
       {
         "id": "history-precedence",
         "role": "decision:history-precedence",
         "path": "docs/specs/app/APP-CHAIN.md",
-        "sha256": "ad17cb895cc9928e3bd9766236641c1c66617f97b75446f01209999e758ddb67",
+        "sha256": "62064bc38fd6c6e876a49ad1c63ef7ce7aa0425c83798ad72928053c1c1af961",
         "justification": "Load, history precedence, chain visual cap and stale notice rules"
       },
       {

@@ -1,18 +1,108 @@
-# APP-TAGS: plant and write tags at `/app/tags`
+# APP-TAGS: create, write and copy tags at `/app/tags`
 
-**Epic:** RunTag App v1 · **Wave:** W3 · **Priority:** P1 · **Spec depth:** thin
-**Depends on:** APP-SHELL, APP-TAP (plant flow)
-**Promise:** "Make a tag in a minute: name it, write it (Android) or copy the link."
-**Covers:** APP-014 (+ tag list/rename)
+**Epic:** RunTag App v1 (PRDs/runtag-app-prd.md @ f6c230c7…) · **Wave:** W3 · **Priority:** P1 · **Depends on:** APP-SHELL #26 (merged, live), APP-TAP #27 (merged, live: `graceUntil` read by the tap decision)
+**Persona:** owner-runner setting up stickers (Android Chrome with Web NFC; iPhone Safari without it) · **Promise:** "Make a tag in a minute: name it, write it (Android) or copy the link."
+**Gate A:** SHIP_WITH_STIPULATIONS — verdict §7 APP-TAGS items 1–2 (S-7, S-8) folded. **B.5:** docs/specs/app/APP-TAGS-preflight.md — P1-1…P1-8, P2-1…P2-10 folded (v2).
+**Pinned hops:** I2, A2, A5, A10 (automated); A11 (real Android, added to the APP-LINK #19 checklist by this ticket's DoD); shared-contract hops S1, S4; seam APP-TAGS × APP-TAP on `graceUntil` (PRDs/runtag-app-hops.md).
+**Covers:** APP-001 (tag URL origin), APP-014, APP-015 (for this view), APP-017 (setup grace on write/copy); tag list and rename.
 
-## Outcome / behaviour acceptance (outline)
-- AC-1 Create tag → URL `TAG_ORIGIN + '/t/' + id` shown and copyable (S-7)
-- AC-2 `'NDEFReader' in window` → "Write to tag" (NDEF URI); success resets `graceUntil = now + 600 000` before "Tag ready" (S-8)
-- AC-3 No Web NFC → step-by-step instructions for a free NFC writer app
-- AC-4 Write errors in plain language with copy-link fallback (PL-17)
+## Scope
+### In scope
+Replace the APP-SHELL placeholder `components/app/views/tags.tsx` with the tag setup view: create a tag (name), list tags with their URL, copy the link, write the URL to an NFC sticker with Web NFC where available, re-arm the setup grace on write and copy, step-by-step instructions for a free NFC writer app elsewhere, rename a tag. Store functions in `lib/app/tags.ts`.
+### Not in scope
+Planting from `/t/{unknown}` (APP-TAP #27, unchanged); the storage-silo guard and `navigator.storage.persist()` (APP-DURABLE #18, which **depends on this ticket** and is built after it merges). APP-DURABLE gates the single create entry point `onCreate` in components/app/views/tags.tsx and calls persist after `createTag` resolves; its user-agent token detection lives in its own module (`lib/app/silo.ts`), never in tags.tsx or lib/app/tags.ts. Hop I14 and the in-app-browser variant on `/app/tags` are asserted by APP-DURABLE (P1-7). Deleting tags (runs reference tag ids). Real-device writing and read-back (A11, APP-LINK #19 device checklist).
 
-## Gate A stipulations to fold in at promotion
-Verdict §7 APP-TAGS 1–2.
+## Rules
+- **Tag URL (S-7, APP-001):** every displayed or copied URL is `tagUrl(id)` (= `TAG_ORIGIN + '/t/' + id`); never `location.*` (contract APP-ORIGIN).
+- **Create (P2-1, P2-10):** name trimmed, 1–40 characters (`cleanTagName`), default "My tag". `createTag(name, now)` rejects with `TypeError` if `cleanTagName(name)` is null and stores the cleaned name. In one `withTxn('readwrite')` it tries up to 3 ids: each try is `await req(s.tags.add({ id: newTagId(), name, createdAt: now, graceUntil: now + SETUP_GRACE_MS }))` in a `try` that catches **only** `e.name === 'ConstraintError'` and rethrows everything else; it never uses `put`. A third collision rejects (the S1 failure applies). (Retrying works because `withTxn` `preventDefault`s request errors, lib/app/store.ts, so a caught request error does not abort.) Create is disabled while pending, so one press makes one tag. After the commit the field resets to empty and keeps focus, Create stays disabled until a name is typed, and `role="status"` announces "Tag created". The new tag appears at the top of the list.
+- **List:** all tags sorted by `createdAt` descending, then `id` ascending; DOM order = list order. Each row: name, URL text, Copy link, Rename, and Write to tag where Web NFC exists. The view keeps the "Your tags" h1 and `<AppNav/>`.
+- **Copy link (P1-2):** `navigator.clipboard.writeText(tagUrl(id))` is called synchronously in the click handler (before any `await`). Success → "Link copied". If the clipboard is unavailable or rejects → "Copy this link:" and the URL in a read-only, pre-selected text field (no error wording; the rejection is handled explicitly). After either branch the view calls `markTagWritten(id, Date.now())`, so the test tap after a writer-app write lands in setup grace; a failed re-arm does not hide the link and shows the S1 failure under it.
+- **Web NFC (S-8, APP-014, P1-1):** feature-detect only: `'NDEFReader' in window` (never user-agent sniffing). On press the view first calls `markTagWritten(id, Date.now())` (arm). If that rejects it shows the S1 failure and **does not call `write()`**. After the arm commits it calls `new NDEFReader().write({ records: [{ recordType: 'url', data: tagUrl(id) }] }, { signal })` from the same click task's continuation. On success it calls `markTagWritten(id, Date.now())` again, and only after that commits does the row show "Tag ready". If this second save fails, the row shows "Tag written. That wasn't saved" with Retry for the save only (never a rewrite); grace is already armed.
+- **Pending write (P1-3):** at most one write at a time. While pending, that row shows "Hold your phone on the sticker." and a **Cancel** button, which calls `controller.abort()` on the `AbortController` passed as `{ signal }`; every other row's Write button is disabled. Cancel → `AbortError` → "Writing was cancelled." Leaving the view aborts it.
+- **Write errors (PL-17, P1-4):** plain language by `DOMException.name`: `NotAllowedError` → "NFC permission was refused. Allow NFC for this site, or copy the link instead."; `NotSupportedError` → "This phone or sticker can't be written here. Copy the link instead."; `NotReadableError` → "NFC is switched off. Turn on NFC in your phone's settings, then try again, or copy the link instead."; `InvalidStateError` → "Keep RunTag open on screen while writing, then try again."; `AbortError` → "Writing was cancelled."; `NetworkError` / anything else → "Couldn't write the tag. Hold the phone still on the sticker and try again, or copy the link instead." Every error keeps the armed `graceUntil` (harmless: a tap inside it shows "Tag works ✓" with an explicit Start/Finish) and shows the copy-link fallback.
+- **No Web NFC (APP-014):** "Write to tag" is absent; the view shows, as an ordered list: "Install a free NFC writer app (for example NFC Tools)." "Choose Write, then Add a record, then URL." "Paste your tag link." "Tap Write and hold the phone on the sticker." "Tap the sticker once with your phone to test it. You'll see 'Tag works ✓'."
+- **Rename (P2-2):** inline field, same 1–40 rule; Enter saves, Escape cancels. `renameTag(id, name)` and `markTagWritten(id, now)` `get` the row inside their transaction and `put({...row, name})` / `put({...row, graceUntil})`; if the row is absent they write nothing and resolve `null`, and the view re-lists.
+- **Failure (S1, P2-3):** pending/retry via `useAction` (components/app/views/tapped.tsx). Retry (same action, fresh `Date.now()`) only for `StoreError` kinds `quota` / `tx-aborted`: "That wasn't saved" + Retry, nothing written. Other kinds, and a rejected initial list load, render `<p data-testid="store-error" role="alert">RunTag can't open its storage on this device ({kind}).</p>` with `<AppNav/>`.
+- **Copy and accessibility (P2-6, P2-7):** no metrics, dates, relative times or durations on this view, including "Tag ready" and the instructions (APP-008, M-6). Tag names are user content; test fixtures use metric-free names. Every `<input>` puts `aria-label` (or `id` with `<label htmlFor>`) **before** any attribute containing `=>`. Status text uses `role="status"`, errors `role="alert"`. Buttons are at least 48 × 48 px (APP-015).
 
-## Journey
-J-APP-PLANT (setup parts)
+## Views and copy (P1-8)
+| Element | testid / attributes | Copy |
+|---|---|---|
+| heading | — | "Your tags" (h1, kept) + `<AppNav/>` (kept) |
+| create name input | `tag-create-name`, `aria-label="Tag name"`, `maxLength={40}` | default "My tag" |
+| create button | `tag-create` | "Create tag"; status "Tag created" |
+| row | `tag-row`, `data-tag-id={id}`; list order = DOM order | — |
+| row name | `tag-row-name` | the stored name |
+| row URL | `tag-url` | `tagUrl(id)` |
+| copy | `tag-copy` → status `tag-copied` (`role="status"`) | "Copy link" → "Link copied" |
+| copy fallback | `tag-copy-fallback` (read-only input, `aria-label="Tag link"`) | "Copy this link:" |
+| write | `tag-write` → `tag-writing` + `tag-write-cancel` → `tag-ready` (`role="status"`) | "Write to tag" → "Hold your phone on the sticker." / "Cancel" → "Tag ready" |
+| write error | `tag-error` (`role="alert"`) | the Write errors messages; "Tag written. That wasn't saved" |
+| rename | `tag-rename` → `tag-rename-input` (`aria-label="New name"`) + `tag-rename-save` / `tag-rename-cancel` | "Rename" / "Save" / "Cancel" |
+| failure | `tag-failed` + `tag-retry` | "That wasn't saved" / "Retry" |
+| instructions | `nfc-instructions` (`<ol>`) | the No Web NFC steps |
+
+## Module contract
+```ts
+// lib/app/tags.ts
+export function cleanTagName(input: string): string | null              // trimmed 1–40, else null
+export function createTag(name: string, now: number): Promise<Tag>       // TypeError on an invalid name; add only, ≤ 3 ids
+export function renameTag(id: string, name: string): Promise<Tag | null> // null when the row is absent
+export function markTagWritten(id: string, now: number): Promise<Tag | null> // graceUntil = now + SETUP_GRACE_MS; null when absent
+```
+
+## Acceptance Criteria
+| AC | Criterion | Oracle (re-read value) |
+|---|---|---|
+| AC-TAGS-1 | Create a tag on a fresh device (I2, S4), both projects | `/app/tags`, name "Oak at gate", `tag-create` at fixed T0: `listTags()` = one row `{ name:'Oak at gate', createdAt: T0, graceUntil: T0 + 600000 }`, `id` ~ `^[a-z0-9]{10}$`; after reload that row's `tag-url` text = `"https://runtag.vercel.app/t/" + id`; then `goto('/app')` + reload: `empty-state` count 0, `chain-value` `"0"` (seam APP-TAGS → APP-CHAIN on `tags`). Collision: seed tag `aaaaaaaaaa`; an init script zero-fills the first `Crypto.prototype.getRandomValues` call after `sessionStorage['runtag-collide']==='1'`; Create → `listTags()` has 2 rows, the seeded row deep-equals its seed, the new id ≠ `aaaaaaaaaa` |
+| AC-TAGS-2 | Name rule and one press, one tag | empty or whitespace-only name → `tag-create` disabled; `maxLength` 40; default value "My tag"; a 40-character name is stored exactly; surrounding spaces trimmed (re-read); after Create the field is empty and `tag-create` disabled; `dblclick` on `tag-create` → `listTags()` grows by exactly 1 |
+| AC-TAGS-3 | Copy link and grace re-arm (P1-2, S4) | chromium with clipboard permissions: `navigator.clipboard.readText()` = `tagUrl(id)` and `tag-copied` "Link copied"; reject branch (`Clipboard.prototype.writeText` rejecting) and unavailable branch (`navigator.clipboard` undefined) in both projects: "Copy this link:" and `tag-copy-fallback` value = `tagUrl(id)`, also after `page.reload()` and Copy on the reloaded row. Grace: tag seeded with `createdAt` = T0 − 1 h; Copy at T0 → row `graceUntil` = T0 + 600000 (re-read); `/t/{id}` at T0 + 5 min → `/app?grace={id}`, `listRuns()` = `[]` |
+| AC-TAGS-4 | No Web NFC, with a positive control (A10, P1-5) | seed tags A and B; without the harness (`'NDEFReader' in window` false in both projects): `tag-row` count 2, `tag-write` count 0, `nfc-instructions` text contains the five steps, and after reload `listTags()` sorted by id deep-equals the seeded rows. Positive control in a fresh page with the harness `NDEFReader`: `tag-write` count 2, `nfc-instructions` count 0 |
+| AC-TAGS-5 | Write success: arm, write, re-arm (S-8, P2-5) | harness resolving `write`; precondition: row `graceUntil` = createdAt + 600000 < writeTime (tag created 1 h earlier). Press Write at writeTime: one recorded call per press, `active === true` (chromium), `signalPresent === true`, `message` deep-equals `{records:[{recordType:'url', data: tagUrl(id)}]}`; `tag-ready` "Tag ready"; row re-read `graceUntil = writeTime + 600000`; at writeTime and again at writeTime + 2 min, `/t/{id}` → URL `/app?grace={id}`, `[data-testid=tap-result][data-state=grace]` contains "Tag works ✓", primary "Start run", `listRuns()` = `[]` (seam APP-TAGS → APP-TAP on `graceUntil`) |
+| AC-TAGS-6 | Write errors, pending and cancel (PL-17, P1-3, P1-4) | harness `write` rejecting with each of `NotAllowedError`, `NotSupportedError`, `NotReadableError`, `InvalidStateError`, `NetworkError`: the matching `tag-error` message, `tag-copy` visible, no `tag-ready`, row `graceUntil` = pressTime + 600000 (armed) and all other fields deep-equal their values before. Harness `write` staying pending: `tag-writing` visible, the other rows' `tag-write` disabled; Cancel → recorded `signal.aborted === true`, "Writing was cancelled.", `tag-writing` gone, every `tag-write` enabled |
+| AC-TAGS-7 | List and rename (P2-2) | three tags created at T0, T0 + 1 min, T0 + 2 min render newest first (`tag-row` `data-tag-id` order); rename one to "Bridge" → after reload that row's name is "Bridge" and the other rows deep-equal their previous values; two pages: page 2 writes A (harness) after page 1 rendered the list, page 1 renames A → after reload A = `{...page2Row, name:'Bridge'}` (page 2's `graceUntil` kept) |
+| AC-TAGS-8 | A failed save writes nothing (S1, P2-3) | init script wraps `IDBObjectStore.prototype.put`/`.add` to throw `QuotaExceededError` while `sessionStorage['runtag-fail-writes'] === '1'` (armed after the database exists): Create → `tag-failed` "That wasn't saved" + `tag-retry`, `listTags()` re-read in the same context unchanged; disarm, Retry → exactly one new tag. Rename armed → name unchanged (re-read); disarm, Retry → renamed. Database pre-created at version 2 → `/app/tags` shows `store-error` and no `tag-create` |
+| AC-TAGS-9 | No metrics, accessible controls | the regex and `FORBIDDEN_TERMS` part of the APP-SHELL metric check (not `checkView`'s one-primary assertion) on: empty view, 3 rows, copied, fallback, writing, ready, each error, rename open, failure; every input has an accessible name; Create tag / Copy link / Write to tag / Rename / Save / Cancel / Retry buttons ≥ 48 × 48 px; lib/app/tags.ts and components/app/views/tags.tsx contain no `userAgent` and detect Web NFC only with `'NDEFReader' in window`; `npm run test:contracts` green |
+| AC-TAGS-10 | Create-only grace and offline list (A2, A5) — chromium only (SW interception) | online, after Ready offline ✓: create "Gate A" at T0 and "Gate B" at T0 + 1 min through the UI; at T0 + 12 min both rows re-read have `graceUntil` < `Date.now()` and `/t/{A.id}` at that clock → `TAPPED_PREFIX + run.id` with `tagInId` = A.id (no grace); then `setOffline(true)`, `goto('/app')`, click `nav-tags` → `tag-row-name` texts = ["Gate B", "Gate A"], `listTags()` length 2 |
+| AC-TAGS-11 | Arm failure never writes; post-write save failure keeps grace (P1-1) | fail-writes armed → press Write: `tag-failed` "That wasn't saved" + Retry, harness `write` call count 0, no `tag-ready`, row deep-equals its value before (re-read in the same context). Post-write save failure: harness `write` resolves and the init script fails only the 2nd `put` after arming (`sessionStorage['runtag-fail-nth-put']='2'`) → "Tag written. That wasn't saved", no `tag-ready`, row `graceUntil` = pressTime + 600000; `/t/{id}` at the same clock → `/app?grace={id}`, `listRuns()` = `[]` |
+
+## Gherkin (PRD §5 Plant, setup part)
+```gherkin
+Feature: Tag setup
+  Scenario: Create a tag and copy its link
+    Given no tags exist on this device
+    When I open "/app/tags", name a tag "Oak at gate" and press "Create tag"
+    Then the tag link "https://runtag.vercel.app/t/<id>" is shown
+    When I press "Copy link"
+    Then the clipboard holds that link
+
+  Scenario: Write a tag on Android
+    Given Web NFC is available
+    When I press "Write to tag" and hold the phone on the sticker
+    Then I see "Tag ready"
+    And tapping the sticker straight away shows "Tag works ✓" without starting a run
+
+  Scenario: No Web NFC
+    Given Web NFC is not available
+    Then I see how to write the link with a free NFC writer app
+    And copying the link means the test tap shows "Tag works ✓"
+```
+
+## Journey (Definition of Done)
+J-APP-TAGS (`tests/e2e/journey_app_tags.spec.ts`, contract `docs/contracts/journey_app_tags.yml`, `covers_reqs` includes the J-APP-PLANT setup steps of PRD §6) (P2-8). `test.use({ timezoneId: 'Europe/London' })`, time only via `page.clock.setFixedTime()`; rows re-read through `window.__runtagStore` (`listTags`, `listRuns`). **Web NFC harness (P2-5):** an init script `window.NDEFReader = class { async write(message, options) { … } }` records each call as `{ message, signalPresent: !!options?.signal, active: navigator.userActivation?.isActive }` and resolves, rejects with `new DOMException('x', name)` or stays pending (rejecting with `AbortError` when its signal aborts), as the test arms it through `sessionStorage['runtag-ndef']`; it is never evidence of physical writing (A11 is a real-device check). **Clipboard (P2-4):** chromium grants `['clipboard-read','clipboard-write']` and asserts `readText()`; the read-back step skips on WebKit with `test.skip(browserName === 'webkit', 'Playwright WebKit cannot grant clipboard-write (wkPage _grantPermissions)')`; the reject branch (`Clipboard.prototype.writeText` overridden to reject) and the unavailable branch (`Object.defineProperty(Navigator.prototype, 'clipboard', { get: () => undefined })`) run in both projects. AC-TAGS-10 Chromium-only with the stated reason. Run against `npm run build && PW_PROD=1 npx playwright test`.
+
+## Declarations (Gate B)
+Surfaces are route literals, `data-testid` values and exported API identifiers as they appear in code. `graceUntil`, `/app/tags` and `nav-tags` resolve pre-build (vacuous); they are covered by `markTagWritten`, `tag-create` and `tag-url`. `createTag`, `onCreate` and `tag-create` are read by APP-DURABLE #18.
+writes: [`/app/tags`, `tags`, `onCreate`, `tag-create`, `tag-create-name`, `tag-row`, `tag-row-name`, `tag-url`, `tag-copy`, `tag-copied`, `tag-copy-fallback`, `tag-write`, `tag-writing`, `tag-write-cancel`, `tag-ready`, `tag-error`, `tag-rename`, `tag-rename-input`, `tag-rename-save`, `tag-rename-cancel`, `tag-failed`, `tag-retry`, `nfc-instructions`, `createTag`, `renameTag`, `markTagWritten`, `cleanTagName`, `graceUntil`]
+reads: [`tagUrl`, `TAG_ORIGIN`, `newTagId`, `withTxn`, `req`, `listTags`, `SETUP_GRACE_MS`, `StoreError`, `store-error`, `useAction`, `shellNavigate`, `AppNav`, `nav-tags`, `empty-state`]
+files: [`components/app/views/tags.tsx`, `lib/app/tags.ts`, `tests/e2e/journey_app_tags.spec.ts`, `docs/contracts/journey_app_tags.yml`, `evidence/seams-app-tags.json`, `evidence/seams-runtag-app.json`]
+adrNone: "repo has no ADR folder"
+
+Post-build (DoD): `bash evidence/seams-check.sh evidence/seams-app-tags.json` exits 0 on a clean tree; the epic graph is recomputed with `--no-resolve`.
+
+## Definition of Done
+- [ ] Every criterion in the Acceptance Criteria table asserted; `npm run test:contracts` + full Playwright (chromium + mobile) green on CI (Gate C)
+- [ ] provenance record `evidence/provenance-<issue>.json` passes `scripts/provenance-gate.cjs` on the branch diff
+- [ ] production code < 1000 hand-written lines (owner amendment 2026-10-13: tests and contracts excluded)
+- [ ] `bash evidence/seams-check.sh evidence/seams-app-tags.json` exits 0 after build
+- [ ] APP-LINK #19 device checklist (docs/specs/app/APP-LINK.md) lists A11 verbatim: "Android Chrome: Write to tag on `https://runtag.vercel.app/app/tags`; NFC Tools read-back = `https://runtag.vercel.app/t/<id>`; export `graceUntil` ≥ write time + 600000; the auto-read straight after writing creates no run; NFC switched off shows the NotReadableError message."

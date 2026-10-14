@@ -1,0 +1,1 @@
+Promoted to the build-ready ticket #31 (same scope; criteria namespaced as AC-TAGS-n; B.5 pre-flight docs/specs/app/APP-TAGS-preflight.md folded as v2). This thin outline had no reviews; it is closed rather than rewritten so its original outline is not changed.

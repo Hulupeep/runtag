@@ -1,0 +1,24 @@
+{
+ "issue": 29,
+ "capability": "APP-CHAIN",
+ "testedSha": "6190838eaefcefe739dc4f358e37a932b0501e72",
+ "command": "npm run build > evidence/capability-29-build.log && PW_PROD=1 npx playwright test tests/e2e/journey_app_chain.spec.ts --project=chromium --reporter=json > evidence/capability-29-playwright-report.json",
+ "project": "chromium",
+ "buildExitCode": 0,
+ "exitCode": 0,
+ "executed": 25,
+ "failed": 0,
+ "skipped": 0,
+ "flaky": 0,
+ "startTime": "2026-10-14T20:11:14.757Z",
+ "raw": [
+  {
+   "path": "evidence/capability-29-build.log",
+   "sha256": "3d356dfb6a0d5fafcf803c0551457068db6e43c7eb9da4e0c140b49c094bb168"
+  },
+  {
+   "path": "evidence/capability-29-playwright-report.json",
+   "sha256": "659b9069ae2788ab0ce006aab223a17b69bdeca418fd110e4fe4cedb9f863431"
+  }
+ ]
+}

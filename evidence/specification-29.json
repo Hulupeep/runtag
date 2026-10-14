@@ -65,7 +65,7 @@
         "id": "hops",
         "role": "acceptance-checks",
         "path": "PRDs/runtag-app-hops.md",
-        "sha256": "9eeda4d7fdbadd92354ad1064215513ff580131f6a0f0e3320594dde5a913d92",
+        "sha256": "2e1a31ecc01d1c5294729a7fe44ec63949ab6088bd87b60eb441978cf51e2d71",
         "reuse": true,
         "shared": true
       },
@@ -237,5 +237,16 @@
       }
     },
     "at": "2026-10-14T19:07:58.791Z"
+  },
+  "capability": {
+    "status": "tested",
+    "scope": "7dc8afb05a7724f5b43f2eb290fbb3c3cd04d1dc4cc6f48fefe3d2a3b03f17b2",
+    "evidence": [
+      {
+        "path": "evidence/capability-29.json",
+        "sha256": "f1d346be32cda9c1a8a961456673cf393d30542aea5376bdf858da7d877a9762"
+      }
+    ],
+    "note": "APP-CHAIN merged in PR #30 (6190838) and live; raw build log and Playwright report referenced by hash from the summary"
   }
 }

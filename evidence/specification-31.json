@@ -197,7 +197,8 @@
         "name": "P1",
         "description": "",
         "color": "ff9500"
-      }
+      },
+      "spec:build-ready"
     ],
     "number": 31,
     "title": "APP-TAGS: create, write and copy tags at /app/tags (build-ready; promotes thin #17)"
@@ -208,6 +209,53 @@
     "number": 31
   },
   "freshness": {
-    "status": "current"
+    "status": "current",
+    "scope": "0415feb66dac4d0ed2d13cc726880abb1ce31af58a374d14a5afa42ea63e6a7b"
+  },
+  "remoteDiscoveries": [],
+  "readiness": {
+    "id": "e78735af-cee1-490e-b44d-d13ded4952b5",
+    "producer": "specflow-specification/v1",
+    "tier": "build-ready",
+    "inputHash": "6e68b0daeabbced66c8fe9994208e575737f01bea8147c92c78f61826e5540d0",
+    "dependenciesHash": "d6019ebe9c87563a22965637c29898f645c39fc4569e35e654d610ae2c411eb9",
+    "discoveryHash": "fb8e9016857e276a539a8be49de8a28c381629bf704cbbba4026b8f3eab0af70",
+    "discoverySources": [
+      31,
+      26,
+      27,
+      29,
+      24
+    ],
+    "why": "APP-TAGS #31 v3 build-ready: scoped independent review (duo run 1792009118051-7e6c4584) verified AC-TAGS-1..11 and gates; bounded pending write; D24 reconciled for #31; J-APP-TAGS deferred to implementation (owner issue #31)",
+    "selected": 31,
+    "gates": [
+      {
+        "id": "contracts",
+        "scope": "6e68b0daeabbced66c8fe9994208e575737f01bea8147c92c78f61826e5540d0",
+        "status": "passed",
+        "executed": true,
+        "skipped": false,
+        "evidence": {
+          "path": ".specflow/specification/evidence/gate-31-e91c801f-b74f-4ea2-a44e-03b34ab245de.json",
+          "sha256": "6f7d60a8425778d6803f0a850bc55332174e591264df09dc3ae675ca43736de8"
+        }
+      }
+    ],
+    "review": {
+      "outcome": "passed",
+      "evidence": {
+        "path": ".specflow/duo/1792009118051-7e6c4584/round-003/stdout.txt",
+        "sha256": "3a815bb2884381367692165787b68b028a8acb3afb1270561569a0526ed1a7ab"
+      },
+      "identity": {
+        "provider": "codex",
+        "model": "gpt-6-astra",
+        "family": "gpt",
+        "modelEvidence": "explicit-cli-selection (provider did not report served model)",
+        "mode": "live"
+      }
+    },
+    "at": "2026-10-14T20:28:08.464Z"
   }
 }

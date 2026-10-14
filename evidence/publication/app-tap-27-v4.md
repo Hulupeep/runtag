@@ -1,0 +1,1 @@
+v4: scoped review round 2 finding F-EXPLICIT-RACE-OUTCOMES repaired — explicit Finish (changed) and Start (already-open) now return the re-read run identity from the same transaction, with defined URL, copy and primary action, and two-page scenarios AC-TAP-22 / AC-TAP-23 (no false success feedback).

@@ -13,7 +13,7 @@
     "PRDs/runtag-app-hops.md",
     "docs/specs/app/APP-TAP-preflight.md"
   ],
-  "objective": "APP-TAP #27 v3 (linked successor of ceased run 1791874116426-1a636bfa, on Specflow with #206 fixed): the four scoped findings are repaired and every AC-TAP criterion has an executable re-read oracle; Gate A stipulations, pinned hops (amended 2026-10-14) and B.5 findings folded",
+  "objective": "APP-TAP #27 v4 (linked successor of ceased run 1791874116426-1a636bfa, on Specflow with #206 fixed): the four scoped findings are repaired and every AC-TAP criterion has an executable re-read oracle; Gate A stipulations, pinned hops (amended 2026-10-14) and B.5 findings folded",
   "finish": "Scoped independent review passes for build-ready preparation; promotion succeeds",
   "criteria": [
     {
@@ -140,6 +140,18 @@
       "id": "AC-TAP-21",
       "source": "docs/specs/app/APP-TAP.md",
       "anchor": "| AC-TAP-21 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-22",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-22 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-23",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-23 |",
       "kind": "acceptance"
     },
     {

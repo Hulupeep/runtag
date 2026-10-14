@@ -31,7 +31,9 @@
    "scannedTagId",
    "plant-changed",
    "plant-already-open",
-   "other-open"
+   "other-open",
+   "finish-changed",
+   "start-already-open"
   ],
   "reads": [
    "withTxn",

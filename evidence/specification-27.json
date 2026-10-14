@@ -197,7 +197,15 @@
    "evidence": [
     {
      "path": "evidence/capability-26.json",
-     "sha256": "3120a1fd9c88f87fc2209b51ec0872b89e49f3713c7f2b1730ab74ff90c588a7"
+     "sha256": "704d277a2326e88e9f05654545d58f3f65d11ab6af57cee72d2db7bdeec06d41"
+    },
+    {
+     "path": "evidence/capability-26-build.log",
+     "sha256": "937c7ab346fe716a0f56ca248c4dedbeef2b23fd71738d680bfc8495e08b3b13"
+    },
+    {
+     "path": "evidence/capability-26-playwright-report.json",
+     "sha256": "d1b7f2a337048294e218e286733a7136caaf767bd39a752fd4eb68e492045c69"
     }
    ]
   }

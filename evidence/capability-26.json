@@ -1,15 +1,24 @@
 {
  "issue": 26,
  "capability": "APP-SHELL",
- "testedSha": "202681ff872d355317650722cc278edc5c91dfae",
- "command": "npm run build && PW_PROD=1 npx playwright test tests/e2e/app_shell.spec.ts tests/e2e/app_logic.spec.ts tests/e2e/journey_app_offline.spec.ts --project=chromium",
+ "testedSha": "9e4e8ccf9609186cde8debfbb2e306460276d17c",
+ "command": "npm run build > evidence/capability-26-build.log && PW_PROD=1 npx playwright test tests/e2e/app_shell.spec.ts tests/e2e/app_logic.spec.ts tests/e2e/journey_app_offline.spec.ts --project=chromium --reporter=json > evidence/capability-26-playwright-report.json",
  "project": "chromium",
- "startedAt": "2026-10-14T11:00:44Z",
- "finishedAt": "2026-10-14T11:00:58.236Z",
+ "buildExitCode": 0,
  "exitCode": 0,
  "executed": 42,
  "failed": 0,
  "skipped": 0,
  "flaky": 0,
- "expected": 42
+ "startTime": "2026-10-14T11:07:48.647Z",
+ "raw": [
+  {
+   "path": "evidence/capability-26-build.log",
+   "sha256": "937c7ab346fe716a0f56ca248c4dedbeef2b23fd71738d680bfc8495e08b3b13"
+  },
+  {
+   "path": "evidence/capability-26-playwright-report.json",
+   "sha256": "d1b7f2a337048294e218e286733a7136caaf767bd39a752fd4eb68e492045c69"
+  }
+ ]
 }

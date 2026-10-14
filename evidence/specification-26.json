@@ -223,9 +223,9 @@
   "evidence": [
    {
     "path": "evidence/capability-26.json",
-    "sha256": "3120a1fd9c88f87fc2209b51ec0872b89e49f3713c7f2b1730ab74ff90c588a7"
+    "sha256": "704d277a2326e88e9f05654545d58f3f65d11ab6af57cee72d2db7bdeec06d41"
    }
   ],
-  "note": "APP-SHELL merged in PR #25 (f67b92c) and live; re-executed at 202681f"
+  "note": "APP-SHELL merged in PR #25 (f67b92c) and live; raw build log and Playwright report referenced by hash from the summary"
  }
 }

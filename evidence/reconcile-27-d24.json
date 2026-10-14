@@ -1,0 +1,18 @@
+{
+ "kind": "nonimpact",
+ "reason": "APP-TAP #27 was written after D24 and already applies its fix: Declarations list only route literals, data-testid values and exported API identifiers as writes/reads, touched files are listed separately under files:, and the post-build DoD runs bash evidence/seams-check.sh evidence/seams-app-tap.json on a clean tree. No APP-TAP surface is a file path, so the discovery requires no change to this ticket.",
+ "evidence": [
+  {
+   "path": "docs/specs/app/APP-TAP.md",
+   "sha256": "1cf67e26f17f2a381bfd09d3ca4c4c51ea8b2d8eda93023dfa95d9687790129f"
+  },
+  {
+   "path": "evidence/seams-app-tap.json",
+   "sha256": "73f37a4e256e64ac6810760526e14d9e6c73de898c2a2da96c9ab7709721689d"
+  },
+  {
+   "path": "evidence/seams-check.sh",
+   "sha256": "78c0017cc702e86362bbfd1041bd5286a77c5d71299304e8bc6791517cc69b91"
+  }
+ ]
+}

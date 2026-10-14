@@ -1,0 +1,43 @@
+{
+ "issue": 31,
+ "slice": "APP-TAGS",
+ "head": "feat/31-app-tags",
+ "result": "pass",
+ "source_provenance": [
+  {
+   "claim": "Created tag row and its URL (AC-TAGS-1, AC-TAGS-2)",
+   "source": "createTag(name, Date.now()) in lib/app/tags.ts adds {id: newTagId(), name, createdAt, graceUntil: createdAt + SETUP_GRACE_MS} in one withTxn; the row renders tagUrl(id)",
+   "verification": "listTags() re-read deep-equals {id ~ ^[a-z0-9]{10}$, name, createdAt T0, graceUntil T0 + 600000}; after reload tag-url text = https://runtag.vercel.app/t/ + id; collision case keeps the seeded row deep-equal"
+  },
+  {
+   "claim": "Copy link and grace re-arm (AC-TAGS-3)",
+   "source": "navigator.clipboard.writeText(tagUrl(id)) inside the click, then markTagWritten(id, Date.now())",
+   "verification": "clipboard readText = tagUrl(id) on chromium; fallback field value = tagUrl(id) for reject and unavailable branches in both projects; graceUntil re-read = T0 + 600000; /t/{id} at T0 + 5 min lands on /app?grace={id} with no run row"
+  },
+  {
+   "claim": "Web NFC write lifecycle (AC-TAGS-4, AC-TAGS-5, AC-TAGS-6, AC-TAGS-11)",
+   "source": "'NDEFReader' in window feature detection; arm (markTagWritten) before write, re-arm after; deadline WRITE_DEADLINE_MS and visibilitychange abort; DOMException name to message map. The NDEFReader is an init-script harness that records calls (ticket-mandated, contract-allowed by APP-TAGS Journey section; never proof of physical writing — A11 is a device check)",
+   "verification": "recorded call message deep-equals one url record = tagUrl(id) with a signal and user activation; graceUntil re-read after each path; grace view and zero runs on /t/{id} at write time and +2 min; errors leave the armed grace; cancel, deadline and hide set signal.aborted"
+  },
+  {
+   "claim": "List order and rename (AC-TAGS-7)",
+   "source": "sortTags (createdAt desc, id asc); renameTag re-reads the row inside its transaction",
+   "verification": "tag-row data-tag-id order equals creation order reversed; renamed row = {...page2Row, name: Bridge} keeping another page's graceUntil; other rows deep-equal"
+  },
+  {
+   "claim": "Failures (AC-TAGS-8, AC-TAGS-11a)",
+   "source": "real IDBObjectStore.put/add wrapped by an init script armed through sessionStorage after the database exists (ticket-mandated injection, contract-allowed by APP-TAGS AC-TAGS-8 and hop S1); a database pre-created at version 2",
+   "verification": "listTags() re-read in the same context unchanged while armed; Retry after disarming creates or renames exactly once; failed arm records zero write calls; newer schema shows store-error without tag-create"
+  },
+  {
+   "claim": "Offline list and create-only grace expiry (AC-TAGS-10)",
+   "source": "production service worker serves the shell; tags in IndexedDB",
+   "verification": "graceUntil re-read < now at +12 min and the tap at that clock is a tap-in with tagInId = the created tag; offline tag-row-name texts = [Gate B, Gate A] — chromium only (SW interception)"
+  },
+  {
+   "claim": "No metrics and accessible controls (AC-TAGS-9)",
+   "source": "rendered copy in components/app/views/tags.tsx",
+   "verification": "noMetrics on the empty, one-tag, copied, fallback, writing, ready, each error, rename-open and failure views; every input has aria-label; every button at least 48 x 48 px; no userAgent in the tags code"
+  }
+ ]
+}

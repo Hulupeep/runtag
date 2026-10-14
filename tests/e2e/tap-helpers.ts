@@ -97,3 +97,11 @@ export async function checkView(page: Page, label: string) {
   expect(text, label).not.toMatch(/\b\d+\s?(min|mins|minutes|h|hr|hrs|hours|s|sec|secs|seconds)\b/)
   for (const term of FORBIDDEN) expect(text, `${label} ${term}`).not.toMatch(new RegExp(`\\b${term}\\b`))
 }
+
+/** The metric half of checkView (no one-primary assertion), for views with several actions. */
+export async function noMetrics(page: Page, label: string) {
+  const text = (await page.locator('body').innerText()).toLowerCase()
+  expect(text, label).not.toMatch(/\b\d{1,2}:\d{2}\b/)
+  expect(text, label).not.toMatch(/\b\d+\s?(min|mins|minutes|h|hr|hrs|hours|s|sec|secs|seconds)\b/)
+  for (const term of FORBIDDEN) expect(text, `${label} ${term}`).not.toMatch(new RegExp(`\\b${term}\\b`))
+}

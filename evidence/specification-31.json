@@ -11,14 +11,14 @@
         "id": "tags-acceptance",
         "role": "acceptance-checks",
         "path": "docs/specs/app/APP-TAGS.md",
-        "sha256": "4efab4c7da6bf0daa819ec0be5a03cd2fdd265fa61f9c1fc9811f379e802b338",
+        "sha256": "6b20cf290824dc75f4d7a3738559d1523b08b0ef13a79e30bc27d86e0097bb49",
         "justification": "AC-TAGS criteria with re-read oracles"
       },
       {
         "id": "write-grace",
         "role": "decision:write-grace",
         "path": "docs/specs/app/APP-TAGS.md",
-        "sha256": "4efab4c7da6bf0daa819ec0be5a03cd2fdd265fa61f9c1fc9811f379e802b338",
+        "sha256": "6b20cf290824dc75f4d7a3738559d1523b08b0ef13a79e30bc27d86e0097bb49",
         "justification": "Arm-before-write, re-arm on success and copy, pending/cancel and error rules"
       },
       {

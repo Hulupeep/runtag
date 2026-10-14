@@ -4,6 +4,7 @@
   "writes": [
    "/app/tags",
    "tags",
+   "WRITE_DEADLINE_MS",
    "onCreate",
    "tag-create",
    "tag-create-name",

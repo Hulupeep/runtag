@@ -1,0 +1,26 @@
+{
+ "kind": "nonimpact",
+ "reason": "APP-TAGS #31 was written after D24 and already applies its fix: Declarations list only route literals, data-testid values and exported API identifiers as writes/reads (pre-existing surfaces graceUntil, /app/tags and nav-tags are named as vacuous and covered by markTagWritten, tag-create and tag-url), touched files are listed separately under files:, the seam input evidence/seams-app-tags.json and the APP-TAGS entry of evidence/seams-runtag-app.json mirror them, the dated hops amendment 2026-10-14c pins the derived seams, and the post-build DoD runs bash evidence/seams-check.sh evidence/seams-app-tags.json on a clean tree. No APP-TAGS surface is a file path, so the discovery requires no change to this ticket. D24 has no publication obligation for #31 (promotion requires reconciliation only).",
+ "evidence": [
+  {
+   "path": "docs/specs/app/APP-TAGS.md",
+   "sha256": "6b20cf290824dc75f4d7a3738559d1523b08b0ef13a79e30bc27d86e0097bb49"
+  },
+  {
+   "path": "evidence/seams-app-tags.json",
+   "sha256": "bc6d0e1f1dadc2270489be147bfd042a3914dba1ea1f1f9640e05f5252e50d64"
+  },
+  {
+   "path": "evidence/seams-runtag-app.json",
+   "sha256": "e7a163a425ac07174177d3b71d73576e4931962b2abc7ed49db1951016e45ff0"
+  },
+  {
+   "path": "PRDs/runtag-app-hops.md",
+   "sha256": "2e1a31ecc01d1c5294729a7fe44ec63949ab6088bd87b60eb441978cf51e2d71"
+  },
+  {
+   "path": "evidence/seams-check.sh",
+   "sha256": "78c0017cc702e86362bbfd1041bd5286a77c5d71299304e8bc6791517cc69b91"
+  }
+ ]
+}

@@ -13,7 +13,7 @@
     "PRDs/runtag-app-hops.md",
     "docs/specs/app/APP-TAGS-preflight.md"
   ],
-  "objective": "APP-TAGS #31 v2 (promotes thin #17): every AC-TAGS criterion has an executable re-read oracle; Gate A stipulations (S-7, S-8), pinned hops I2/A2/A5/A10/A11/S1/S4 and the graceUntil seam (amended 2026-10-14c) and all B.5 pre-flight findings folded; APP-SHELL #26, APP-TAP #27 and APP-CHAIN #29 dependencies carry raw capability evidence",
+  "objective": "APP-TAGS #31 v3 (promotes thin #17; linked successor of run 1792008746457-33b13b3f: F-WRITE-GRACE-EXPIRY and F-DISCOVERY-31 repaired): every AC-TAGS criterion has an executable re-read oracle; Gate A stipulations (S-7, S-8), pinned hops I2/A2/A5/A10/A11/S1/S4 and the graceUntil seam (amended 2026-10-14c) and all B.5 pre-flight findings folded; APP-SHELL #26, APP-TAP #27 and APP-CHAIN #29 dependencies carry raw capability evidence",
   "finish": "Scoped independent review passes for build-ready preparation; promotion succeeds",
   "criteria": [
     {
@@ -109,7 +109,7 @@
     {
       "id": "GATE-B",
       "source": "QA/loops/spec-build.yaml",
-      "anchor": "requirement→journey→test→issue complete; no orphans; no duplicate IDs;",
+      "anchor": "requirement\u2192journey\u2192test\u2192issue complete; no orphans; no duplicate IDs;",
       "kind": "gate"
     }
   ]

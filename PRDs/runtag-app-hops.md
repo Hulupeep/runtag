@@ -198,3 +198,25 @@ Reason: the APP-CHAIN v2 declarations (docs/specs/app/APP-CHAIN.md, evidence/sea
 | Step | From → URL | Control | EXPECTED VALUE (re-read) | Owner |
 |---|---|---|---|---|
 | S10.1 | database pre-created at version 2; open `/app` | none | `store-error` visible on the replaced home view; tags/runs counts unchanged (AC-SHELL-16 unmodified) | APP-CHAIN (AC-CHAIN-12) |
+
+## Amendment 2026-10-14c (Gate B, APP-TAGS B.5 pre-flight; pinned hop IDs and expected values unchanged)
+Reason: the APP-TAGS v2 declarations (docs/specs/app/APP-TAGS.md, evidence/seams-app-tags.json) add surfaces, so the epic seam graph was recomputed with `--no-resolve` (evidence/seams-runtag-app.out.json). New derived seams get checks; owners and harness of the TAGS hops are reconciled with the ticket.
+
+| Hop | Reconciled harness / owner |
+|---|---|
+| I2 | Button label "Create tag" (`tag-create`); runs in `chromium` and `mobile`; `createdAt` = the fixed clock; the WebKit "Write to tag = 0" half is AC-TAGS-4. Owner APP-TAGS (AC-TAGS-1). |
+| A2 | Owner APP-TAGS (AC-TAGS-10): tags created through the UI, both `graceUntil` < now at +11/12 min, a tap at that clock is a tap-in (no grace). |
+| A5 | Owner APP-TAGS (AC-TAGS-10): offline `/app` → `nav-tags` lists both names; chromium only (SW interception). |
+| A10 | Seeded rows plus a positive control (harness `NDEFReader` → `tag-write` present); without it `tag-write` = 0 and the writer-app steps are shown (AC-TAGS-4). |
+| A11 | Real Android, listed verbatim in the APP-LINK #19 device checklist (APP-TAGS DoD), incl. "NFC switched off → NotReadableError message". |
+
+**New seam hop S11 — `graceUntil` (writer APP-TAGS, reader APP-TAP)**
+| Step | From → URL | Control | EXPECTED VALUE (re-read) | Owner |
+|---|---|---|---|---|
+| S11.1 | tag created 1 h before writeTime; `/app/tags` with the Web NFC harness | "Write to tag" | row `graceUntil` = writeTime + 600000; `/t/{id}` at writeTime and writeTime + 2 min → `/app?grace={id}`, "Tag works ✓", `listRuns()` = `[]` | APP-TAGS (AC-TAGS-5) |
+| S11.2 | tag created 1 h before T0; no Web NFC | "Copy link" at T0 | row `graceUntil` = T0 + 600000; `/t/{id}` at T0 + 5 min → `/app?grace={id}`, `listRuns()` = `[]` | APP-TAGS (AC-TAGS-3) |
+
+**New seam hop S12 — `tags` (writer APP-TAGS, reader APP-CHAIN `empty-state`)**
+| Step | From → URL | Control | EXPECTED VALUE (re-read) | Owner |
+|---|---|---|---|---|
+| S12.1 | fresh device; create one tag on `/app/tags` | `goto('/app')`, reload | `empty-state` count 0; `chain-value` `"0"`; `listTags()` length 1 | APP-TAGS (AC-TAGS-1) |

@@ -1,0 +1,44 @@
+# J-APP-TAGS — create, copy, write and rename tags at /app/tags (APP-TAGS #31; the J-APP-PLANT setup steps of PRD §6)
+journey_meta:
+  id: J-APP-TAGS
+  from_spec: "PRDs/runtag-app-prd.md"
+  covers_reqs: [APP-001, APP-014, APP-015, APP-017, AC-TAGS-1, AC-TAGS-2, AC-TAGS-3, AC-TAGS-4, AC-TAGS-5, AC-TAGS-6, AC-TAGS-7, AC-TAGS-8, AC-TAGS-9, AC-TAGS-10, AC-TAGS-11]
+  type: "e2e"
+  dod_criticality: critical
+  status: not_tested
+  owner: "@hulupeep"
+
+preconditions:
+  - description: "Europe/London zone; time only via page.clock.setFixedTime; rows re-read through the exposed store; the Web NFC harness records calls and is never proof of physical writing"
+    setup_hint: "test.use({ timezoneId: 'Europe/London' }); openApp(page); goto('/app/tags')"
+
+steps:
+  - step: 1
+    name: "Create a tag: stored with graceUntil = createdAt + 600000; its link is TAG_ORIGIN/t/{id} after reload"
+    required_elements:
+      - selector: "[data-testid='tag-create']"
+      - selector: "[data-testid='tag-url']"
+  - step: 2
+    name: "Copy link (or the by-hand fallback) re-arms the setup grace"
+    required_elements:
+      - selector: "[data-testid='tag-copy']"
+  - step: 3
+    name: "No Web NFC: writer-app steps; with Web NFC: Write to tag"
+    required_elements:
+      - selector: "[data-testid='nfc-instructions']"
+  - step: 4
+    name: "Write to tag arms grace, writes, re-arms, then Tag ready; the auto-read is setup grace"
+    required_elements:
+      - selector: "[data-testid='tag-write']"
+      - selector: "[data-testid='tag-ready']"
+  - step: 5
+    name: "Rename keeps the other fields"
+    required_elements:
+      - selector: "[data-testid='tag-rename']"
+  - step: 6
+    name: "A failed save writes nothing; Retry after the cause clears"
+    required_elements:
+      - selector: "[data-testid='tag-failed']"
+
+test_hooks:
+  e2e_test_file: "tests/e2e/journey_app_tags.spec.ts"

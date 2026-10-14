@@ -1,0 +1,113 @@
+{
+  "workKind": "implementation",
+  "specification": {
+    "record": "evidence/specification-31.json"
+  },
+  "goal": "docs/goal.md",
+  "task": "docs/specs/app/APP-TAGS.md",
+  "references": [
+    "PRDs/runtag-app-prd.md",
+    "PRDs/runtag-app-hops.md",
+    "PRDs/runtag-app-verdict.md"
+  ],
+  "objective": "Implement APP-TAGS #31: create/list/rename tags, copy link with grace re-arm, Web NFC write with arm-before-write, re-arm, bounded pending write and plain-language errors, writer-app instructions; J-APP-TAGS journey — all AC-TAGS criteria asserted and green on CI",
+  "finish": "Every AC-TAGS criterion asserted by an executed test; contracts and full Playwright green on branch CI (Gate C); provenance evidence complete; post-build seam check exits 0; production code under 1000 lines",
+  "criteria": [
+    {
+      "id": "AC-TAGS-1",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-1 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-2",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-2 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-3",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-3 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-4",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-4 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-5",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-5 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-6",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-6 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-7",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-7 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-8",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-8 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-9",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-9 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-10",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-10 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-11",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-11 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "GATE-CONTRACTS",
+      "source": "CLAUDE.md",
+      "anchor": "npm test -- contracts    # Must pass",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-C",
+      "source": "QA/loops/feature-build.yaml",
+      "anchor": "contract + journey tests green on branch-protected CI vs real seeded backend",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-PROVENANCE",
+      "source": "QA/loops/feature-build.yaml",
+      "anchor": "every value-bearing output/assertion is source-proven after implementation:",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-SEAMS",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "- [ ] `bash evidence/seams-check.sh evidence/seams-app-tags.json` exits 0 after build",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-SIZE",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "- [ ] production code < 1000 hand-written lines (owner amendment 2026-10-13: tests and contracts excluded)",
+      "kind": "gate"
+    }
+  ]
+}

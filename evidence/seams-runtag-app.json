@@ -165,14 +165,59 @@
  {
   "id": "APP-TAGS",
   "writes": [
-   "/app/tags"
+   "/app/tags",
+   "tags",
+   "WRITE_DEADLINE_MS",
+   "onCreate",
+   "tag-create",
+   "tag-create-name",
+   "tag-row",
+   "tag-row-name",
+   "tag-url",
+   "tag-copy",
+   "tag-copied",
+   "tag-copy-fallback",
+   "tag-write",
+   "tag-writing",
+   "tag-write-cancel",
+   "tag-ready",
+   "tag-error",
+   "tag-rename",
+   "tag-rename-input",
+   "tag-rename-save",
+   "tag-rename-cancel",
+   "tag-failed",
+   "tag-retry",
+   "nfc-instructions",
+   "createTag",
+   "renameTag",
+   "markTagWritten",
+   "cleanTagName",
+   "graceUntil"
   ],
   "reads": [
    "tagUrl",
    "TAG_ORIGIN",
    "newTagId",
    "withTxn",
-   "nav-tags"
+   "req",
+   "listTags",
+   "SETUP_GRACE_MS",
+   "StoreError",
+   "store-error",
+   "useAction",
+   "shellNavigate",
+   "AppNav",
+   "nav-tags",
+   "empty-state"
+  ],
+  "files": [
+   "components/app/views/tags.tsx",
+   "lib/app/tags.ts",
+   "tests/e2e/journey_app_tags.spec.ts",
+   "docs/contracts/journey_app_tags.yml",
+   "evidence/seams-app-tags.json",
+   "evidence/seams-runtag-app.json"
   ]
  },
  {

@@ -169,6 +169,22 @@
       "kind": "writer-reader"
     },
     {
+      "surface": "empty-state",
+      "writers": [
+        "APP-CHAIN"
+      ],
+      "readers": [
+        "APP-TAGS"
+      ],
+      "pairs": [
+        [
+          "APP-CHAIN",
+          "APP-TAGS"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
       "surface": "getOpenRunIn",
       "writers": [
         "APP-SHELL"
@@ -179,6 +195,22 @@
       "pairs": [
         [
           "APP-SHELL",
+          "APP-TAP"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "graceUntil",
+      "writers": [
+        "APP-TAGS"
+      ],
+      "readers": [
+        "APP-TAP"
+      ],
+      "pairs": [
+        [
+          "APP-TAGS",
           "APP-TAP"
         ]
       ],
@@ -297,12 +329,17 @@
       ],
       "readers": [
         "APP-CHAIN",
+        "APP-TAGS",
         "APP-TAP"
       ],
       "pairs": [
         [
           "APP-SHELL",
           "APP-CHAIN"
+        ],
+        [
+          "APP-SHELL",
+          "APP-TAGS"
         ],
         [
           "APP-SHELL",
@@ -348,12 +385,17 @@
         "APP-SHELL"
       ],
       "readers": [
-        "APP-CHAIN"
+        "APP-CHAIN",
+        "APP-TAGS"
       ],
       "pairs": [
         [
           "APP-SHELL",
           "APP-CHAIN"
+        ],
+        [
+          "APP-SHELL",
+          "APP-TAGS"
         ]
       ],
       "kind": "writer-reader"
@@ -366,6 +408,7 @@
       "readers": [
         "APP-CHAIN",
         "APP-DURABLE",
+        "APP-TAGS",
         "APP-TAP"
       ],
       "pairs": [
@@ -376,6 +419,10 @@
         [
           "APP-SHELL",
           "APP-DURABLE"
+        ],
+        [
+          "APP-SHELL",
+          "APP-TAGS"
         ],
         [
           "APP-SHELL",
@@ -396,6 +443,22 @@
         [
           "APP-SHELL",
           "APP-TAGS"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "tags",
+      "writers": [
+        "APP-TAGS"
+      ],
+      "readers": [
+        "APP-CHAIN"
+      ],
+      "pairs": [
+        [
+          "APP-TAGS",
+          "APP-CHAIN"
         ]
       ],
       "kind": "writer-reader"
@@ -541,8 +604,18 @@
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
+      "surface": "empty-state",
+      "why": "seam (writer-reader) between APP-CHAIN, APP-TAGS",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
       "surface": "getOpenRunIn",
       "why": "seam (writer-reader) between APP-SHELL, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "graceUntil",
+      "why": "seam (writer-reader) between APP-TAGS, APP-TAP",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
@@ -577,7 +650,7 @@
     },
     {
       "surface": "shellNavigate",
-      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-TAP",
+      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-TAGS, APP-TAP",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
@@ -592,17 +665,22 @@
     },
     {
       "surface": "store-error",
-      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN",
+      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-TAGS",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
       "surface": "StoreError",
-      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-DURABLE, APP-TAP",
+      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-DURABLE, APP-TAGS, APP-TAP",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
       "surface": "TAG_ORIGIN",
       "why": "seam (writer-reader) between APP-SHELL, APP-TAGS",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "tags",
+      "why": "seam (writer-reader) between APP-TAGS, APP-CHAIN",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {

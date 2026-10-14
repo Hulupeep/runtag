@@ -1,0 +1,116 @@
+{
+  "workKind": "preparation",
+  "specification": {
+    "record": "evidence/specification-31.json",
+    "targetTier": "build-ready",
+    "reviewerModel": "gpt-6-astra"
+  },
+  "goal": "docs/goal.md",
+  "task": "docs/specs/app/APP-TAGS.md",
+  "references": [
+    "PRDs/runtag-app-prd.md",
+    "PRDs/runtag-app-verdict.md",
+    "PRDs/runtag-app-hops.md",
+    "docs/specs/app/APP-TAGS-preflight.md"
+  ],
+  "objective": "APP-TAGS #31 v3 (promotes thin #17; linked successor of run 1792008746457-33b13b3f: F-WRITE-GRACE-EXPIRY and F-DISCOVERY-31 repaired): every AC-TAGS criterion has an executable re-read oracle; Gate A stipulations (S-7, S-8), pinned hops I2/A2/A5/A10/A11/S1/S4 and the graceUntil seam (amended 2026-10-14c) and all B.5 pre-flight findings folded; APP-SHELL #26, APP-TAP #27 and APP-CHAIN #29 dependencies carry raw capability evidence",
+  "finish": "Scoped independent review passes for build-ready preparation; promotion succeeds",
+  "criteria": [
+    {
+      "id": "AC-TAGS-1",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-1 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-2",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-2 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-3",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-3 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-4",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-4 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-5",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-5 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-6",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-6 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-7",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-7 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-8",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-8 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-9",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-9 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-10",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-10 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAGS-11",
+      "source": "docs/specs/app/APP-TAGS.md",
+      "anchor": "| AC-TAGS-11 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "GATE-A-STIPULATIONS",
+      "source": "PRDs/runtag-app-verdict.md",
+      "anchor": "### APP-TAGS (W3)",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-B5",
+      "source": "QA/loops/spec-build.yaml",
+      "anchor": "gate: no CRITICAL design gap survives",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-BUILD-READY",
+      "source": "SPECIFICATION.md",
+      "anchor": "Build-ready also references acceptance-checks, simulation and preflight;",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-CONTRACTS",
+      "source": "CLAUDE.md",
+      "anchor": "npm test -- contracts    # Must pass",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-B",
+      "source": "QA/loops/spec-build.yaml",
+      "anchor": "requirement\u2192journey\u2192test\u2192issue complete; no orphans; no duplicate IDs;",
+      "kind": "gate"
+    }
+  ]
+}

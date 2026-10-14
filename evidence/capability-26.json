@@ -1,0 +1,15 @@
+{
+ "issue": 26,
+ "capability": "APP-SHELL",
+ "testedSha": "202681ff872d355317650722cc278edc5c91dfae",
+ "command": "npm run build && PW_PROD=1 npx playwright test tests/e2e/app_shell.spec.ts tests/e2e/app_logic.spec.ts tests/e2e/journey_app_offline.spec.ts --project=chromium",
+ "project": "chromium",
+ "startedAt": "2026-10-14T11:00:44Z",
+ "finishedAt": "2026-10-14T11:00:58.236Z",
+ "exitCode": 0,
+ "executed": 42,
+ "failed": 0,
+ "skipped": 0,
+ "flaky": 0,
+ "expected": 42
+}

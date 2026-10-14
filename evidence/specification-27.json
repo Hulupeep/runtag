@@ -188,5 +188,18 @@
  },
  "freshness": {
   "status": "current"
- }
+ },
+ "dependencies": [
+  {
+   "issue": 26,
+   "record": "evidence/specification-26.json",
+   "reason": "APP-TAP calls the APP-SHELL store (withTxn, startRunIfNoneOpenIn, getOpenRunIn, StoreError), chain (localDayOf, computeChain), routing (resolveRoute, TAPPED_PREFIX) and navigation (shellNavigate, subscribeLocation) modules",
+   "evidence": [
+    {
+     "path": "evidence/capability-26.json",
+     "sha256": "3120a1fd9c88f87fc2209b51ec0872b89e49f3713c7f2b1730ab74ff90c588a7"
+    }
+   ]
+  }
+ ]
 }

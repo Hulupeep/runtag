@@ -57,10 +57,12 @@ type RowProps = {
   nfc: boolean
   writingId: string | null
   setWritingId: (id: string | null) => void
+  /** Shared across rows and taken synchronously on press: at most one write operation at a time. */
+  writeLock: React.MutableRefObject<string | null>
   reload: () => void
 }
 
-function TagRow({ tag, nfc, writingId, setWritingId, reload }: RowProps) {
+function TagRow({ tag, nfc, writingId, setWritingId, writeLock, reload }: RowProps) {
   const url = tagUrl(tag.id)
   const [copied, setCopied] = useState<'copied' | 'fallback' | null>(null)
   const [writeState, setWriteState] = useState<'idle' | 'writing' | 'ready'>('idle')
@@ -99,23 +101,48 @@ function TagRow({ tag, nfc, writingId, setWritingId, reload }: RowProps) {
   }
 
   const write = async () => {
-    if (writingId !== null || !window.NDEFReader) return
-    setWriteError(null)
-    setWriteState('idle')
-    const armAt = Date.now()
-    try {
-      if ((await markTagWritten(tag.id, armAt)) === null) return reload()
-    } catch (e) {
-      return save.fail({ kind: kindOf(e), retry: () => void write() }) // a failed arm never writes
-    }
+    // Reserve synchronously, before anything is awaited, so repeated or competing presses start nothing.
+    if (writeLock.current !== null || !window.NDEFReader) return
+    writeLock.current = tag.id
     const c = { abort: new AbortController(), reason: null as 'cancel' | 'timeout' | 'hidden' | null }
     controller.current = c
     setWritingId(tag.id)
+    setWriteError(null)
     setWriteState('writing')
+    const armAt = Date.now()
     const deadline = armAt + WRITE_DEADLINE_MS
+    // Cancel, hide, leaving the view and the deadline apply from the press on, including during the arm.
     const timer = setInterval(() => Date.now() >= deadline && abortWrite('timeout'), 1000)
     const onHide = () => document.visibilityState === 'hidden' && abortWrite('hidden')
     document.addEventListener('visibilitychange', onHide)
+    const release = () => {
+      clearInterval(timer)
+      document.removeEventListener('visibilitychange', onHide)
+      if (controller.current === c) controller.current = null
+      if (writeLock.current === tag.id) writeLock.current = null
+      setWritingId(null)
+    }
+    const stopped = () => c.abort.signal.aborted || document.visibilityState === 'hidden' || Date.now() >= deadline
+    const showStop = () => {
+      setWriteState('idle')
+      setWriteError(c.reason === 'timeout' || (c.reason === null && Date.now() >= deadline) ? TIMED_OUT : WRITE_ERRORS.AbortError)
+    }
+
+    try {
+      if ((await markTagWritten(tag.id, armAt)) === null) {
+        release()
+        setWriteState('idle')
+        return reload()
+      }
+    } catch (e) {
+      release()
+      setWriteState('idle')
+      return save.fail({ kind: kindOf(e), retry: () => void write() }) // a failed arm never writes
+    }
+    if (stopped()) {
+      release()
+      return showStop() // cancelled, hidden, left or timed out during the arm: no write starts
+    }
     let written = false
     let failure: unknown = null
     try {
@@ -124,15 +151,13 @@ function TagRow({ tag, nfc, writingId, setWritingId, reload }: RowProps) {
     } catch (e) {
       failure = e
     }
-    clearInterval(timer)
-    document.removeEventListener('visibilitychange', onHide)
-    controller.current = null
-    setWritingId(null)
-    if (written && (c.abort.signal.aborted || Date.now() >= deadline)) written = false
+    release()
+    if (written && stopped()) written = false
     if (!written) {
       setWriteState('idle')
-      const name = (failure as { name?: string } | null)?.name ?? 'AbortError'
-      setWriteError(c.reason === 'timeout' || (c.reason === null && Date.now() >= deadline) ? TIMED_OUT : (WRITE_ERRORS[name] ?? WRITE_FALLBACK))
+      if (c.abort.signal.aborted || Date.now() >= deadline) return showStop()
+      const name = (failure as { name?: string } | null)?.name ?? ''
+      setWriteError(WRITE_ERRORS[name] ?? WRITE_FALLBACK)
       return
     }
     // Written: re-arm the grace from now; "Tag ready" only after that commits (S-8).
@@ -140,6 +165,7 @@ function TagRow({ tag, nfc, writingId, setWritingId, reload }: RowProps) {
       await markTagWritten(tag.id, Date.now())
       setWriteState('ready')
     } catch (e) {
+      setWriteState('idle')
       setWriteError("Tag written. That wasn't saved")
       save.fail({ kind: kindOf(e), retry: () => rearmAfterWrite() })
     }
@@ -272,6 +298,7 @@ export function TagsView() {
   const [status, setStatus] = useState<string | null>(null)
   const [nfc, setNfc] = useState(false)
   const [writingId, setWritingId] = useState<string | null>(null)
+  const writeLock = useRef<string | null>(null)
   const create = useAction()
   const busy = useRef(false)
   const nameInput = useRef<HTMLInputElement>(null)
@@ -351,7 +378,7 @@ export function TagsView() {
       )}
       <ul className="mt-2">
         {(tags ?? []).map((t) => (
-          <TagRow key={t.id} tag={t} nfc={nfc} writingId={writingId} setWritingId={setWritingId} reload={reload} />
+          <TagRow key={t.id} tag={t} nfc={nfc} writingId={writingId} setWritingId={setWritingId} writeLock={writeLock} reload={reload} />
         ))}
       </ul>
       <AppNav />

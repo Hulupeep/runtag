@@ -50,6 +50,32 @@ function failureHarness() {
   }
 }
 
+
+/** Holds every store behind a long readwrite transaction, so the next arm (markTagWritten) waits until release. */
+const holdArm = (page: Page) =>
+  page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        const w = window as unknown as { __releaseArm?: boolean }
+        w.__releaseArm = false
+        const open = indexedDB.open('runtag')
+        open.onsuccess = () => {
+          const db = open.result
+          const tx = db.transaction(['tags', 'runs', 'meta'], 'readwrite')
+          const meta = tx.objectStore('meta')
+          const spin = () => {
+            if (!w.__releaseArm) meta.get('meta').onsuccess = spin
+          }
+          spin()
+          tx.oncomplete = () => db.close()
+          resolve()
+        }
+      }),
+  )
+const pressInPage = (page: Page, id: string) =>
+  page.evaluate((i) => document.querySelector<HTMLButtonElement>(`[data-testid=tag-row][data-tag-id="${i}"] [data-testid=tag-write]`)!.click(), id)
+const releaseArm = (page: Page) => page.evaluate(() => ((window as unknown as { __releaseArm: boolean }).__releaseArm = true))
+
 const calls = (page: Page) => page.evaluate(() => (window as unknown as { __ndefCalls: { message: unknown; signalPresent: boolean; active: boolean | null }[] }).__ndefCalls)
 
 async function openTags(page: Page, now = T0) {
@@ -433,6 +459,84 @@ test.describe('AC-TAGS-11 the write is bounded and the grace protects it', () =>
     await expect(row(page, tag.id).getByTestId('tag-writing')).toHaveCount(0)
     await expect(page.getByTestId('tag-ready')).toHaveCount(0)
     await expect(row(page, tag.id).getByTestId('tag-error')).toBeVisible()
+  })
+})
+
+test.describe('AC-TAGS-6 AC-TAGS-11 the write operation is reserved at press and owns its lifecycle', () => {
+  test('presses during a held arm start exactly one write', async ({ page }) => {
+    await page.addInitScript(ndefHarness)
+    await openTags(page)
+    const [a, b] = [await seedTag(page, A, T0 - HOUR), await seedTag(page, B, T0 - HOUR)]
+    await page.evaluate(() => sessionStorage.setItem('runtag-ndef', 'pending'))
+    await page.reload()
+    await expect(page.getByTestId('tag-write')).toHaveCount(2)
+    await holdArm(page)
+    // Same row twice and the other row once, all before React re-renders.
+    await page.evaluate(([idA, idB]) => {
+      const btn = (id: string) => document.querySelector<HTMLButtonElement>(`[data-testid=tag-row][data-tag-id="${id}"] [data-testid=tag-write]`)!
+      const first = btn(idA)
+      const other = btn(idB)
+      first.click()
+      first.click()
+      other.click()
+    }, [a.id, b.id])
+    await expect(row(page, b.id).getByTestId('tag-write')).toBeDisabled()
+    await releaseArm(page)
+    await expect(row(page, a.id).getByTestId('tag-writing')).toBeVisible()
+    await expect.poll(async () => (await calls(page)).length).toBe(1)
+    expect((await calls(page))[0]).toMatchObject({ message: { records: [{ recordType: 'url', data: URL_OF(a.id) }] } })
+    await row(page, a.id).getByTestId('tag-write-cancel').click()
+    await expect(row(page, a.id).getByTestId('tag-error')).toHaveText('Writing was cancelled.')
+    for (const btn of await page.getByTestId('tag-write').all()) await expect(btn).toBeEnabled()
+    expect((await calls(page)).length).toBe(1)
+  })
+
+  test('hiding the page during a held arm starts no write; a fresh press arms again', async ({ page }) => {
+    await page.addInitScript(ndefHarness)
+    await openTags(page)
+    const tag = await seedTag(page, A, T0 - HOUR)
+    await page.reload()
+    await expect(row(page, tag.id).getByTestId('tag-write')).toBeEnabled() // the list has loaded before the hold
+    await holdArm(page)
+    await pressInPage(page, tag.id) // an in-page click: the held transaction keeps the page busy for actionability waits
+    await page.evaluate(() => {
+      Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'hidden' })
+      document.dispatchEvent(new Event('visibilitychange'))
+    })
+    await releaseArm(page)
+    await expect(row(page, tag.id).getByTestId('tag-error')).toHaveText('Writing was cancelled.')
+    await page.waitForTimeout(300)
+    expect((await calls(page)).length).toBe(0)
+    await expect(page.getByTestId('tag-ready')).toHaveCount(0)
+    // Returning to the page needs a fresh press, which arms again and writes.
+    await page.evaluate(() => {
+      Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'visible' })
+      document.dispatchEvent(new Event('visibilitychange'))
+    })
+    await page.clock.setFixedTime(T0 + MIN)
+    await row(page, tag.id).getByTestId('tag-write').click()
+    await expect(row(page, tag.id).getByTestId('tag-ready')).toBeVisible()
+    expect((await calls(page)).length).toBe(1)
+    expect((await tags(page)).find((t) => t.id === tag.id)?.graceUntil).toBe(T0 + MIN + 600_000)
+  })
+
+  test('leaving the view during a held arm starts no write', async ({ page }) => {
+    await page.addInitScript(ndefHarness)
+    await openTags(page)
+    const tag = await seedTag(page, A, T0 - HOUR)
+    await page.reload()
+    await expect(row(page, tag.id).getByTestId('tag-write')).toBeEnabled() // the list has loaded before the hold
+    await holdArm(page)
+    await pressInPage(page, tag.id) // an in-page click: the held transaction keeps the page busy for actionability waits
+    await page.getByTestId('nav-chain').click() // in-shell navigation unmounts the tags view
+    await expect(page.getByTestId('view')).toHaveAttribute('data-view', 'home')
+    await releaseArm(page)
+    await page.waitForTimeout(500)
+    expect((await calls(page)).length).toBe(0)
+    await page.getByTestId('nav-tags').click()
+    await expect(row(page, tag.id).getByTestId('tag-write')).toBeEnabled()
+    await expect(page.getByTestId('tag-ready')).toHaveCount(0)
+    expect((await calls(page)).length).toBe(0)
   })
 })
 

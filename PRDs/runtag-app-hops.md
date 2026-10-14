@@ -178,3 +178,23 @@ Reason: APP-TAP's B.5 pre-flight and scoped review corrected how several pinned 
 | S8.1 | seed via the real store: open run R0 with `startedAt` = now − 7 h; tag A planted > 10 min ago | — | `R0.status` = `'open'` | fixture |
 | S8.2 | `/t/<A>` | none (auto tap) | after reload: `R0` = `{status:'abandoned', abandonedAt: now}` with all other fields unchanged; exactly one new open run with `tagInId` = A; stale notice visible | APP-TAP (AC-TAP-11) |
 | S8.3 | seed a second stale open run R9 (`startedAt` = now − 7 h, no tap); open `/app` | none | after reload: `R9.status` = `'abandoned'`, `abandonedAt` set; `chain-value` unchanged; no open-run banner for R9 | APP-CHAIN (AC-CHAIN-5) |
+
+## Amendment 2026-10-14b (Gate B, APP-CHAIN B.5 pre-flight; pinned hop IDs and expected values unchanged)
+Reason: the APP-CHAIN v2 declarations (docs/specs/app/APP-CHAIN.md, evidence/seams-app-chain.json) add surfaces, so the epic seam graph was recomputed with `--no-resolve` (evidence/seams-runtag-app.out.json). Two new derived seams get checks; the harness for the pinned CHAIN hops is reconciled with the ticket.
+
+| Hop | Reconciled harness |
+|---|---|
+| I1 | "after reload" on a fresh context; `chain-visual` stays rendered in the empty state (`data-count` `"0"`) next to `empty-state`, whose text contains lowercase `plant`. |
+| A13 (TZ) | `storageState({indexedDB:true})` is the export of the seeding context (`context.storageState({ indexedDB: true })`), restored with `browser.newContext({ ...testInfo.project.use, timezoneId: 'America/New_York', storageState })`; precondition: `listRuns()` in the new context deep-equals the seeded rows. DST clock `2026-10-26T12:00:00Z`. The 23:55 → 00:20 run is produced through `tapAtTag`, never seeded. |
+| A14 | "rendered links" = count of `[data-testid=chain-visual] [data-testid^=chain-day-]`; no horizontal scroll at the mobile width. `data-count` means links rendered (`min(chain, 30)`); the chain itself is `chain-value`. |
+
+**New seam hop S9 — `stale-notice` (writers APP-TAP and APP-CHAIN)**
+| Step | From → URL | Control | EXPECTED VALUE (re-read) | Owner |
+|---|---|---|---|---|
+| S9.1 | seed open run R9 with `startedAt` = now − 7 h; open `/app` | none | after reload at the same clock: `stale-notice` text = "Your last run wasn't tapped out, so it didn't count."; R9 `abandonedAt` = now | APP-CHAIN (AC-CHAIN-5) |
+| S9.2 | same clock + 61 s, reload `/app` | none | `stale-notice` absent; R9 unchanged | APP-CHAIN (AC-CHAIN-5) |
+
+**New seam hop S10 — `store-error` (writer APP-SHELL, reader APP-CHAIN)**
+| Step | From → URL | Control | EXPECTED VALUE (re-read) | Owner |
+|---|---|---|---|---|
+| S10.1 | database pre-created at version 2; open `/app` | none | `store-error` visible on the replaced home view; tags/runs counts unchanged (AC-SHELL-16 unmodified) | APP-CHAIN (AC-CHAIN-12) |

@@ -1,0 +1,58 @@
+{
+ "issue": 29,
+ "slice": "APP-CHAIN",
+ "head": "feat/29-app-chain",
+ "result": "pass",
+ "source_provenance": [
+  {
+   "claim": "Rendered chain (AC-CHAIN-1, AC-CHAIN-8)",
+   "source": "ChainHome loads runs in one withTxn readwrite after abandonStaleIn and renders computeChain(runs, localDayOf(now)); one case produced by tapAtTag",
+   "verification": "after reload chain-value equals the in-page chainInPage (computeChain(listRuns(), localDayOf(Date.now()))) and chain-visual data-count equals min(chain, 30)"
+  },
+  {
+   "claim": "Chain visual cap (AC-CHAIN-2)",
+   "source": "ChainVisual count = min(chain, 30) with flex-wrap, aria-hidden wrapper",
+   "verification": "counted chain-day elements = 30, data-count 30, chain-value 40, scrollWidth <= innerWidth on chromium and mobile"
+  },
+  {
+   "claim": "History states and day enumeration (AC-CHAIN-3)",
+   "source": "buildHistory(runs, today) in lib/app/history.ts: previousDay enumeration and the done / today-pending / neutral / missed precedence",
+   "verification": "data-day and data-state of all 14 history-day elements re-read after reload equal the expected arrays for fixtures (a)-(e), incl. 14 distinct days across DST"
+  },
+  {
+   "claim": "At-risk (AC-CHAIN-4)",
+   "source": "isAtRisk(history): yesterday done, today not done",
+   "verification": "present with its copy or absent after reload for the five fixtures"
+  },
+  {
+   "claim": "Stale abandon on render, stale notice, banner (AC-CHAIN-5)",
+   "source": "abandonStaleIn(s, now) inside the home load transaction; stale-notice derived from abandonedAt; open-run-banner from the remaining open run",
+   "verification": "re-read stale rows deep-equal {...seeded, status abandoned, abandonedAt T0}; chain-value 2; notice present then absent after +61 s; fresh run row unchanged with banner"
+  },
+  {
+   "claim": "Empty state (AC-CHAIN-6)",
+   "source": "no runs and no tags in the load result",
+   "verification": "chain-value 0, data-count 0, empty-state text, tags count 0 and meta schemaVersion 1 re-read; the link navigates to /app/tags"
+  },
+  {
+   "claim": "Time-zone travel and the device date (AC-CHAIN-7)",
+   "source": "today = localDayOf(now) in the device zone; stored localDay values transferred with context.storageState({ indexedDB: true })",
+   "verification": "new New York context: listRuns deep-equals the seeded rows, chain 3, aria-label Monday 12 October; at 21:30 New York the newest day is 2026-10-12 done and at-risk absent"
+  },
+  {
+   "claim": "Late-night run keeps its day (AC-CHAIN-9)",
+   "source": "tapAtTag at 23:55 and 00:20 through the exposed store; startRunIfNoneOpenIn stores localDay at tap-in",
+   "verification": "re-read row {status done, localDay 2026-10-11}; history 10-11 done, 10-12 today-pending, at-risk present, chain 1 after reload"
+  },
+  {
+   "claim": "Failed load and service-worker path (AC-CHAIN-12, AC-CHAIN-13)",
+   "source": "real IDBObjectStore.put/add wrapped by an init script armed through sessionStorage after the database exists (ticket-mandated injection, contract-allowed by APP-CHAIN AC-CHAIN-13 and hop S1); home.tsx source for SKIP_WAITING",
+   "verification": "store-error with quota, rows deep-equal the seeded rows in the same context, then disarm + reload abandons R9 with chain 2; static match of postMessage SKIP_WAITING and controllerchange"
+  },
+  {
+   "claim": "Ready offline and no metrics (AC-CHAIN-10, AC-CHAIN-11)",
+   "source": "ReadyOffline kept on the chain home; rendered copy in components/app/views/home.tsx",
+   "verification": "cache audit both ways on chromium; noMetrics (body innerText vs the APP-SHELL time/duration regexes and forbidden terms) runs on every loaded view of the journey: each chain, history (a)-(e), at-risk, stale-notice and post-notice, open-run, empty, both New York clocks, DST, late-night, ready-offline and cache-incomplete, failed-load and recovered views; contract APP-CHAIN-SOURCE"
+  }
+ ]
+}

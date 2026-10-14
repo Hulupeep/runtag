@@ -91,3 +91,19 @@ rules:
           self.addEventListener('install', (e) => { self.skipWaiting() })
         example_compliant: |
           self.addEventListener('message', (e) => { if (e.data.type === 'SKIP_WAITING') self.skipWaiting() })
+
+    - id: APP-CHAIN-SOURCE
+      title: "The app chain comes from computeChain, never demo constants (M-3, APP-CHAIN #29)"
+      scope:
+        - "components/app/**/*.{ts,tsx}"
+        - "lib/app/**/*.ts"
+      behavior:
+        forbidden_patterns:
+          - pattern: /(?<![\w-])CHAIN\.(initial|afterRun)\b/
+            message: "Demo chain constants are not the runner's chain; use computeChain(runs, today)"
+          - pattern: /\bchainCount\b/
+            message: "INV-D3 collision (M-3): name the app value chain, not chainCount"
+        example_violation: |
+          const chainCount = CHAIN.initial
+        example_compliant: |
+          const chain = computeChain(runs, today)

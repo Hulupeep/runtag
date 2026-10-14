@@ -1,0 +1,48 @@
+# J-APP-CHAIN — the chain home at /app: one number and the days behind it (APP-CHAIN #29)
+journey_meta:
+  id: J-APP-CHAIN
+  from_spec: "PRDs/runtag-app-prd.md"
+  covers_reqs: [APP-006, APP-007, APP-008, APP-009, AC-CHAIN-1, AC-CHAIN-2, AC-CHAIN-3, AC-CHAIN-4, AC-CHAIN-5, AC-CHAIN-6, AC-CHAIN-7, AC-CHAIN-8, AC-CHAIN-9, AC-CHAIN-10, AC-CHAIN-11, AC-CHAIN-13]
+  type: "e2e"
+  dod_criticality: critical
+  status: not_tested
+  owner: "@hulupeep"
+
+preconditions:
+  - description: "Europe/London zone; time only via page.clock.setFixedTime; rows seeded through the exposed store (withTxn + req) or produced by tapAtTag"
+    setup_hint: "test.use({ timezoneId: 'Europe/London' }); openApp(page); seedRun / seedTag from tests/e2e/tap-helpers.ts"
+
+steps:
+  - step: 1
+    name: "Open /app: abandon stale runs and read in one transaction; chain-value equals computeChain(listRuns(), localDayOf(Date.now()))"
+    required_elements:
+      - selector: "[data-testid='chain-value']"
+      - selector: "[data-testid='chain-visual']"
+  - step: 2
+    name: "14-day history oldest to newest with done / missed / today-pending / neutral"
+    required_elements:
+      - selector: "[data-testid='history-day']"
+  - step: 3
+    name: "At-risk when yesterday is done and today is not"
+    required_elements:
+      - selector: "[data-testid='at-risk']"
+  - step: 4
+    name: "A stale open run is abandoned on render, never counted, and the stale notice shows for a minute"
+    required_elements:
+      - selector: "[data-testid='stale-notice']"
+  - step: 5
+    name: "A fresh open run shows the in-progress banner"
+    required_elements:
+      - selector: "[data-testid='open-run-banner']"
+  - step: 6
+    name: "Empty device: chain 0, Plant your first tag, link to /app/tags"
+    required_elements:
+      - selector: "[data-testid='empty-state']"
+      - selector: "[data-testid='empty-plant-link']"
+  - step: 7
+    name: "A failed load writes nothing and shows the store error"
+    required_elements:
+      - selector: "[data-testid='store-error']"
+
+test_hooks:
+  e2e_test_file: "tests/e2e/journey_app_chain.spec.ts"

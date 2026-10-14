@@ -16,7 +16,10 @@ const INITIAL_KEY = typeof window === 'undefined' ? null : locationKey()
 let claimed = false
 let inflight: { key: string; promise: Promise<TapOutcome | null> } | null = null
 
-/** The document's navigation type. The buffered observer covers browsers (and test clocks) without timeline reads. */
+/**
+ * The document's navigation type. The buffered observer covers browsers (and test clocks) without timeline reads.
+ * Without evidence it is 'unknown', which never decides: only a confirmed 'navigate' load may record a tap (AC-TAP-15).
+ */
 function navigationType(): Promise<string> {
   const entry = performance.getEntriesByType?.('navigation')[0] as PerformanceNavigationTiming | undefined
   if (entry) return Promise.resolve(entry.type)
@@ -27,7 +30,7 @@ function navigationType(): Promise<string> {
       clearTimeout(timer)
       resolve(type)
     }
-    const timer = setTimeout(() => done('navigate'), 1000)
+    const timer = setTimeout(() => done('unknown'), 1000)
     try {
       observer = new PerformanceObserver((list) => {
         const e = list.getEntries()[0] as PerformanceNavigationTiming | undefined
@@ -35,7 +38,7 @@ function navigationType(): Promise<string> {
       })
       observer.observe({ type: 'navigation', buffered: true })
     } catch {
-      done('navigate')
+      done('unknown')
     }
   })
 }

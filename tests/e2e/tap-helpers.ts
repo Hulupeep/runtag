@@ -14,8 +14,15 @@ export const TAPPED = '/app?tapped='
 export const PROD = !!(process.env.CI || process.env.PW_PROD)
 
 export const storeReady = (page: Page) => page.waitForFunction(() => !!window.__runtagStore)
-export const runs = (page: Page): Promise<Run[]> => page.evaluate(() => window.__runtagStore!.listRuns())
-export const tags = (page: Page): Promise<Tag[]> => page.evaluate(() => window.__runtagStore!.listTags())
+/** Re-reads rows once the current document has exposed the store (a navigation may have just replaced it). */
+export async function runs(page: Page): Promise<Run[]> {
+  await storeReady(page)
+  return page.evaluate(() => window.__runtagStore!.listRuns())
+}
+export async function tags(page: Page): Promise<Tag[]> {
+  await storeReady(page)
+  return page.evaluate(() => window.__runtagStore!.listTags())
+}
 export const primary = (page: Page) => page.locator('[data-testid=tap-primary][data-primary]')
 export const openRuns = async (page: Page) => (await runs(page)).filter((r) => r.status === 'open')
 export const byId = async (page: Page, id: string) => (await runs(page)).find((r) => r.id === id)

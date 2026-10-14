@@ -356,6 +356,50 @@ test.describe('AC-TAP-15 AC-TAP-19 a tap is decided once per document', () => {
     expect(await openRuns(page)).toHaveLength(1)
   })
 
+  for (const observer of ['silent', 'unavailable'] as const) {
+    test(`without navigation evidence (no timeline entry, ${observer} observer) a load never decides`, async ({ page }) => {
+      await openApp(page)
+      await seedTag(page, A)
+      // An old finished run: any tap decision would add an open run next to it.
+      await seedRun(page, { ...openRunAt('old-1', A, T0 - 2 * HOUR), status: 'done', endedAt: T0 - HOUR, tagOutId: A, lastTapAt: T0 - HOUR, lastTransition: 'out' })
+      const before = await runs(page)
+      await page.addInitScript((mode) => {
+        const real = performance.getEntriesByType.bind(performance)
+        performance.getEntriesByType = (t: string) => (t === 'navigation' ? [] : real(t))
+        if (mode === 'unavailable') {
+          ;(window as unknown as { PerformanceObserver: unknown }).PerformanceObserver = function () {
+            throw new TypeError('PerformanceObserver unavailable')
+          }
+        } else {
+          ;(window as unknown as { PerformanceObserver: unknown }).PerformanceObserver = class {
+            observe() {}
+            disconnect() {}
+          }
+        }
+      }, observer)
+      // Fresh load, reload and back/forward: none is a confirmed 'navigate', so each is a non-deciding revisit.
+      await tap(page, A, T0)
+      await expectPath(page, '/app')
+      expect(await runs(page)).toEqual(before)
+      await page.goto(`/t/${A}`)
+      await page.reload()
+      await expectPath(page, '/app')
+      expect(await runs(page)).toEqual(before)
+      await page.goto('/app/settings')
+      await page.goBack()
+      await expectPath(page, '/app')
+      expect(await runs(page)).toEqual(before)
+    })
+  }
+
+  test('a confirmed navigate load still records exactly one transition', async ({ page }) => {
+    await openApp(page)
+    await seedTag(page, A)
+    await tap(page, A, T0)
+    await expect(page.getByText('TAGGED')).toBeVisible()
+    expect(await runs(page)).toEqual([expect.objectContaining({ status: 'open', tagInId: A, startedAt: T0, lastTransition: 'in' })])
+  })
+
   test('a reload of /t/ and an in-shell Back to /t/ record nothing', async ({ page }) => {
     await openApp(page)
     await tap(page, A, T0)

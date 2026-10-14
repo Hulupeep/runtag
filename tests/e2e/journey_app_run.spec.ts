@@ -1,7 +1,7 @@
 import { test, expect, type Page } from '@playwright/test'
 import {
   A, B, HOUR, MIN, PROD, T0, TAPPED,
-  byId, checkView, expectChainAfterReload, expectPath, openApp, openRunAt, openRuns, primary, runs, seedRun, seedTag, storeReady, tap,
+  byId, chainInPage, checkView, expectChainAfterReload, expectPath, openApp, openRunAt, openRuns, primary, runs, seedRun, seedTag, storeReady, tap,
 } from './tap-helpers'
 
 // J-APP-RUN (docs/contracts/journey_app_run.yml): tap in, tap out, guard, Undo, races and failures (APP-TAP #27).
@@ -58,7 +58,9 @@ test('AC-TAP-6 AC-TAP-7 AC-TAP-8 AC-TAP-9 AC-TAP-10 tap in, reload, guard, tap o
   await expectPath(page, TAPPED + rows[0].id)
   const done = await byId(page, rows[0].id)
   expect(done).toMatchObject({ status: 'done', endedAt: T0 + 40 * MIN, tagOutId: A, lastTapAt: T0 + 40 * MIN, lastTransition: 'out' })
-  await expect(page.getByText('Day 1. Chain unbroken.')).toBeVisible()
+  const n = await chainInPage(page) // N comes from the real functions, never a copied literal
+  expect(n).toBe(1)
+  await expect(page.getByText(`Day ${n}. Chain unbroken.`)).toBeVisible()
   await checkView(page, 'tap-out result')
 
   // AC-TAP-10: a double read after tap-out starts nothing and offers Start another run.
@@ -211,7 +213,8 @@ test.describe('AC-TAP-12 Undo', () => {
       b?.click()
       return !!b
     })
-    if (pressed) await expect(page.getByText('Undo window has passed.')).toBeVisible()
+    expect(pressed, 'late press landed before the once-a-second re-check').toBe(true)
+    await expect(page.getByText('Undo window has passed.')).toBeVisible()
     await expect(page.getByTestId('tap-undo')).toHaveCount(0)
     expect(await page.evaluate((r) => window.__runtagStore!.undoTap(r.id, r.lastTapAt, Date.now()), run)).toBe('expired')
     expect(await runs(page)).toEqual([run])
@@ -280,6 +283,43 @@ test('AC-TAP-13 storage failure: nothing saved, Retry records the tap', async ({
   const [run] = await runs(page)
   expect(run).toMatchObject({ status: 'open', tagInId: A, startedAt: T0 + 5_000 })
   await expectPath(page, TAPPED + run.id)
+})
+
+test('AC-TAP-13 AC-TAP-18 a store that cannot open shows the failure with the store error and Go', async ({ page }) => {
+  await page.goto('/')
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve, reject) => {
+        const r = indexedDB.open('runtag', 2) // a newer schema than this build understands
+        r.onupgradeneeded = () => {
+          r.result.createObjectStore('tags', { keyPath: 'id' })
+          r.result.createObjectStore('runs', { keyPath: 'id' })
+        }
+        r.onsuccess = () => {
+          r.result.close()
+          resolve()
+        }
+        r.onerror = () => reject(r.error)
+      }),
+  )
+  await tap(page, A, T0)
+  await expect(page.getByText("This tap wasn't saved")).toBeVisible()
+  await expect(page.getByTestId('store-error')).toContainText('newer-schema')
+  await expect(primary(page)).toHaveText('Go')
+  await expect(page.getByText('TAGGED')).toHaveCount(0)
+  await checkView(page, 'failure, newer schema')
+  const counts = await page.evaluate(
+    () =>
+      new Promise<number[]>((resolve) => {
+        const r = indexedDB.open('runtag', 2)
+        r.onsuccess = () => {
+          const tx = r.result.transaction(['tags', 'runs'])
+          const c = [tx.objectStore('tags').count(), tx.objectStore('runs').count()]
+          tx.oncomplete = () => resolve(c.map((q) => q.result))
+        }
+      }),
+  )
+  expect(counts).toEqual([0, 0])
 })
 
 test('AC-TAP-14 two pages loading the same tag at once leave exactly one open run', async ({ context }) => {

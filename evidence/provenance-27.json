@@ -1,0 +1,63 @@
+{
+ "issue": 27,
+ "slice": "APP-TAP",
+ "head": "feat/14-app-tap",
+ "result": "pass",
+ "source_provenance": [
+  {
+   "claim": "Tap-in row fields and TAGGED after commit (AC-TAP-6)",
+   "source": "tapAtTag(tagId, Date.now()) in lib/app/tap.ts calls startRunIfNoneOpenIn inside one withTxn('readwrite'); the view navigates only after withTxn resolves on transaction complete",
+   "verification": "journey_app_run.spec.ts re-reads listRuns() and asserts status, tagInId, localDay 2026-10-12 (Europe/London), lastTransition and the exact /app?tapped={id} URL"
+  },
+  {
+   "claim": "Tap-out, Day N and chain after reload (AC-TAP-9)",
+   "source": "tapAtTag finishes the open run in the same transaction; the result view computes computeChain(listRuns(), localDayOf(Date.now())) from IndexedDB",
+   "verification": "re-read run row {status done, tagOutId, endedAt, lastTransition out}; rendered Day 1; after goto('/app') + reload chain-value equals the in-page computeChain"
+  },
+  {
+   "claim": "Double-read guard keeps the scanned tag across reload (AC-TAP-8, AC-TAP-10)",
+   "source": "guard outcome writes nothing; URL carries tag={tagId}; Finish run / Start another run call finishOpenRun / startRunExplicit with the tag read from the URL",
+   "verification": "lastTapAt and run count re-read unchanged before the press; after reload and press, tagOutId / tagInId equal the second tag B"
+  },
+  {
+   "claim": "Stale and future-dated runs (AC-TAP-11)",
+   "source": "abandonStaleIn runs first inside every tap transaction and sets status abandoned with abandonedAt = now",
+   "verification": "re-read fixtures deep-equal {...seed, status abandoned, abandonedAt T0}; a done run with a future lastTapAt is unchanged and the tap proceeds"
+  },
+  {
+   "claim": "Undo compare-and-set (AC-TAP-12)",
+   "source": "undoTap re-reads the run in one readwrite transaction and checks status, lastTransition, lastTapAt, window, 6 h age and other open runs",
+   "verification": "re-read rows after each outcome: deleted, reopened (deep-equal to the tap-in row), unchanged for changed / expired / too-late / other-open; chain re-read after reload"
+  },
+  {
+   "claim": "Storage failure and Retry (AC-TAP-13)",
+   "source": "real IDBObjectStore.put/add wrapped by an init script armed through sessionStorage after the database exists (ticket-mandated injection, contract-allowed by APP-TAP AC-TAP-13 and hops amendment I12)",
+   "verification": "same-context re-read: zero runs and no TAGGED while armed; after disarming, Retry records a run with the retry time"
+  },
+  {
+   "claim": "One decision per document (AC-TAP-14, AC-TAP-15, AC-TAP-19)",
+   "source": "TapView decides only for the document's initial URL on a navigate load once visible and not prerendering; IndexedDB serialises overlapping readwrite transactions",
+   "verification": "two simultaneous pages: exactly one open row and one tapped / one guard URL; prerender: zero runs until prerenderingchange; reload, in-shell Back and restored URLs 40 minutes later leave rows deep-equal"
+  },
+  {
+   "claim": "Plant view and plant races (AC-TAP-1 to AC-TAP-5, AC-TAP-21)",
+   "source": "plantTag saves the tag unless it exists and then starts, saves or taps out the displayed run in one transaction",
+   "verification": "re-read tags {id, name, createdAt, graceUntil = createdAt + 600000}; races leave R1 deep-equal to the other screen's write and R2 the only open run; exact notice URLs"
+  },
+  {
+   "claim": "Explicit Finish / Start races (AC-TAP-22, AC-TAP-23)",
+   "source": "finishOpenRun and startRunExplicit re-read in the same transaction and write nothing when the run changed",
+   "verification": "R1 and R2 re-read in the same context unchanged; exact notice URLs; success copy absent"
+  },
+  {
+   "claim": "Offline and slow network (AC-TAP-16, AC-TAP-20)",
+   "source": "production service worker serves the cached shell cache-first; the store is on-device IndexedDB",
+   "verification": "Node-side timing under 1000 ms from goto to result; tagInId / tagOutId re-read equal each URL id — Chromium only (SW interception)"
+  },
+  {
+   "claim": "No metrics and one primary per view (AC-TAP-17, AC-TAP-18)",
+   "source": "rendered copy in components/app/views/{tap,tapped,plant}.tsx",
+   "verification": "checkView() on every view: body innerText matches no time/duration regex or forbidden term; exactly one [data-testid=tap-primary][data-primary]"
+  }
+ ]
+}

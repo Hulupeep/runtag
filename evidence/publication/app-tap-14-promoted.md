@@ -1,0 +1,1 @@
+Promoted to the build-ready ticket #27 (same scope; criteria namespaced as AC-TAP-n; B.5 pre-flight folded). This thin outline had no reviews; it is closed rather than rewritten so its original outline IDs are not changed.

@@ -1,0 +1,47 @@
+# J-APP-RUN — tap in, tap out, guard, Undo, races and failures (APP-TAP #27)
+journey_meta:
+  id: J-APP-RUN
+  from_spec: "PRDs/runtag-app-prd.md"
+  covers_reqs: [APP-003, APP-004, APP-005, APP-006, APP-016, APP-018, APP-019, APP-020, APP-021, APP-023, AC-TAP-6, AC-TAP-7, AC-TAP-8, AC-TAP-9, AC-TAP-10, AC-TAP-11, AC-TAP-12, AC-TAP-13, AC-TAP-14, AC-TAP-15, AC-TAP-16, AC-TAP-17, AC-TAP-18, AC-TAP-19, AC-TAP-20, AC-TAP-22, AC-TAP-23]
+  type: "e2e"
+  dod_criticality: critical
+  status: not_tested
+  owner: "@hulupeep"
+
+preconditions:
+  - description: "A known tag planted more than 10 minutes ago; Europe/London zone; time only via page.clock.setFixedTime"
+    setup_hint: "goto('/app'); seed the tag through window.__runtagStore.withTxn; test.use({ timezoneId: 'Europe/London' })"
+
+timing:
+  result_view_ms: 1000   # AC-TAP-16, AC-TAP-20, measured Node-side
+
+steps:
+  - step: 1
+    name: "Open /t/{tagId}: TAGGED after the open run row is committed; URL replaced with /app?tapped={runId}"
+    required_elements:
+      - selector: "[data-testid='tap-result'][data-state='in']"
+      - selector: "[data-testid='tapped-run']"
+  - step: 2
+    name: "Reload /app?tapped={runId}: result read from IndexedDB, no re-tap; Undo inside the window"
+    required_elements:
+      - selector: "[data-testid='tap-undo']"
+  - step: 3
+    name: "Second read within a minute: guard view with the scanned tag in the URL, Finish run, nothing written"
+    required_elements:
+      - selector: "[data-testid='tap-guard']"
+      - selector: "[data-testid='tap-primary'][data-primary]"
+  - step: 4
+    name: "Tap out later: run done at the scanned tag; Day N. Chain unbroken. equals the in-page chain"
+    required_elements:
+      - selector: "[data-testid='tap-result'][data-state='out']"
+  - step: 5
+    name: "After goto('/app') and reload, chain-value equals computeChain(listRuns(), localDayOf(Date.now()))"
+    required_elements:
+      - selector: "[data-testid='chain-value']"
+  - step: 6
+    name: "Storage failure: This tap wasn't saved + Retry, rows unchanged; Retry after disarming records the tap"
+    required_elements:
+      - selector: "[data-testid='tap-failed']"
+
+test_hooks:
+  e2e_test_file: "tests/e2e/journey_app_run.spec.ts"

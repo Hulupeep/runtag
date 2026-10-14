@@ -7,6 +7,12 @@ export function shellNavigate(path: string): void {
   window.dispatchEvent(new Event(NAVIGATE))
 }
 
+/** Replaces the current history entry, so Back and reload never return to it (APP-016). Call only after an awaited store call. */
+export function shellReplace(path: string): void {
+  window.history.replaceState(null, '', path)
+  window.dispatchEvent(new Event(NAVIGATE))
+}
+
 export function subscribeLocation(onChange: () => void): () => void {
   window.addEventListener('popstate', onChange)
   window.addEventListener(NAVIGATE, onChange)

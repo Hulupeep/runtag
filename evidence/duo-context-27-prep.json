@@ -1,0 +1,188 @@
+{
+  "workKind": "preparation",
+  "specification": {
+    "record": "evidence/specification-27.json",
+    "targetTier": "build-ready",
+    "reviewerModel": "gpt-6-astra"
+  },
+  "goal": "docs/goal.md",
+  "task": "docs/specs/app/APP-TAP.md",
+  "references": [
+    "PRDs/runtag-app-prd.md",
+    "PRDs/runtag-app-verdict.md",
+    "PRDs/runtag-app-hops.md",
+    "docs/specs/app/APP-TAP-preflight.md"
+  ],
+  "objective": "APP-TAP #27 v4 (linked successor of ceased run 1791874116426-1a636bfa, on Specflow with #206 fixed): the four scoped findings are repaired and every AC-TAP criterion has an executable re-read oracle; Gate A stipulations, pinned hops (amended 2026-10-14) and B.5 findings folded",
+  "finish": "Scoped independent review passes for build-ready preparation; promotion succeeds",
+  "criteria": [
+    {
+      "id": "AC-TAP-1",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-1 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-2",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-2 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-3",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-3 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-4",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-4 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-5",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-5 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-6",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-6 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-7",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-7 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-8",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-8 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-9",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-9 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-10",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-10 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-11",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-11 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-12",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-12 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-13",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-13 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-14",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-14 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-15",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-15 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-16",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-16 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-17",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-17 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-18",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-18 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-19",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-19 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-20",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-20 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-21",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-21 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-22",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-22 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-TAP-23",
+      "source": "docs/specs/app/APP-TAP.md",
+      "anchor": "| AC-TAP-23 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "GATE-A-STIPULATIONS",
+      "source": "PRDs/runtag-app-verdict.md",
+      "anchor": "### APP-TAP (W2)",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-B5",
+      "source": "QA/loops/spec-build.yaml",
+      "anchor": "gate: no CRITICAL design gap survives",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-BUILD-READY",
+      "source": "SPECIFICATION.md",
+      "anchor": "Build-ready also references acceptance-checks, simulation and preflight;",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-CONTRACTS",
+      "source": "CLAUDE.md",
+      "anchor": "npm test -- contracts    # Must pass",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-B",
+      "source": "QA/loops/spec-build.yaml",
+      "anchor": "requirement→journey→test→issue complete; no orphans; no duplicate IDs;",
+      "kind": "gate"
+    }
+  ]
+}

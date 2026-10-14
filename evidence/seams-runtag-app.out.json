@@ -86,19 +86,45 @@
       "kind": "writer-writer"
     },
     {
+      "surface": "abandonStaleIn",
+      "writers": [
+        "APP-TAP"
+      ],
+      "readers": [
+        "APP-CHAIN"
+      ],
+      "pairs": [
+        [
+          "APP-TAP",
+          "APP-CHAIN"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
       "surface": "chain-value",
       "writers": [
         "APP-CHAIN",
         "APP-SHELL"
       ],
-      "readers": [],
+      "readers": [
+        "APP-TAP"
+      ],
       "pairs": [
         [
           "APP-CHAIN",
           "APP-SHELL"
+        ],
+        [
+          "APP-CHAIN",
+          "APP-TAP"
+        ],
+        [
+          "APP-SHELL",
+          "APP-TAP"
         ]
       ],
-      "kind": "writer-writer"
+      "kind": "mixed"
     },
     {
       "surface": "computeChain",
@@ -107,7 +133,8 @@
       ],
       "readers": [
         "APP-CHAIN",
-        "APP-DURABLE"
+        "APP-DURABLE",
+        "APP-TAP"
       ],
       "pairs": [
         [
@@ -117,6 +144,10 @@
         [
           "APP-SHELL",
           "APP-DURABLE"
+        ],
+        [
+          "APP-SHELL",
+          "APP-TAP"
         ]
       ],
       "kind": "writer-reader"
@@ -240,6 +271,22 @@
     },
     {
       "surface": "resolveRoute",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-TAP"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-TAP"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "shellNavigate",
       "writers": [
         "APP-SHELL"
       ],
@@ -428,13 +475,18 @@
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
+      "surface": "abandonStaleIn",
+      "why": "seam (writer-reader) between APP-TAP, APP-CHAIN",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
       "surface": "chain-value",
-      "why": "seam (writer-writer) between APP-CHAIN, APP-SHELL",
+      "why": "seam (mixed) between APP-CHAIN, APP-SHELL, APP-TAP",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
       "surface": "computeChain",
-      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-DURABLE",
+      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-DURABLE, APP-TAP",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
@@ -474,6 +526,11 @@
     },
     {
       "surface": "resolveRoute",
+      "why": "seam (writer-reader) between APP-SHELL, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "shellNavigate",
       "why": "seam (writer-reader) between APP-SHELL, APP-TAP",
       "assert": "re-read value on the merged tree — not element presence"
     },

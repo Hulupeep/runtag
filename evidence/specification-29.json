@@ -178,7 +178,8 @@
         "name": "P0",
         "description": "",
         "color": "ff9500"
-      }
+      },
+      "spec:build-ready"
     ],
     "number": 29,
     "title": "APP-CHAIN: chain home and 14-day history at /app (build-ready; promotes thin #15)"
@@ -189,6 +190,52 @@
     "number": 29
   },
   "freshness": {
-    "status": "current"
+    "status": "current",
+    "scope": "773a05059706b0ae968f3ea010412e7489cc7a6ce7d7ee3f4efa9b0022ee1537"
+  },
+  "remoteDiscoveries": [],
+  "readiness": {
+    "id": "cba9aa42-74d1-4694-9a22-4be697aac72e",
+    "producer": "specflow-specification/v1",
+    "tier": "build-ready",
+    "inputHash": "b4d494140f31a9ec5be32fa46aa88856798ebcc0d8ab82e6986591ede0b45548",
+    "dependenciesHash": "1034688a70bfac70912b0943e46bd3ab018357affa67df0a8d7a9a21f9b4dd97",
+    "discoveryHash": "90b94a9e2f44d391b92762515ed1ee841aecb42cb204b07d27812d3b4a7f4090",
+    "discoverySources": [
+      29,
+      26,
+      27,
+      24
+    ],
+    "why": "APP-CHAIN #29 v3 build-ready: scoped independent review (duo run 1792003844638-6bfa631b) verified AC-CHAIN-1..13 and gates; S1 failure oracle added; D24 reconciled for #29; J-APP-CHAIN creation and execution assigned to implementation (owner issue #29)",
+    "selected": 29,
+    "gates": [
+      {
+        "id": "contracts",
+        "scope": "b4d494140f31a9ec5be32fa46aa88856798ebcc0d8ab82e6986591ede0b45548",
+        "status": "passed",
+        "executed": true,
+        "skipped": false,
+        "evidence": {
+          "path": ".specflow/specification/evidence/gate-29-d18d9cd4-eae6-486e-95c5-617b4610ec9e.json",
+          "sha256": "20fd370c84cccd4b9daaa6b5c2975a9ba188907df588cde8feb32a3e39c1ac69"
+        }
+      }
+    ],
+    "review": {
+      "outcome": "passed",
+      "evidence": {
+        "path": ".specflow/duo/1792003844638-6bfa631b/round-003/stdout.txt",
+        "sha256": "6d3297c364623fcfa57a33043caf4acc2f8d5ffe2b579a065e329dfcc66dcbd7"
+      },
+      "identity": {
+        "provider": "codex",
+        "model": "gpt-6-astra",
+        "family": "gpt",
+        "modelEvidence": "explicit-cli-selection (provider did not report served model)",
+        "mode": "live"
+      }
+    },
+    "at": "2026-10-14T19:07:58.791Z"
   }
 }

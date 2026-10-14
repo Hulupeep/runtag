@@ -65,7 +65,7 @@
         "id": "hops",
         "role": "acceptance-checks",
         "path": "PRDs/runtag-app-hops.md",
-        "sha256": "2eab66fb9d253b24d96193ea6aabdceb4c9d198b4e62d205c4b68f8750cb0334",
+        "sha256": "9eeda4d7fdbadd92354ad1064215513ff580131f6a0f0e3320594dde5a913d92",
         "reuse": true,
         "shared": true
       },
@@ -255,5 +255,16 @@
       }
     },
     "at": "2026-10-14T11:31:09.825Z"
+  },
+  "capability": {
+    "status": "tested",
+    "scope": "47d327a38507e9dbc1baff103c19e8ce233aa7a3f0113911db0eba81309beec5",
+    "evidence": [
+      {
+        "path": "evidence/capability-27.json",
+        "sha256": "ceaae480f2625613cd2c7bd990d1c4cbe9d039d4fcae33648e86de49cea68c9b"
+      }
+    ],
+    "note": "APP-TAP merged in PR #28 (9cd49b9) and live; raw build log and Playwright report referenced by hash from the summary"
   }
 }

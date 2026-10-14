@@ -1,11 +1,28 @@
-seam-lite: 10 seam(s) across 6 tickets
-  ⚠ /app — mixed: APP-CHAIN↔APP-DURABLE, APP-CHAIN↔APP-SHELL, APP-CHAIN↔APP-LINK, APP-DURABLE↔APP-SHELL, APP-DURABLE↔APP-LINK, APP-SHELL↔APP-LINK
+seam-lite: 27 seam(s) across 6 tickets
+  ⚠ /app — mixed: APP-CHAIN↔APP-SHELL, APP-CHAIN↔APP-LINK, APP-SHELL↔APP-LINK
   ⚠ /app?tapped= — writer-writer: APP-SHELL↔APP-TAP
   ⚠ /app/settings — writer-writer: APP-DURABLE↔APP-SHELL
   ⚠ /app/tags — writer-writer: APP-SHELL↔APP-TAGS
   ⚠ /t/ — writer-writer: APP-SHELL↔APP-TAP
-  ⚠ components/scenes/Scene8CTA.tsx — writer-writer: APP-LINK↔APP-SHELL
-  ⚠ lib/app/origin.ts — writer-reader: APP-SHELL↔APP-TAGS, APP-SHELL↔APP-TAP
-  ⚠ lib/app/store.ts — writer-reader: APP-SHELL↔APP-CHAIN, APP-SHELL↔APP-DURABLE, APP-SHELL↔APP-TAGS, APP-SHELL↔APP-TAP
-  ⚠ runs — mixed: APP-DURABLE↔APP-TAP, APP-DURABLE↔APP-CHAIN, APP-TAP↔APP-CHAIN
-  ⚠ tags — writer-writer: APP-DURABLE↔APP-TAGS, APP-DURABLE↔APP-TAP, APP-TAGS↔APP-TAP
+  ⚠ abandonStaleIn — writer-reader: APP-TAP↔APP-CHAIN
+  ⚠ chain-value — mixed: APP-CHAIN↔APP-SHELL, APP-CHAIN↔APP-TAP, APP-SHELL↔APP-TAP
+  ⚠ computeChain — writer-reader: APP-SHELL↔APP-CHAIN, APP-SHELL↔APP-DURABLE, APP-SHELL↔APP-TAP
+  ⚠ Email address — writer-reader: APP-SHELL↔APP-LINK
+  ⚠ getOpenRunIn — writer-reader: APP-SHELL↔APP-TAP
+  ⚠ localDayOf — writer-reader: APP-SHELL↔APP-CHAIN, APP-SHELL↔APP-TAP
+  ⚠ nav-settings — writer-reader: APP-SHELL↔APP-DURABLE
+  ⚠ nav-tags — writer-reader: APP-SHELL↔APP-CHAIN, APP-SHELL↔APP-TAGS
+  ⚠ newTagId — writer-reader: APP-SHELL↔APP-TAGS
+  ⚠ ready-offline — writer-reader: APP-SHELL↔APP-CHAIN
+  ⚠ resolveRoute — writer-reader: APP-SHELL↔APP-TAP
+  ⚠ shellNavigate — writer-reader: APP-SHELL↔APP-CHAIN, APP-SHELL↔APP-TAP
+  ⚠ stale-notice — writer-writer: APP-CHAIN↔APP-TAP
+  ⚠ startRunIfNoneOpenIn — writer-reader: APP-SHELL↔APP-TAP
+  ⚠ store-error — writer-reader: APP-SHELL↔APP-CHAIN
+  ⚠ StoreError — writer-reader: APP-SHELL↔APP-CHAIN, APP-SHELL↔APP-DURABLE, APP-SHELL↔APP-TAP
+  ⚠ TAG_ORIGIN — writer-reader: APP-SHELL↔APP-TAGS
+  ⚠ tagUrl — writer-reader: APP-SHELL↔APP-TAGS
+  ⚠ tap-tag-id — writer-writer: APP-SHELL↔APP-TAP
+  ⚠ TAPPED_PREFIX — writer-reader: APP-SHELL↔APP-TAP
+  ⚠ tapped-run — writer-writer: APP-SHELL↔APP-TAP
+  ⚠ withTxn — writer-reader: APP-SHELL↔APP-CHAIN, APP-SHELL↔APP-DURABLE, APP-SHELL↔APP-TAGS, APP-SHELL↔APP-TAP

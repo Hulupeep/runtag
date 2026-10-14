@@ -1,0 +1,1265 @@
+{
+  "config": {
+    "configFile": "/home/xanacan/projects/code/runtag/playwright.config.ts",
+    "rootDir": "/home/xanacan/projects/code/runtag/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 6
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/xanacan/projects/code/runtag/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/xanacan/projects/code/runtag/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/xanacan/projects/code/runtag/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "mobile",
+        "name": "mobile",
+        "testDir": "/home/xanacan/projects/code/runtag/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 6,
+    "webServer": {
+      "command": "npm run start",
+      "url": "http://localhost:3000",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "e2e/journey_app_plant.spec.ts",
+      "file": "e2e/journey_app_plant.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "AC-TAP-1 AC-TAP-2 AC-TAP-5 plant a new tag, start a run, then the next load is setup grace",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1742,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-14T18:40:55.211Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4113308ca755e833a606-fe90123dcc5516dd6fac",
+          "file": "e2e/journey_app_plant.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "AC-TAP-3 AC-TAP-5 Just save stores the tag only; grace without a run offers Start run",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1490,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-14T18:40:55.266Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4113308ca755e833a606-5ec3153ed67d145ec1f5",
+          "file": "e2e/journey_app_plant.spec.ts",
+          "line": 46,
+          "column": 5
+        },
+        {
+          "title": "AC-TAP-4 unknown tag while a run is open: Save and tap out here finishes it at the new tag",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 1006,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-14T18:40:55.262Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4113308ca755e833a606-baaf97454168055632fd",
+          "file": "e2e/journey_app_plant.spec.ts",
+          "line": 71,
+          "column": 5
+        },
+        {
+          "title": "AC-TAP-4 plant tap-out race: the displayed run changed on another screen, nothing is tapped out",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 1771,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-14T18:40:55.302Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4113308ca755e833a606-21c10659220d46cf9864",
+          "file": "e2e/journey_app_plant.spec.ts",
+          "line": 86,
+          "column": 5
+        },
+        {
+          "title": "AC-TAP-21 plant start race: a run started elsewhere, so the plant start opens nothing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 1568,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-14T18:40:55.230Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4113308ca755e833a606-49b0116c9f8cf754d84e",
+          "file": "e2e/journey_app_plant.spec.ts",
+          "line": 113,
+          "column": 5
+        },
+        {
+          "title": "AC-TAP-11 forgotten tap-out with an unknown tag: the stale run is abandoned and cannot be tapped out",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 941,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-14T18:40:55.245Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4113308ca755e833a606-2129b6423c37e7dabd28",
+          "file": "e2e/journey_app_plant.spec.ts",
+          "line": 135,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "e2e/journey_app_run.spec.ts",
+      "file": "e2e/journey_app_run.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "AC-TAP-6 AC-TAP-7 AC-TAP-8 AC-TAP-9 AC-TAP-10 tap in, reload, guard, tap out, guard again",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 2126,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-14T18:40:56.393Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "391e3567ccb44cfb0e76-4a84890c8fed8eaead4c",
+          "file": "e2e/journey_app_run.spec.ts",
+          "line": 20,
+          "column": 5
+        },
+        {
+          "title": "AC-TAP-8 cross-tag guard after tap-in survives reload and finishes at the scanned tag",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 1574,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-14T18:40:56.533Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "391e3567ccb44cfb0e76-c2f824ed7d92c484198c",
+          "file": "e2e/journey_app_run.spec.ts",
+          "line": 78,
+          "column": 5
+        },
+        {
+          "title": "AC-TAP-10 cross-tag guard after tap-out survives reload and starts at the scanned tag",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1024,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-14T18:40:56.980Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "391e3567ccb44cfb0e76-32ae6503925090cb04e2",
+          "file": "e2e/journey_app_run.spec.ts",
+          "line": 106,
+          "column": 5
+        },
+        {
+          "title": "AC-TAP-13 storage failure: nothing saved, Retry records the tap",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 963,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-14T18:40:58.769Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "391e3567ccb44cfb0e76-2360e20b98fa28d9e98e",
+          "file": "e2e/journey_app_run.spec.ts",
+          "line": 258,
+          "column": 5
+        },
+        {
+          "title": "AC-TAP-13 AC-TAP-18 a store that cannot open shows the failure with the store error and Go",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 718,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-14T18:40:58.909Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "391e3567ccb44cfb0e76-5592f5d4f3ac5c1d6ebf",
+          "file": "e2e/journey_app_run.spec.ts",
+          "line": 288,
+          "column": 5
+        },
+        {
+          "title": "AC-TAP-14 two pages loading the same tag at once leave exactly one open run",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 780,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-14T18:40:58.963Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "391e3567ccb44cfb0e76-e9024055903ad56febc1",
+          "file": "e2e/journey_app_run.spec.ts",
+          "line": 325,
+          "column": 5
+        },
+        {
+          "title": "AC-TAP-17 AC-TAP-18 stored-result views: missing and abandoned runs",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 527,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-14T18:41:00.718Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "391e3567ccb44cfb0e76-149f2cf26b5efc2058a9",
+          "file": "e2e/journey_app_run.spec.ts",
+          "line": 521,
+          "column": 5
+        }
+      ],
+      "suites": [
+        {
+          "title": "AC-TAP-11 stale and future-dated runs",
+          "file": "e2e/journey_app_run.spec.ts",
+          "line": 126,
+          "column": 6,
+          "specs": [
+            {
+              "title": "an open run aged 7 h is abandoned on the next tap, which then taps in",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 896,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:40:57.020Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-7114dbfdeff85c202763",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 127,
+              "column": 7
+            },
+            {
+              "title": "an open run dated in the future is abandoned",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 724,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:40:57.152Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-c721fd6a3a5a55371011",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 145,
+              "column": 7
+            },
+            {
+              "title": "a done run with a future lastTapAt never guards",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 810,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:40:57.319Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-ff7a98c07d716c45094c",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 154,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "AC-TAP-12 Undo",
+          "file": "e2e/journey_app_run.spec.ts",
+          "line": 167,
+          "column": 6,
+          "specs": [
+            {
+              "title": "tap-in Undo deletes the run; the chain is unchanged",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1021,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:40:57.916Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-6eb9d63a9418ccac6528",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 168,
+              "column": 7
+            },
+            {
+              "title": "tap-out Undo reopens the run and the chain goes back",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 1035,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:40:57.939Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-296145280c341d300c18",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 180,
+              "column": 7
+            },
+            {
+              "title": "something changed: compare-and-set refuses",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 715,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:40:58.026Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-7d874e99f96c0745207a",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 193,
+              "column": 7
+            },
+            {
+              "title": "window passed: Undo hides, and a late press is refused",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 718,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:40:58.156Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-c846814ee98b9ed1fc21",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 204,
+              "column": 7
+            },
+            {
+              "title": "tap-out Undo of a run aged 6 h is too late",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 865,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:40:58.169Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-b45fe2b5b3f321a69a89",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 223,
+              "column": 7
+            },
+            {
+              "title": "two pages: Undo of a tap-out while another run is open is refused",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 1419,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:40:58.550Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-4e46da30821c63fe2d5a",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 236,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "AC-TAP-15 AC-TAP-19 a tap is decided once per document",
+          "file": "e2e/journey_app_run.spec.ts",
+          "line": 338,
+          "column": 6,
+          "specs": [
+            {
+              "title": "prerendering defers the decision until prerenderingchange",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 1239,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:40:58.994Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-d8f8574e6261d09d5d39",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 339,
+              "column": 7
+            },
+            {
+              "title": "without navigation evidence (no timeline entry, silent observer) a load never decides",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 4404,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:40:59.061Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-3e59dc3ddfc1d9a45294",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 360,
+              "column": 9
+            },
+            {
+              "title": "without navigation evidence (no timeline entry, unavailable observer) a load never decides",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 828,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:40:59.654Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-302865ab0d1daae3a271",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 360,
+              "column": 9
+            },
+            {
+              "title": "a confirmed navigate load still records exactly one transition",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 486,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:40:59.760Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-2d2595075a3f3e7c8797",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 395,
+              "column": 7
+            },
+            {
+              "title": "a reload of /t/ and an in-shell Back to /t/ record nothing",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 936,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:40:59.761Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-e0ec6bee0cb914e90e95",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 403,
+              "column": 7
+            },
+            {
+              "title": "restoring guard, grace and result URLs 40 minutes later records nothing",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 1290,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:40:59.988Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-057cd769dc9aec9e9b93",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 422,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "AC-TAP-22 AC-TAP-23 explicit actions after another screen changed the run",
+          "file": "e2e/journey_app_run.spec.ts",
+          "line": 446,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Finish run when the displayed run was finished and another started",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 1079,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:41:00.254Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-103c4ee603697e783ac9",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 447,
+              "column": 7
+            },
+            {
+              "title": "Finish run when the displayed run was finished and nothing is open",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1252,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:41:00.264Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-1b947f11a4a97d1c776d",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 475,
+              "column": 7
+            },
+            {
+              "title": "Start another run when a run was started elsewhere",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1189,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:41:00.499Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-b2eb254e92a81611bf35",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 495,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "offline and slow network (production service worker)",
+          "file": "e2e/journey_app_run.spec.ts",
+          "line": 533,
+          "column": 6,
+          "specs": [
+            {
+              "title": "AC-TAP-16 offline: two never-loaded tag URLs tap in then out with their own ids",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 869,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:41:01.264Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-b8dc0f0ff2beb7895c32",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 542,
+              "column": 7
+            },
+            {
+              "title": "AC-TAP-20 online with navigations delayed 30 s, a tap still commits and shows TAGGED at once",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 724,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-14T18:41:01.308Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "391e3567ccb44cfb0e76-3a418bc2cbc65627c5a7",
+              "file": "e2e/journey_app_run.spec.ts",
+              "line": 565,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-14T18:40:53.611Z",
+    "duration": 9920.859,
+    "expected": 33,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -227,9 +227,14 @@
         "APP-SHELL"
       ],
       "readers": [
+        "APP-CHAIN",
         "APP-TAGS"
       ],
       "pairs": [
+        [
+          "APP-SHELL",
+          "APP-CHAIN"
+        ],
         [
           "APP-SHELL",
           "APP-TAGS"
@@ -291,15 +296,35 @@
         "APP-SHELL"
       ],
       "readers": [
+        "APP-CHAIN",
         "APP-TAP"
       ],
       "pairs": [
+        [
+          "APP-SHELL",
+          "APP-CHAIN"
+        ],
         [
           "APP-SHELL",
           "APP-TAP"
         ]
       ],
       "kind": "writer-reader"
+    },
+    {
+      "surface": "stale-notice",
+      "writers": [
+        "APP-CHAIN",
+        "APP-TAP"
+      ],
+      "readers": [],
+      "pairs": [
+        [
+          "APP-CHAIN",
+          "APP-TAP"
+        ]
+      ],
+      "kind": "writer-writer"
     },
     {
       "surface": "startRunIfNoneOpenIn",
@@ -318,15 +343,36 @@
       "kind": "writer-reader"
     },
     {
+      "surface": "store-error",
+      "writers": [
+        "APP-SHELL"
+      ],
+      "readers": [
+        "APP-CHAIN"
+      ],
+      "pairs": [
+        [
+          "APP-SHELL",
+          "APP-CHAIN"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
       "surface": "StoreError",
       "writers": [
         "APP-SHELL"
       ],
       "readers": [
+        "APP-CHAIN",
         "APP-DURABLE",
         "APP-TAP"
       ],
       "pairs": [
+        [
+          "APP-SHELL",
+          "APP-CHAIN"
+        ],
         [
           "APP-SHELL",
           "APP-DURABLE"
@@ -511,7 +557,7 @@
     },
     {
       "surface": "nav-tags",
-      "why": "seam (writer-reader) between APP-SHELL, APP-TAGS",
+      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-TAGS",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
@@ -531,7 +577,12 @@
     },
     {
       "surface": "shellNavigate",
-      "why": "seam (writer-reader) between APP-SHELL, APP-TAP",
+      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "stale-notice",
+      "why": "seam (writer-writer) between APP-CHAIN, APP-TAP",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
@@ -540,8 +591,13 @@
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
+      "surface": "store-error",
+      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
       "surface": "StoreError",
-      "why": "seam (writer-reader) between APP-SHELL, APP-DURABLE, APP-TAP",
+      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-DURABLE, APP-TAP",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {

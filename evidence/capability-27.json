@@ -1,0 +1,24 @@
+{
+ "issue": 27,
+ "capability": "APP-TAP",
+ "testedSha": "9cd49b97b826e77854ec8804b3450ba7522d7552",
+ "command": "npm run build > evidence/capability-27-build.log && PW_PROD=1 npx playwright test tests/e2e/journey_app_run.spec.ts tests/e2e/journey_app_plant.spec.ts --project=chromium --reporter=json > evidence/capability-27-playwright-report.json",
+ "project": "chromium",
+ "buildExitCode": 0,
+ "exitCode": 0,
+ "executed": 33,
+ "failed": 0,
+ "skipped": 0,
+ "flaky": 0,
+ "startTime": "2026-10-14T18:40:53.611Z",
+ "raw": [
+  {
+   "path": "evidence/capability-27-build.log",
+   "sha256": "cfe13abcb978b332896b3f3e76c312bf7454f4ee582a5314d8eda33cf440a91e"
+  },
+  {
+   "path": "evidence/capability-27-playwright-report.json",
+   "sha256": "6da9e90133b870ed3ae427cf8155ad8249768ea6789e4375fc337412548553d0"
+  }
+ ]
+}

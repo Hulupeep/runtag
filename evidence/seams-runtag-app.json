@@ -128,7 +128,9 @@
    "history-day",
    "at-risk",
    "open-run-banner",
+   "stale-notice",
    "empty-state",
+   "empty-plant-link",
    "backup-status",
    "ChainHome",
    "buildHistory"
@@ -139,6 +141,15 @@
    "previousDay",
    "withTxn",
    "abandonStaleIn",
+   "isStale",
+   "runs",
+   "tags",
+   "StoreError",
+   "store-error",
+   "shellNavigate",
+   "AppNav",
+   "nav-tags",
+   "ReadyOffline",
    "ready-offline",
    "ChainVisual"
   ],
@@ -146,6 +157,7 @@
    "components/app/views/home.tsx",
    "lib/app/history.ts",
    "tests/e2e/journey_app_chain.spec.ts",
+   "tests/e2e/app_logic.spec.ts",
    "docs/contracts/journey_app_chain.yml",
    "docs/contracts/feature_app.yml"
   ]

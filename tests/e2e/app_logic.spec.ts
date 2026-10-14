@@ -106,3 +106,10 @@ test('service worker matches build assets ignoring the ?dpl= deployment query (V
   expect(assets).toContain('ignoreSearch: true')
 })
 
+
+test('AC-CHAIN-12 the chain home keeps the service-worker update path', () => {
+  const home = fs.readFileSync(path.join(__dirname, '..', '..', 'components/app/views/home.tsx'), 'utf8')
+  expect(home).toMatch(/postMessage\(\{\s*type:\s*'SKIP_WAITING'\s*\}\)/)
+  expect(home).toMatch(/controllerchange/)
+  expect(home).toContain('data-testid="store-error"')
+})

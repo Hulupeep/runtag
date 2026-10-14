@@ -13,7 +13,7 @@
     "PRDs/runtag-app-hops.md",
     "docs/specs/app/APP-CHAIN-preflight.md"
   ],
-  "objective": "APP-CHAIN #29 v2 (promotes thin #15): every AC-CHAIN criterion has an executable re-read oracle; Gate A stipulations (S-11, T12, M-3), pinned hops I1/I13/A13/A14/S3/S7/S8.3 (amended 2026-10-14b) and all B.5 pre-flight findings folded; APP-SHELL #26 and APP-TAP #27 dependencies carry raw capability evidence",
+  "objective": "APP-CHAIN #29 v3 (promotes thin #15; linked successor of run 1792003451876-5eb0f37b: F-HOME-FAILURE-ORACLE and F-D24-UNRECONCILED repaired): every AC-CHAIN criterion has an executable re-read oracle; Gate A stipulations (S-11, T12, M-3), pinned hops I1/I13/A13/A14/S1/S3/S7/S8.3/S9/S10 (amended 2026-10-14b) and all B.5 pre-flight findings folded; APP-SHELL #26 and APP-TAP #27 dependencies carry raw capability evidence",
   "finish": "Scoped independent review passes for build-ready preparation; promotion succeeds",
   "criteria": [
     {
@@ -86,6 +86,12 @@
       "id": "AC-CHAIN-12",
       "source": "docs/specs/app/APP-CHAIN.md",
       "anchor": "| AC-CHAIN-12 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-CHAIN-13",
+      "source": "docs/specs/app/APP-CHAIN.md",
+      "anchor": "| AC-CHAIN-13 |",
       "kind": "acceptance"
     },
     {

@@ -1,0 +1,125 @@
+{
+  "workKind": "implementation",
+  "specification": {
+    "record": "evidence/specification-29.json"
+  },
+  "goal": "docs/goal.md",
+  "task": "docs/specs/app/APP-CHAIN.md",
+  "references": [
+    "PRDs/runtag-app-prd.md",
+    "PRDs/runtag-app-hops.md",
+    "PRDs/runtag-app-verdict.md"
+  ],
+  "objective": "Implement APP-CHAIN #29: chain home at /app with stale abandon and reads in one transaction, 30-link capped visual, 14-day history with explicit precedence, at-risk, banner, stale notice, empty state, kept SW update path and store error; J-APP-CHAIN journey — all AC-CHAIN criteria asserted and green on CI",
+  "finish": "Every AC-CHAIN criterion asserted by an executed test; contracts and full Playwright green on branch CI (Gate C); provenance evidence complete; post-build seam check exits 0; production code under 1000 lines",
+  "criteria": [
+    {
+      "id": "AC-CHAIN-1",
+      "source": "docs/specs/app/APP-CHAIN.md",
+      "anchor": "| AC-CHAIN-1 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-CHAIN-2",
+      "source": "docs/specs/app/APP-CHAIN.md",
+      "anchor": "| AC-CHAIN-2 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-CHAIN-3",
+      "source": "docs/specs/app/APP-CHAIN.md",
+      "anchor": "| AC-CHAIN-3 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-CHAIN-4",
+      "source": "docs/specs/app/APP-CHAIN.md",
+      "anchor": "| AC-CHAIN-4 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-CHAIN-5",
+      "source": "docs/specs/app/APP-CHAIN.md",
+      "anchor": "| AC-CHAIN-5 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-CHAIN-6",
+      "source": "docs/specs/app/APP-CHAIN.md",
+      "anchor": "| AC-CHAIN-6 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-CHAIN-7",
+      "source": "docs/specs/app/APP-CHAIN.md",
+      "anchor": "| AC-CHAIN-7 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-CHAIN-8",
+      "source": "docs/specs/app/APP-CHAIN.md",
+      "anchor": "| AC-CHAIN-8 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-CHAIN-9",
+      "source": "docs/specs/app/APP-CHAIN.md",
+      "anchor": "| AC-CHAIN-9 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-CHAIN-10",
+      "source": "docs/specs/app/APP-CHAIN.md",
+      "anchor": "| AC-CHAIN-10 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-CHAIN-11",
+      "source": "docs/specs/app/APP-CHAIN.md",
+      "anchor": "| AC-CHAIN-11 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-CHAIN-12",
+      "source": "docs/specs/app/APP-CHAIN.md",
+      "anchor": "| AC-CHAIN-12 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-CHAIN-13",
+      "source": "docs/specs/app/APP-CHAIN.md",
+      "anchor": "| AC-CHAIN-13 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "GATE-CONTRACTS",
+      "source": "CLAUDE.md",
+      "anchor": "npm test -- contracts    # Must pass",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-C",
+      "source": "QA/loops/feature-build.yaml",
+      "anchor": "contract + journey tests green on branch-protected CI vs real seeded backend",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-PROVENANCE",
+      "source": "QA/loops/feature-build.yaml",
+      "anchor": "every value-bearing output/assertion is source-proven after implementation:",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-SEAMS",
+      "source": "docs/specs/app/APP-CHAIN.md",
+      "anchor": "- [ ] `bash evidence/seams-check.sh evidence/seams-app-chain.json` exits 0 after build",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-SIZE",
+      "source": "docs/specs/app/APP-CHAIN.md",
+      "anchor": "- [ ] production code < 1000 hand-written lines (owner amendment 2026-10-13: tests and contracts excluded)",
+      "kind": "gate"
+    }
+  ]
+}

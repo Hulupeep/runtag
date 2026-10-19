@@ -1,0 +1,48 @@
+{
+ "issue": 33,
+ "slice": "APP-DURABLE",
+ "head": "feat/33-app-durable",
+ "result": "pass",
+ "source_provenance": [
+  {
+   "claim": "Round trip and restore (AC-DUR-1)",
+   "source": "exportFile reads tags, runs and meta in one transaction and sorts by id; importBackup merges by id in one readwrite transaction",
+   "verification": "downloaded file parsed: tags deep-equal the seeded rows, exportedAt the fixed clock, name runtag-backup-<local day>.json; after import in a new context listRuns() deep-equals the file's runs, chain-value 8 = in-page computeChain; re-export tags/runs deep-equal; re-import summary Already here 13 and rows unchanged"
+  },
+  {
+   "claim": "Validation (AC-DUR-2)",
+   "source": "validateBackup checks the ExportFile, Tag and Run shapes, unique ids and unknown keys before any transaction",
+   "verification": "for fourteen invalid files: backup-invalid shown and listTags(), listRuns(), getMeta() re-read deep-equal the seeded values"
+  },
+  {
+   "claim": "Conflicts, equivalence and drift (AC-DUR-3, AC-DUR-4)",
+   "source": "planImport with seen = fingerprint(local row); importBackup re-reads, checks drift before the first write, applies choices, abandonStaleIn and the newest-open rule",
+   "verification": "re-read rows after Keep mine, repeat, Use backup; a future-dated run imported twice keeps abandonedAt T0; two pages: exactly one open run after a tap between plan and Apply; a rename between plan and Apply leaves page 2's rows deep-equal and shows backup-changed"
+  },
+  {
+   "claim": "Persistence (AC-DUR-5)",
+   "source": "requestPersistence after createTag, plantTag or an import commits; navigator.storage.persist overridden by an init script property override (contract-allowed by APP-DURABLE AC-DUR-5; WebKit has no navigator.storage)",
+   "verification": "getMeta().persistResult polled false / true; persist call count re-read from sessionStorage stays 1; a meta-only write failure leaves one committed tag and persistResult undefined"
+  },
+  {
+   "claim": "Silo guard (AC-DUR-6, AC-DUR-7, AC-DUR-8)",
+   "source": "detectSilo / guardPlant / useSilo in lib/app/silo.ts used by the tags view and the plant view; standalone via a Navigator.prototype property override and the in-app user agent via the context option (contract-allowed by APP-DURABLE Journey section)",
+   "verification": "tags and runs re-read deep-equal the seeded rows after blocked presses; positive control plants without the override; in-app rows appear only after the confirmation, one per press, with the exact tag row; one tap-primary per plant view"
+  },
+  {
+   "claim": "Last backup and nudge (AC-DUR-9)",
+   "source": "home load transaction returns meta; shouldNudge; updateMeta read-modify-write",
+   "verification": "card present/absent at the boundary; lastExportAt and backupNudgeDismissedUntil re-read; two pages keep both meta fields"
+  },
+  {
+   "claim": "Failures (AC-DUR-10)",
+   "source": "real IDBObjectStore.put/add wrapped by an init script armed through sessionStorage after the database exists (ticket-mandated injection, contract-allowed by APP-DURABLE AC-DUR-10 and hop S1); a database pre-created at version 2",
+   "verification": "tags, runs and meta re-read in the same context unchanged while armed; Retry after disarming applies once; the export downloads once and Retry only saves lastExportAt"
+  },
+  {
+   "claim": "No metrics and accessible controls (AC-DUR-11)",
+   "source": "rendered copy in settings.tsx, home.tsx, tags.tsx, plant.tsx",
+   "verification": "noMetrics on settings, summary, conflicts, invalid, failure, home with the card and plant views in warning, confirm and blocked states; inputs labelled; buttons at least 48 x 48 px"
+  }
+ ]
+}

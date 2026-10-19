@@ -105,3 +105,18 @@ export async function noMetrics(page: Page, label: string) {
   expect(text, label).not.toMatch(/\b\d+\s?(min|mins|minutes|h|hr|hrs|hours|s|sec|secs|seconds)\b/)
   for (const term of FORBIDDEN) expect(text, `${label} ${term}`).not.toMatch(new RegExp(`\\b${term}\\b`))
 }
+
+/** Seeds the meta row (read-modify-write, like the app's only meta writer). */
+export async function seedMeta(page: Page, patch: Record<string, unknown>) {
+  await page.evaluate(
+    (p) =>
+      window.__runtagStore!.withTxn('readwrite', async (s) => {
+        const req = window.__runtagStore!.req
+        const row = ((await req(s.meta.get('meta'))) ?? {}) as Record<string, unknown>
+        await req(s.meta.put({ ...row, ...p, schemaVersion: 1 }, 'meta'))
+      }),
+    patch,
+  )
+}
+
+export const metaOf = (page: Page) => page.evaluate(() => window.__runtagStore!.getMeta())

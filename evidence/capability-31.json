@@ -1,0 +1,24 @@
+{
+ "issue": 31,
+ "capability": "APP-TAGS",
+ "testedSha": "8e36bc2acee25a8e13047e03638a85889fbe3edd",
+ "command": "npm run build > evidence/capability-31-build.log && PW_PROD=1 npx playwright test tests/e2e/journey_app_tags.spec.ts --project=chromium --reporter=json > evidence/capability-31-playwright-report.json",
+ "project": "chromium",
+ "buildExitCode": 0,
+ "exitCode": 0,
+ "executed": 26,
+ "failed": 0,
+ "skipped": 0,
+ "flaky": 0,
+ "startTime": "2026-10-19T11:05:02.054Z",
+ "raw": [
+  {
+   "path": "evidence/capability-31-build.log",
+   "sha256": "f1975525836c20f6bf8d32205d75d12edb81b79ac1d2ca259ec9fed59b34f52d"
+  },
+  {
+   "path": "evidence/capability-31-playwright-report.json",
+   "sha256": "44746a758b736fc88a9fd0480a442929436891f781a79b787675e7d5650c6f93"
+  }
+ ]
+}

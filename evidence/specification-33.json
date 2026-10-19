@@ -216,7 +216,8 @@
         "name": "P1",
         "description": "",
         "color": "ff9500"
-      }
+      },
+      "spec:build-ready"
     ],
     "number": 33,
     "title": "APP-DURABLE: backups, persistence, storage-silo guard (build-ready; promotes thin #18)"
@@ -227,6 +228,54 @@
     "number": 33
   },
   "freshness": {
-    "status": "current"
+    "status": "current",
+    "scope": "26a659e9fae6a7320d41fe10d111fc7f1695ea93ab4ff582135e9824baa605a5"
+  },
+  "remoteDiscoveries": [],
+  "readiness": {
+    "id": "38b2e2d5-0478-4064-86be-24d68a5e3e11",
+    "producer": "specflow-specification/v1",
+    "tier": "build-ready",
+    "inputHash": "7858b67ae0032c3dca68e7d2b832d5b23a1a77f6b0595820305525048bdefdf1",
+    "dependenciesHash": "ec7c293787052194824c416f97a8796427c9f979b75502e8738d7076e439e24b",
+    "discoveryHash": "903b325e6fa393be36f692fec25d892ac56198da77bf9e73808e84f164ad2f8e",
+    "discoverySources": [
+      33,
+      26,
+      27,
+      29,
+      31,
+      24
+    ],
+    "why": "APP-DURABLE #33 v5 build-ready: scoped independent review (duo run 1792410143256-d358d186) verified AC-DUR-1..11 and gates; import drift, re-import equivalence, persist fixture and round-trip order repaired; D24 reconciled for #33; J-APP-BACKUP deferred to implementation (owner issue #33)",
+    "selected": 33,
+    "gates": [
+      {
+        "id": "contracts",
+        "scope": "7858b67ae0032c3dca68e7d2b832d5b23a1a77f6b0595820305525048bdefdf1",
+        "status": "passed",
+        "executed": true,
+        "skipped": false,
+        "evidence": {
+          "path": ".specflow/specification/evidence/gate-33-7480d2c1-72df-4630-b7bf-eda33176accf.json",
+          "sha256": "ae026c44fe53bfe2a66637e83959eae95ee1ca77169a2c0c9989c6b8c4eaa317"
+        }
+      }
+    ],
+    "review": {
+      "outcome": "passed",
+      "evidence": {
+        "path": ".specflow/duo/1792410143256-d358d186/round-001/stdout.txt",
+        "sha256": "68ffa78888b226b879d3d50ca6c40e8a33d306fcb633e547898703722efeacb2"
+      },
+      "identity": {
+        "provider": "codex",
+        "model": "gpt-6-astra",
+        "family": "gpt",
+        "modelEvidence": "explicit-cli-selection (provider did not report served model)",
+        "mode": "live"
+      }
+    },
+    "at": "2026-10-19T11:49:23.061Z"
   }
 }

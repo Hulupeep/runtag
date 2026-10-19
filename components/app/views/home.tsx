@@ -6,22 +6,24 @@ import { computeChain, localDayOf } from '@/lib/app/chain'
 import { buildHistory, dayLabel, isAtRisk, weekdayShort } from '@/lib/app/history'
 import { shellNavigate } from '@/lib/app/nav'
 import { req, StoreError, withTxn } from '@/lib/app/store'
-import type { Run, Tag } from '@/lib/app/store'
+import type { Meta, Run, Tag } from '@/lib/app/store'
+import { useSilo } from '@/lib/app/silo'
 import { abandonStaleIn } from '@/lib/app/tap'
 import { AppNav } from '../AppNav'
 import { ReadyOffline } from '../ReadyOffline'
+import { BackupStatus } from './settings'
 
 const VISUAL_CAP = 30
 const STALE_NOTICE_MS = 60_000
 
-type Loaded = { now: number; runs: Run[]; tags: Tag[] }
+type Loaded = { now: number; runs: Run[]; tags: Tag[]; meta: Meta | undefined }
 
 /** One readwrite transaction, one `now`: abandon stale runs, then read what the view renders (APP-006). */
 function loadHome(now: number): Promise<Loaded> {
   return withTxn('readwrite', async (s) => {
     await abandonStaleIn(s, now)
-    const [runs, tags] = await Promise.all([req(s.runs.getAll()), req(s.tags.getAll())])
-    return { now, runs: runs as Run[], tags: tags as Tag[] }
+    const [runs, tags, meta] = await Promise.all([req(s.runs.getAll()), req(s.tags.getAll()), req(s.meta.get('meta'))])
+    return { now, runs: runs as Run[], tags: tags as Tag[], meta: meta as Meta | undefined }
   })
 }
 
@@ -29,6 +31,7 @@ const DAY_MARK: Record<string, string> = { done: '✓', missed: '✕', 'today-pe
 
 /** The chain home (APP-CHAIN): the one number that matters, and the days behind it. */
 export function ChainHome() {
+  const silo = useSilo()
   const [data, setData] = useState<Loaded | null>(null)
   const [error, setError] = useState<string | null>(null)
 
@@ -125,7 +128,9 @@ export function ChainHome() {
           </li>
         ))}
       </ol>
-      <div data-testid="backup-status" />
+      <div data-testid="backup-status" className="mt-6">
+        <BackupStatus meta={data.meta} runs={data.runs} now={data.now} silo={silo} reload={load} />
+      </div>
       <ReadyOffline />
       <AppNav />
     </section>

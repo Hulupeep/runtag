@@ -1,0 +1,46 @@
+# J-APP-BACKUP — export, validated import, persistence, silo guard and the backup nudge (APP-DURABLE #33)
+journey_meta:
+  id: J-APP-BACKUP
+  from_spec: "PRDs/runtag-app-prd.md"
+  covers_reqs: [APP-012, APP-013, APP-022, AC-DUR-1, AC-DUR-2, AC-DUR-3, AC-DUR-4, AC-DUR-5, AC-DUR-6, AC-DUR-7, AC-DUR-8, AC-DUR-9, AC-DUR-10, AC-DUR-11]
+  type: "e2e"
+  dod_criticality: critical
+  status: not_tested
+  owner: "@hulupeep"
+
+preconditions:
+  - description: "Europe/London zone; time only via page.clock.setFixedTime; rows re-read through the exposed store; context injection only by addInitScript property overrides or the context userAgent option"
+    setup_hint: "test.use({ timezoneId: 'Europe/London' }); openApp(page); goto('/app/settings')"
+
+steps:
+  - step: 1
+    name: "Export: the file holds tags and runs sorted by id; last backup recorded"
+    required_elements:
+      - selector: "[data-testid='backup-export']"
+      - selector: "[data-testid='last-backup']"
+  - step: 2
+    name: "Import a valid file: summary, conflicts (Keep mine by default), Apply; re-import changes nothing"
+    required_elements:
+      - selector: "[data-testid='backup-import']"
+      - selector: "[data-testid='backup-summary']"
+      - selector: "[data-testid='backup-apply']"
+  - step: 3
+    name: "An invalid file writes nothing: This isn't a RunTag backup"
+    required_elements:
+      - selector: "[data-testid='backup-invalid']"
+  - step: 4
+    name: "Home Screen app: planting and restore blocked with a notice on load"
+    required_elements:
+      - selector: "[data-testid='silo-blocked']"
+  - step: 5
+    name: "In-app browser: warning on load and one confirmation per press"
+    required_elements:
+      - selector: "[data-testid='silo-warning']"
+      - selector: "[data-testid='silo-confirm']"
+  - step: 6
+    name: "Backup nudge on home when storage may be cleared or no recent export with 3 done runs"
+    required_elements:
+      - selector: "[data-testid='backup-nudge']"
+
+test_hooks:
+  e2e_test_file: "tests/e2e/journey_app_backup.spec.ts"

@@ -5,7 +5,11 @@ import { tagUrl } from '@/lib/app/origin'
 import { listTags, StoreError } from '@/lib/app/store'
 import type { Tag } from '@/lib/app/store'
 import { cleanTagName, createTag, markTagWritten, renameTag, sortTags, WRITE_DEADLINE_MS } from '@/lib/app/tags'
+import { requestPersistence } from '@/lib/app/backup'
+import { TAG_ORIGIN } from '@/lib/app/origin'
+import { useSilo } from '@/lib/app/silo'
 import { AppNav } from '../AppNav'
+import { SiloNotice } from './settings'
 import { useAction } from './tapped'
 import type { Failure } from './tapped'
 
@@ -302,6 +306,9 @@ export function TagsView() {
   const create = useAction()
   const busy = useRef(false)
   const nameInput = useRef<HTMLInputElement>(null)
+  const silo = useSilo()
+  const [confirmAsk, setConfirmAsk] = useState(false)
+  const blockedRef = useRef<HTMLParagraphElement>(null)
 
   const reload = useCallback(() => {
     listTags().then(
@@ -314,11 +321,14 @@ export function TagsView() {
     reload()
   }, [reload])
 
-  /** The single create entry point (APP-DURABLE gates it with the storage-silo guard). */
-  const onCreate = () => {
+  /** The single create entry point, gated by the storage-silo guard (APP-DURABLE). */
+  const onCreate = (confirmedNow = false) => {
     if (busy.current || cleanTagName(name) === null) return
+    if (silo === 'standalone') return blockedRef.current?.focus() // planting here is blocked; nothing is written
+    if (silo === 'in-app' && !confirmedNow) return setConfirmAsk(true) // one press, one confirmation
     busy.current = true
     setStatus(null)
+    setConfirmAsk(false)
     create.run(async (now) => {
       try {
         await createTag(name, now)
@@ -326,6 +336,7 @@ export function TagsView() {
         setStatus('Tag created')
         reload()
         nameInput.current?.focus()
+        void requestPersistence() // after the commit; never part of this action's failure or Retry
       } finally {
         busy.current = false
       }
@@ -347,6 +358,8 @@ export function TagsView() {
   return (
     <section className="mx-auto max-w-md px-4 py-6">
       <h1 className="app-title">Your tags</h1>
+      <SiloNotice silo={silo} link={`${TAG_ORIGIN}/app/tags`} blockedRef={blockedRef} />
+      <p data-testid="private-note">Private tabs forget your chain.</p>
       <form
         className="mt-4"
         onSubmit={(e) => {
@@ -366,6 +379,11 @@ export function TagsView() {
         <button type="submit" data-testid="tag-create" className={`${PRIMARY} mt-3`} disabled={create.pending || cleanTagName(name) === null}>
           Create tag
         </button>
+        {confirmAsk && (
+          <button type="button" data-testid="silo-confirm" className={`${BTN} mt-3`} disabled={create.pending} onClick={() => onCreate(true)}>
+            Plant here anyway
+          </button>
+        )}
       </form>
       {status && <p role="status">{status}</p>}
       {create.failure && <SaveFailure failure={create.failure} />}

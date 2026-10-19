@@ -4,7 +4,7 @@
  "evidence": [
   {
    "path": "docs/specs/app/APP-DURABLE.md",
-   "sha256": "9bccab0300ddd0211fff2bd0ad1ac403fac2ce27c73d13c6cbc85f074c12310a"
+   "sha256": "aa5e99dc8abb155182f6c118a413635f466128f2fe2f36272c17e63bdba40a12"
   },
   {
    "path": "evidence/seams-app-durable.json",

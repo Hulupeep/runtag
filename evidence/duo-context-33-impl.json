@@ -1,0 +1,113 @@
+{
+  "workKind": "implementation",
+  "specification": {
+    "record": "evidence/specification-33.json"
+  },
+  "goal": "docs/goal.md",
+  "task": "docs/specs/app/APP-DURABLE.md",
+  "references": [
+    "PRDs/runtag-app-prd.md",
+    "PRDs/runtag-app-hops.md",
+    "PRDs/runtag-app-verdict.md"
+  ],
+  "objective": "Implement APP-DURABLE #33: export and validated plan/apply import with drift detection and one equivalence predicate, persistence after plant or import, single meta writer, home backup status and nudge, storage-silo guard on both planting entry points; J-APP-BACKUP journey — all AC-DUR criteria asserted and green on CI",
+  "finish": "Every AC-DUR criterion asserted by an executed test; contracts and full Playwright green on branch CI (Gate C); provenance evidence complete; post-build seam check exits 0; production code under 1000 lines",
+  "criteria": [
+    {
+      "id": "AC-DUR-1",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-1 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-2",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-2 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-3",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-3 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-4",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-4 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-5",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-5 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-6",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-6 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-7",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-7 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-8",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-8 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-9",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-9 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-10",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-10 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-11",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-11 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "GATE-CONTRACTS",
+      "source": "CLAUDE.md",
+      "anchor": "npm test -- contracts    # Must pass",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-C",
+      "source": "QA/loops/feature-build.yaml",
+      "anchor": "contract + journey tests green on branch-protected CI vs real seeded backend",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-PROVENANCE",
+      "source": "QA/loops/feature-build.yaml",
+      "anchor": "every value-bearing output/assertion is source-proven after implementation:",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-SEAMS",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "- [ ] `bash evidence/seams-check.sh evidence/seams-app-durable.json` exits 0 after build",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-SIZE",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "- [ ] production code < 1000 hand-written lines (owner amendment 2026-10-13: tests and contracts excluded)",
+      "kind": "gate"
+    }
+  ]
+}

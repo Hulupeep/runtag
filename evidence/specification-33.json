@@ -11,14 +11,14 @@
         "id": "durable-acceptance",
         "role": "acceptance-checks",
         "path": "docs/specs/app/APP-DURABLE.md",
-        "sha256": "b32518f4288362c2e439f8e8687da5c24afd2bd27c9ff5dff90a0d906d4d90de",
+        "sha256": "116f20d94c51d855b2259f0a827efda8d8f52620b4a156a5236c3a2ae6318139",
         "justification": "AC-DUR criteria with re-read oracles"
       },
       {
         "id": "import-merge",
         "role": "decision:import-merge",
         "path": "docs/specs/app/APP-DURABLE.md",
-        "sha256": "b32518f4288362c2e439f8e8687da5c24afd2bd27c9ff5dff90a0d906d4d90de",
+        "sha256": "116f20d94c51d855b2259f0a827efda8d8f52620b4a156a5236c3a2ae6318139",
         "justification": "Validation, plan/apply re-merge, open-run rule, meta writer, persistence trigger and silo guard rules"
       },
       {

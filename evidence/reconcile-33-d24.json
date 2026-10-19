@@ -1,0 +1,26 @@
+{
+ "kind": "nonimpact",
+ "reason": "APP-DURABLE #33 was written after D24 and already applies its fix: Declarations list only route literals, data-testid values and exported API identifiers as writes/reads (pre-existing surfaces meta, /app/settings and the Meta fields are named as vacuous and covered by updateMeta, backup-export and last-backup), touched files are listed separately under files:, the seam input evidence/seams-app-durable.json and the APP-DURABLE entry of evidence/seams-runtag-app.json mirror them, the dated hops amendment 2026-10-19 pins the derived seams, and the post-build DoD runs bash evidence/seams-check.sh evidence/seams-app-durable.json on a clean tree. No APP-DURABLE surface is a file path, so the discovery requires no change to this ticket. Promotion requires reconciliation only (no publication obligation for #33).",
+ "evidence": [
+  {
+   "path": "docs/specs/app/APP-DURABLE.md",
+   "sha256": "9bccab0300ddd0211fff2bd0ad1ac403fac2ce27c73d13c6cbc85f074c12310a"
+  },
+  {
+   "path": "evidence/seams-app-durable.json",
+   "sha256": "40194d70f7cd83f1508f4739521c6bf1373e9b8260dad1ab74e7f0db49319909"
+  },
+  {
+   "path": "evidence/seams-runtag-app.json",
+   "sha256": "ce9a41ad117e345c67625085482d244807071ff28ce5e2f9c88afe37301f9225"
+  },
+  {
+   "path": "PRDs/runtag-app-hops.md",
+   "sha256": "fe4d5d1f9c06caacd7afee11ffa6f60f53f977d462c436f6d541d10c87b4c8b6"
+  },
+  {
+   "path": "evidence/seams-check.sh",
+   "sha256": "78c0017cc702e86362bbfd1041bd5286a77c5d71299304e8bc6791517cc69b91"
+  }
+ ]
+}

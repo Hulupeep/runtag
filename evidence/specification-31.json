@@ -65,7 +65,7 @@
         "id": "hops",
         "role": "acceptance-checks",
         "path": "PRDs/runtag-app-hops.md",
-        "sha256": "2e1a31ecc01d1c5294729a7fe44ec63949ab6088bd87b60eb441978cf51e2d71",
+        "sha256": "fe4d5d1f9c06caacd7afee11ffa6f60f53f977d462c436f6d541d10c87b4c8b6",
         "reuse": true,
         "shared": true
       },
@@ -257,5 +257,16 @@
       }
     },
     "at": "2026-10-14T20:28:08.464Z"
+  },
+  "capability": {
+    "status": "tested",
+    "scope": "1b3c9ccc3d5f1f57c288bc4f8939e7c01cfc14352ba8fb896f9caaa0cb0038a8",
+    "evidence": [
+      {
+        "path": "evidence/capability-31.json",
+        "sha256": "3beabe1030f39e4f7b43089ac72f3ee9a41332dc260ba8375a8be46aa2464d7c"
+      }
+    ],
+    "note": "APP-TAGS merged in PR #32 (8e36bc2) and live; raw build log and Playwright report referenced by hash from the summary"
   }
 }

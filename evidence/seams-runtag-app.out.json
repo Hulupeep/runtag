@@ -91,12 +91,33 @@
         "APP-TAP"
       ],
       "readers": [
-        "APP-CHAIN"
+        "APP-CHAIN",
+        "APP-DURABLE"
       ],
       "pairs": [
         [
           "APP-TAP",
           "APP-CHAIN"
+        ],
+        [
+          "APP-TAP",
+          "APP-DURABLE"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "backup-status",
+      "writers": [
+        "APP-CHAIN"
+      ],
+      "readers": [
+        "APP-DURABLE"
+      ],
+      "pairs": [
+        [
+          "APP-CHAIN",
+          "APP-DURABLE"
         ]
       ],
       "kind": "writer-reader"
@@ -127,6 +148,22 @@
       "kind": "mixed"
     },
     {
+      "surface": "cleanTagName",
+      "writers": [
+        "APP-TAGS"
+      ],
+      "readers": [
+        "APP-DURABLE"
+      ],
+      "pairs": [
+        [
+          "APP-TAGS",
+          "APP-DURABLE"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
       "surface": "computeChain",
       "writers": [
         "APP-SHELL"
@@ -153,6 +190,22 @@
       "kind": "writer-reader"
     },
     {
+      "surface": "createTag",
+      "writers": [
+        "APP-TAGS"
+      ],
+      "readers": [
+        "APP-DURABLE"
+      ],
+      "pairs": [
+        [
+          "APP-TAGS",
+          "APP-DURABLE"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
       "surface": "Email address",
       "writers": [
         "APP-SHELL"
@@ -174,9 +227,14 @@
         "APP-CHAIN"
       ],
       "readers": [
+        "APP-DURABLE",
         "APP-TAGS"
       ],
       "pairs": [
+        [
+          "APP-CHAIN",
+          "APP-DURABLE"
+        ],
         [
           "APP-CHAIN",
           "APP-TAGS"
@@ -223,12 +281,17 @@
       ],
       "readers": [
         "APP-CHAIN",
+        "APP-DURABLE",
         "APP-TAP"
       ],
       "pairs": [
         [
           "APP-SHELL",
           "APP-CHAIN"
+        ],
+        [
+          "APP-SHELL",
+          "APP-DURABLE"
         ],
         [
           "APP-SHELL",
@@ -291,6 +354,38 @@
       "kind": "writer-reader"
     },
     {
+      "surface": "onCreate",
+      "writers": [
+        "APP-TAGS"
+      ],
+      "readers": [
+        "APP-DURABLE"
+      ],
+      "pairs": [
+        [
+          "APP-TAGS",
+          "APP-DURABLE"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "plantTag",
+      "writers": [
+        "APP-TAP"
+      ],
+      "readers": [
+        "APP-DURABLE"
+      ],
+      "pairs": [
+        [
+          "APP-TAP",
+          "APP-DURABLE"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
       "surface": "ready-offline",
       "writers": [
         "APP-SHELL"
@@ -318,6 +413,22 @@
         [
           "APP-SHELL",
           "APP-TAP"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "runs",
+      "writers": [
+        "APP-DURABLE"
+      ],
+      "readers": [
+        "APP-CHAIN"
+      ],
+      "pairs": [
+        [
+          "APP-DURABLE",
+          "APP-CHAIN"
         ]
       ],
       "kind": "writer-reader"
@@ -386,12 +497,17 @@
       ],
       "readers": [
         "APP-CHAIN",
+        "APP-DURABLE",
         "APP-TAGS"
       ],
       "pairs": [
         [
           "APP-SHELL",
           "APP-CHAIN"
+        ],
+        [
+          "APP-SHELL",
+          "APP-DURABLE"
         ],
         [
           "APP-SHELL",
@@ -437,9 +553,14 @@
         "APP-SHELL"
       ],
       "readers": [
+        "APP-DURABLE",
         "APP-TAGS"
       ],
       "pairs": [
+        [
+          "APP-SHELL",
+          "APP-DURABLE"
+        ],
         [
           "APP-SHELL",
           "APP-TAGS"
@@ -450,6 +571,7 @@
     {
       "surface": "tags",
       "writers": [
+        "APP-DURABLE",
         "APP-TAGS"
       ],
       "readers": [
@@ -457,11 +579,19 @@
       ],
       "pairs": [
         [
+          "APP-DURABLE",
+          "APP-TAGS"
+        ],
+        [
+          "APP-DURABLE",
+          "APP-CHAIN"
+        ],
+        [
           "APP-TAGS",
           "APP-CHAIN"
         ]
       ],
-      "kind": "writer-reader"
+      "kind": "mixed"
     },
     {
       "surface": "tagUrl",
@@ -469,12 +599,33 @@
         "APP-SHELL"
       ],
       "readers": [
+        "APP-DURABLE",
         "APP-TAGS"
       ],
       "pairs": [
         [
           "APP-SHELL",
+          "APP-DURABLE"
+        ],
+        [
+          "APP-SHELL",
           "APP-TAGS"
+        ]
+      ],
+      "kind": "writer-reader"
+    },
+    {
+      "surface": "tap-primary",
+      "writers": [
+        "APP-TAP"
+      ],
+      "readers": [
+        "APP-DURABLE"
+      ],
+      "pairs": [
+        [
+          "APP-TAP",
+          "APP-DURABLE"
         ]
       ],
       "kind": "writer-reader"
@@ -585,7 +736,12 @@
     },
     {
       "surface": "abandonStaleIn",
-      "why": "seam (writer-reader) between APP-TAP, APP-CHAIN",
+      "why": "seam (writer-reader) between APP-TAP, APP-CHAIN, APP-DURABLE",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "backup-status",
+      "why": "seam (writer-reader) between APP-CHAIN, APP-DURABLE",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
@@ -594,8 +750,18 @@
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
+      "surface": "cleanTagName",
+      "why": "seam (writer-reader) between APP-TAGS, APP-DURABLE",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
       "surface": "computeChain",
       "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-DURABLE, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "createTag",
+      "why": "seam (writer-reader) between APP-TAGS, APP-DURABLE",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
@@ -605,7 +771,7 @@
     },
     {
       "surface": "empty-state",
-      "why": "seam (writer-reader) between APP-CHAIN, APP-TAGS",
+      "why": "seam (writer-reader) between APP-CHAIN, APP-DURABLE, APP-TAGS",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
@@ -620,7 +786,7 @@
     },
     {
       "surface": "localDayOf",
-      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-TAP",
+      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-DURABLE, APP-TAP",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
@@ -639,6 +805,16 @@
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
+      "surface": "onCreate",
+      "why": "seam (writer-reader) between APP-TAGS, APP-DURABLE",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "plantTag",
+      "why": "seam (writer-reader) between APP-TAP, APP-DURABLE",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
       "surface": "ready-offline",
       "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN",
       "assert": "re-read value on the merged tree — not element presence"
@@ -646,6 +822,11 @@
     {
       "surface": "resolveRoute",
       "why": "seam (writer-reader) between APP-SHELL, APP-TAP",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "runs",
+      "why": "seam (writer-reader) between APP-DURABLE, APP-CHAIN",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
@@ -665,7 +846,7 @@
     },
     {
       "surface": "store-error",
-      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-TAGS",
+      "why": "seam (writer-reader) between APP-SHELL, APP-CHAIN, APP-DURABLE, APP-TAGS",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
@@ -675,17 +856,22 @@
     },
     {
       "surface": "TAG_ORIGIN",
-      "why": "seam (writer-reader) between APP-SHELL, APP-TAGS",
+      "why": "seam (writer-reader) between APP-SHELL, APP-DURABLE, APP-TAGS",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
       "surface": "tags",
-      "why": "seam (writer-reader) between APP-TAGS, APP-CHAIN",
+      "why": "seam (mixed) between APP-DURABLE, APP-TAGS, APP-CHAIN",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {
       "surface": "tagUrl",
-      "why": "seam (writer-reader) between APP-SHELL, APP-TAGS",
+      "why": "seam (writer-reader) between APP-SHELL, APP-DURABLE, APP-TAGS",
+      "assert": "re-read value on the merged tree — not element presence"
+    },
+    {
+      "surface": "tap-primary",
+      "why": "seam (writer-reader) between APP-TAP, APP-DURABLE",
       "assert": "re-read value on the merged tree — not element presence"
     },
     {

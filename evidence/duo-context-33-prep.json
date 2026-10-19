@@ -1,0 +1,116 @@
+{
+  "workKind": "preparation",
+  "specification": {
+    "record": "evidence/specification-33.json",
+    "targetTier": "build-ready",
+    "reviewerModel": "gpt-6-astra"
+  },
+  "goal": "docs/goal.md",
+  "task": "docs/specs/app/APP-DURABLE.md",
+  "references": [
+    "PRDs/runtag-app-prd.md",
+    "PRDs/runtag-app-verdict.md",
+    "PRDs/runtag-app-hops.md",
+    "docs/specs/app/APP-DURABLE-preflight.md"
+  ],
+  "objective": "APP-DURABLE #33 v2 (promotes thin #18): every AC-DUR criterion has an executable re-read oracle; Gate A stipulations (S-6, S-12, M-4, T12), pinned hops I14/I15/A9/I17/S1/S3/S5 and the new seams (amended 2026-10-19) and all B.5 pre-flight findings folded; APP-SHELL #26, APP-TAP #27, APP-CHAIN #29 and APP-TAGS #31 dependencies carry raw capability evidence",
+  "finish": "Scoped independent review passes for build-ready preparation; promotion succeeds",
+  "criteria": [
+    {
+      "id": "AC-DUR-1",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-1 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-2",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-2 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-3",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-3 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-4",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-4 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-5",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-5 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-6",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-6 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-7",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-7 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-8",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-8 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-9",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-9 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-10",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-10 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-DUR-11",
+      "source": "docs/specs/app/APP-DURABLE.md",
+      "anchor": "| AC-DUR-11 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "GATE-A-STIPULATIONS",
+      "source": "PRDs/runtag-app-verdict.md",
+      "anchor": "### APP-DURABLE (W3)",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-B5",
+      "source": "QA/loops/spec-build.yaml",
+      "anchor": "gate: no CRITICAL design gap survives",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-BUILD-READY",
+      "source": "SPECIFICATION.md",
+      "anchor": "Build-ready also references acceptance-checks, simulation and preflight;",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-CONTRACTS",
+      "source": "CLAUDE.md",
+      "anchor": "npm test -- contracts    # Must pass",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-B",
+      "source": "QA/loops/spec-build.yaml",
+      "anchor": "requirement→journey→test→issue complete; no orphans; no duplicate IDs;",
+      "kind": "gate"
+    }
+  ]
+}

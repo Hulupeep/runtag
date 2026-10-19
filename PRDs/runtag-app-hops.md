@@ -220,3 +220,30 @@ Reason: the APP-TAGS v2 declarations (docs/specs/app/APP-TAGS.md, evidence/seams
 | Step | From → URL | Control | EXPECTED VALUE (re-read) | Owner |
 |---|---|---|---|---|
 | S12.1 | fresh device; create one tag on `/app/tags` | `goto('/app')`, reload | `empty-state` count 0; `chain-value` `"0"`; `listTags()` length 1 | APP-TAGS (AC-TAGS-1) |
+
+## Amendment 2026-10-19 (Gate B, APP-DURABLE B.5 pre-flight; pinned hop IDs and expected values unchanged)
+Reason: the APP-DURABLE v2 declarations (docs/specs/app/APP-DURABLE.md, evidence/seams-app-durable.json) add surfaces, so the epic seam graph was recomputed with `--no-resolve` (evidence/seams-runtag-app.out.json). New derived seams get checks; the DURABLE hops' harness is reconciled with the ticket.
+
+| Hop | Reconciled harness / owner |
+|---|---|
+| I14 | Seeded tag A and open run R1 first (the oracle is "unchanged from the seed", never a fresh empty store); standalone via `Object.defineProperty(Navigator.prototype, 'standalone', { configurable: true, get: () => true })` (no prototype descriptor exists in Playwright's browsers); `silo-blocked` visible on load before any press; positive control without the override. Owner APP-DURABLE (AC-DUR-6). |
+| A9 | `userAgent` = the project UA with ` Instagram 300.0.0` appended (keeps the iPhone 13 emulation on `mobile`); after the confirmation the tag row deep-equals `{id: C, name, createdAt: now, graceUntil: now + 600000}`. Owner APP-DURABLE (AC-DUR-7). |
+| I15 | Fixture of 3 tags and 10 runs covering every optional `Run` field and no stale open run; restore from the plant view through "Restore from backup"; the chain after restore re-read in the page (S3). Owner APP-DURABLE (AC-DUR-1). |
+| I17 | Real iPhone, listed verbatim in the APP-LINK #19 device checklist (APP-DURABLE DoD). |
+
+**New seam hop S13 — `runs` / `tags` (writers APP-DURABLE with APP-TAP / APP-TAGS; reader APP-CHAIN)**
+| Step | From → URL | Control | EXPECTED VALUE (re-read) | Owner |
+|---|---|---|---|---|
+| S13.1 | page 1 shows the import plan for a backup with open run R2; page 2 taps in (R3) | page 1 Apply | exactly one open run (R3 unchanged), R2 abandoned, same-context re-read | APP-DURABLE (AC-DUR-4) |
+| S13.2 | restore a backup with 8 consecutive done days | `goto('/app')`, reload | `chain-value` `"8"` = in-page `computeChain(listRuns(), localDayOf(now))`; `empty-state` count 0 | APP-DURABLE (AC-DUR-1) |
+
+**New seam hop S14 — `onCreate` / `plantTag` / `tap-primary` (writers APP-TAGS / APP-TAP, reader APP-DURABLE guard)**
+| Step | From → URL | Control | EXPECTED VALUE (re-read) | Owner |
+|---|---|---|---|---|
+| S14.1 | in-app UA; `/t/{C}` with an open run R1 | "Save and tap out here", then "Plant here anyway" | one `tap-primary` in each state; R1 `{status:'done', tagOutId: C}` | APP-DURABLE (AC-DUR-7) |
+| S14.2 | in-app UA; `/app/tags` | Create tag, Enter, then "Plant here anyway" (double click) | tags grow by exactly 1 | APP-DURABLE (AC-DUR-7) |
+
+**New seam hop S15 — `backup-status` (writer APP-CHAIN slot, reader APP-DURABLE)**
+| Step | From → URL | Control | EXPECTED VALUE (re-read) | Owner |
+|---|---|---|---|---|
+| S15.1 | 3 done runs, never exported | `/app` | `backup-nudge` inside `backup-status`; home starts one store transaction (the APP-CHAIN forced-failure test unchanged) | APP-DURABLE (AC-DUR-9) |

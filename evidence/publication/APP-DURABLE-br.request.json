@@ -1,0 +1,1 @@
+{"action":"create","repo":"Hulupeep/runtag","title":"APP-DURABLE: backups, persistence, storage-silo guard (build-ready; promotes thin #18)","bodyFile":"docs/specs/app/APP-DURABLE.md","linkedFiles":["PRDs/runtag-app-hops.md","docs/specs/app/APP-DURABLE-preflight.md","docs/specs/app/APP-LINK.md"]}

@@ -113,6 +113,7 @@ test('AC-DUR-1 round trip: restore from the plant view, chain kept, re-export eq
   await noMetrics(p2, 'summary')
   await p2.getByTestId('backup-apply').click()
   await expect(p2.getByTestId('backup-done')).toContainText('Backup restored.')
+  await noMetrics(p2, 'backup restored')
   await p2.goto('/app')
   await p2.reload()
   await expect(p2.getByTestId('chain-value')).toHaveText('8')
@@ -183,6 +184,34 @@ test('AC-DUR-2 files that are not RunTag backups write nothing', async ({ page }
     expect(await metaOf(page), name).toEqual(before.meta)
   }
   await noMetrics(page, 'invalid')
+})
+
+test('AC-DUR-2 a later selection replaces the earlier plan: invalid clears it, valid applies only the latest', async ({ page }, testInfo) => {
+  await openApp(page)
+  await seedTag(page, A)
+  await seedMeta(page, { lastExportAt: T0 - 24 * HOUR })
+  const before = { tags: await tags(page), runs: await runs(page), meta: await metaOf(page) }
+  const bench = { id: B, name: 'Bench', createdAt: T0 - HOUR, graceUntil: T0 - HOUR + 600_000 }
+  const pier = { id: C, name: 'Pier', createdAt: T0 - HOUR, graceUntil: T0 - HOUR + 600_000 }
+  await openSettings(page)
+  await chooseFile(page, writeFile(testInfo, 'bench.json', fileOf([bench], [])))
+  await expect(page.getByTestId('backup-summary')).toHaveText('New: 1 tags, 0 runs. Already here: 0.')
+  await chooseFile(page, writeFile(testInfo, 'broken.json', '{ nope'))
+  await expect(page.getByTestId('backup-invalid')).toBeVisible()
+  await expect(page.getByTestId('backup-summary')).toHaveCount(0)
+  await expect(page.getByTestId('backup-apply')).toHaveCount(0)
+  expect(await tags(page)).toEqual(before.tags)
+  expect(await runs(page)).toEqual(before.runs)
+  expect(await metaOf(page)).toEqual(before.meta)
+
+  await chooseFile(page, writeFile(testInfo, 'bench2.json', fileOf([bench], [])))
+  await expect(page.getByTestId('backup-summary')).toBeVisible()
+  await chooseFile(page, writeFile(testInfo, 'pier.json', fileOf([pier], [])))
+  await expect(page.getByTestId('backup-invalid')).toHaveCount(0)
+  await page.getByTestId('backup-apply').click()
+  await expect(page.getByTestId('backup-done')).toBeVisible()
+  await noMetrics(page, 'backup restored')
+  expect(byId(await tags(page))).toEqual(byId([...before.tags, pier]))
 })
 
 test('AC-DUR-3 conflicts: keep mine by default, cancel, repeat, use backup; abandoned runs stay settled', async ({ page }, testInfo) => {

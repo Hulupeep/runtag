@@ -185,9 +185,12 @@ export function SettingsView() {
     })
   }
 
-  const plan = (file: ExportFile) =>
+  // Each selection takes a token; a later selection invalidates every earlier read, plan and retry.
+  const selection = useRef(0)
+  const plan = (file: ExportFile, token: number) =>
     act.run(async () => {
       const p = await planImport(file)
+      if (token !== selection.current) return // an obsolete selection never restores its plan
       const choices: Choices = {}
       for (const c of p.conflicts) choices[choiceKey(c)] = { choice: 'mine', seen: c.seen }
       setPending({ file, plan: p, choices })
@@ -197,14 +200,19 @@ export function SettingsView() {
     const f = input.files?.[0]
     input.value = ''
     if (!f) return
+    const token = ++selection.current
+    setPending(null)
+    act.fail(null)
     setInvalid(false)
     setChanged(false)
     setDone(null)
     setConfirmed(false)
     setAskConfirm(false)
-    const file = validateBackup(await f.text())
+    const text = await f.text()
+    if (token !== selection.current) return
+    const file = validateBackup(text)
     if (!file) return setInvalid(true)
-    plan(file)
+    plan(file, token)
   }
 
   const apply = (confirmedNow = confirmed) => {
@@ -215,7 +223,7 @@ export function SettingsView() {
       const r = await importBackup(file, choices, at)
       if (r.status === 'changed') {
         setChanged(true)
-        return plan(file)
+        return plan(file, selection.current)
       }
       setDone(pending.plan)
       setPending(null)

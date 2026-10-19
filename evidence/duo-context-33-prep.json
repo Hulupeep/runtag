@@ -13,7 +13,7 @@
     "PRDs/runtag-app-hops.md",
     "docs/specs/app/APP-DURABLE-preflight.md"
   ],
-  "objective": "APP-DURABLE #33 v2 (promotes thin #18): every AC-DUR criterion has an executable re-read oracle; Gate A stipulations (S-6, S-12, M-4, T12), pinned hops I14/I15/A9/I17/S1/S3/S5 and the new seams (amended 2026-10-19) and all B.5 pre-flight findings folded; APP-SHELL #26, APP-TAP #27, APP-CHAIN #29 and APP-TAGS #31 dependencies carry raw capability evidence",
+  "objective": "APP-DURABLE #33 v3 (promotes thin #18; linked successor of run 1792408866805-8da71dcd: F-IMPORT-DRIFT, F-IMPORT-IDEMPOTENCE, F-PERSIST-FAILURE-FIXTURE repaired): every AC-DUR criterion has an executable re-read oracle; Gate A stipulations (S-6, S-12, M-4, T12), pinned hops I14/I15/A9/I17/S1/S3/S5 and the new seams (amended 2026-10-19) and all B.5 pre-flight findings folded; APP-SHELL #26, APP-TAP #27, APP-CHAIN #29 and APP-TAGS #31 dependencies carry raw capability evidence",
   "finish": "Scoped independent review passes for build-ready preparation; promotion succeeds",
   "criteria": [
     {

@@ -10,7 +10,7 @@
    "validateBackup",
    "planImport",
    "importBackup",
-   "ImportChanged",
+   "fingerprint",
    "updateMeta",
    "requestPersistence",
    "shouldNudge",

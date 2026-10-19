@@ -4,15 +4,15 @@
  "evidence": [
   {
    "path": "docs/specs/app/APP-DURABLE.md",
-   "sha256": "116f20d94c51d855b2259f0a827efda8d8f52620b4a156a5236c3a2ae6318139"
+   "sha256": "83b0f03419251e666f95d6b0f3f89ab23c762a272691ad00fd1c79b0fe2c612c"
   },
   {
    "path": "evidence/seams-app-durable.json",
-   "sha256": "29ad6a88e2202309ff5747a63abbc83d9571b93f92235bde1d0190f77f1d790e"
+   "sha256": "b2ae0bd1d5090046aed39f7399819236084bb6e41d18f2726a8df19f796d6a6a"
   },
   {
    "path": "evidence/seams-runtag-app.json",
-   "sha256": "b685d07bba227bfd4f0aea90e839078a0f944a1b5c34084b602c2b4e7e7f3611"
+   "sha256": "f1116e9c21b270914c7d9b885bed07529b183dbcbc89c6afb1ea6a94064d4798"
   },
   {
    "path": "PRDs/runtag-app-hops.md",

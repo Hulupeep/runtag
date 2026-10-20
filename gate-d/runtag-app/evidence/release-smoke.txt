@@ -1,0 +1,9 @@
+# RunTag App v1 release smoke (APP-LINK #35)
+# merge commit: 8a4ce321c08d83e47938de48582b067b77ea927c (PR #36)
+# production deployment: dpl_C5vvFhJsrMw3S1SMG6EDJ3v1zTPG (Vercel READY; commit status "Deployment has completed")
+# command: bash scripts/release-smoke.sh   started: 2026-10-20T11:49:17.991Z   exit: 0
+# raw capture: .specflow/duo/1792492902876-a3b794ad/evidence/1792496959752-33fa83c6.json
+release-live 200 start-for-real-in-chunk PASS
+shell 200 /t/uz3b2ykyvl title+view+first-party-scripts PASS
+aliases - runtag-floutlabs.vercel.app:302->https://vercel.com/sso-api runtag-git-main-floutlabs.vercel.app:302->https://vercel.com/sso-api PASS
+service-worker 200 const BUILD_ID = '6CqteMJwIn3DFbpnrxvbr' cache-control=no-cache PASS

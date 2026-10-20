@@ -13,7 +13,7 @@
     "PRDs/runtag-app-hops.md",
     "docs/specs/app/APP-LINK-preflight.md"
   ],
-  "objective": "APP-LINK #35 v2 (promotes thin #19): every AC-LINK criterion has an executable re-read oracle; Gate A stipulations (M-8, M-11/M-1, real-device checklist incl. T12) and all B.5 findings folded, incl. the owner-approved A12 amendment 2026-10-20; APP-SHELL #26, APP-TAGS #31 and APP-DURABLE #33 dependencies carry raw capability evidence",
+  "objective": "APP-LINK #35 v3 (promotes thin #19; linked successor of run 1792491184562-5db6da84: F-I16-PRECONDITIONS, F-GATE-D-VALUE-EVIDENCE, F-MOCKED-SIGNUP-ORACLE repaired): every AC-LINK criterion has an executable re-read oracle; Gate A stipulations (M-8, M-11/M-1, real-device checklist incl. T12) and all B.5 findings folded, incl. the owner-approved A12 amendment 2026-10-20; APP-SHELL #26, APP-TAGS #31 and APP-DURABLE #33 dependencies carry raw capability evidence",
   "finish": "Scoped independent review passes for build-ready preparation; promotion succeeds",
   "criteria": [
     {

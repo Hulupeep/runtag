@@ -11,14 +11,14 @@
         "id": "link-acceptance",
         "role": "acceptance-checks",
         "path": "docs/specs/app/APP-LINK.md",
-        "sha256": "e4c10571194d23c125aa16b7a5bd30d7a3b455ec56cca0d59411d51090ad3e1c",
+        "sha256": "64bbb52b7fc18b3231aeca2d82f79dbb8d692116d908c2c54b85dd34a685854a",
         "justification": "AC-LINK criteria with re-read oracles"
       },
       {
         "id": "release-checks",
         "role": "decision:release-checks",
         "path": "docs/specs/app/APP-LINK.md",
-        "sha256": "e4c10571194d23c125aa16b7a5bd30d7a3b455ec56cca0d59411d51090ad3e1c",
+        "sha256": "64bbb52b7fc18b3231aeca2d82f79dbb8d692116d908c2c54b85dd34a685854a",
         "justification": "Link placement, release-note strings, release smoke and device checklist rules incl. the owner decision on A12"
       },
       {

@@ -1,0 +1,108 @@
+{
+ "hop": "L5",
+ "purpose": "next day reversed loop B -> A counts on the new day; chain 2",
+ "expected_value": "new run {tagInId:B, tagOutId:A, status:'done'} on the new localDay; chain grows by one after reload",
+ "covering_acs": "APP-TAP AC-TAP-8, AC-TAP-10 (any known tag in/out); APP-CHAIN AC-CHAIN-1 (app-produced run joins seeded days)",
+ "environment": "merged main, production build (npm run build; PW_PROD=1 npx playwright test), local next start on http://localhost:3000, projects chromium + mobile (iPhone 13 WebKit)",
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "coverage_note": "Composition: no single test replays day +1 B -> A with chain 2. Tag-agnostic in/out is AC-TAP-8/AC-TAP-10/AC-TAP-16; an app-produced run joining seeded prior days (chain re-read after reload) is AC-CHAIN-1 \"a run produced by the app joins the seeded days\".",
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 78,
+   "title": "AC-TAP-8 cross-tag guard after tap-in survives reload and finishes at the scanned tag",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1097,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 78,
+   "title": "AC-TAP-8 cross-tag guard after tap-in survives reload and finishes at the scanned tag",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3703,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 106,
+   "title": "AC-TAP-10 cross-tag guard after tap-out survives reload and starts at the scanned tag",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 904,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 106,
+   "title": "AC-TAP-10 cross-tag guard after tap-out survives reload and starts at the scanned tag",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3413,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 544,
+   "title": "offline and slow network (production service worker) > AC-TAP-16 offline: two never-loaded tag URLs tap in then out with their own ids",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1474,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 544,
+   "title": "offline and slow network (production service worker) > AC-TAP-16 offline: two never-loaded tag URLs tap in then out with their own ids",
+   "project": "mobile",
+   "status": "skipped",
+   "result": "skipped",
+   "duration_ms": 0,
+   "retries": 0,
+   "skip_reason": "SW interception is Chromium-only in Playwright",
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 72,
+   "title": "AC-CHAIN-1 the rendered chain is computeChain over the stored runs > a run produced by the app joins the seeded days",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 890,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 72,
+   "title": "AC-CHAIN-1 the rendered chain is computeChain over the stored runs > a run produced by the app joins the seeded days",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2510,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

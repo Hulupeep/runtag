@@ -1,0 +1,84 @@
+{
+ "hop": "S2",
+ "purpose": "startRunIfNoneOpenIn / getOpenRunIn: exactly one open run with the URL tag",
+ "expected_value": "after tap-in exactly one status:'open' row whose tagInId equals the URL id",
+ "covering_acs": "APP-SHELL AC-SHELL-5; APP-TAP AC-TAP-6, AC-TAP-14",
+ "environment": "merged main, production build (npm run build; PW_PROD=1 npx playwright test), local next start on http://localhost:3000, projects chromium + mobile (iPhone 13 WebKit)",
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "coverage_note": null,
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 20,
+   "title": "AC-TAP-6 AC-TAP-7 AC-TAP-8 AC-TAP-9 AC-TAP-10 tap in, reload, guard, tap out, guard again",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1298,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 20,
+   "title": "AC-TAP-6 AC-TAP-7 AC-TAP-8 AC-TAP-9 AC-TAP-10 tap in, reload, guard, tap out, guard again",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 4252,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 69,
+   "title": "AC-SHELL-5 two pages starting a run at once leave exactly one open run",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 685,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 69,
+   "title": "AC-SHELL-5 two pages starting a run at once leave exactly one open run",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2502,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 325,
+   "title": "AC-TAP-14 two pages loading the same tag at once leave exactly one open run",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 790,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 325,
+   "title": "AC-TAP-14 two pages loading the same tag at once leave exactly one open run",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3322,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

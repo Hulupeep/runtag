@@ -1,0 +1,122 @@
+{
+ "hop": "SEAM-TAPPED-PREFIX",
+ "surface": "TAPPED_PREFIX",
+ "kind": "writer-reader",
+ "writers": [
+  "APP-SHELL"
+ ],
+ "readers": [
+  "APP-TAP"
+ ],
+ "pairs": [
+  [
+   "APP-SHELL",
+   "APP-TAP"
+  ]
+ ],
+ "expected_value": "re-read value on the merged tree — not element presence (evidence/seams-runtag-app.out.json derivedHops)",
+ "covered_by_hops": {
+  "S6": "green",
+  "I5": "green"
+ },
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 20,
+   "title": "AC-TAP-6 AC-TAP-7 AC-TAP-8 AC-TAP-9 AC-TAP-10 tap in, reload, guard, tap out, guard again",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1298,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 20,
+   "title": "AC-TAP-6 AC-TAP-7 AC-TAP-8 AC-TAP-9 AC-TAP-10 tap in, reload, guard, tap out, guard again",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 4252,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 523,
+   "title": "AC-TAP-17 AC-TAP-18 stored-result views: missing and abandoned runs",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 897,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 523,
+   "title": "AC-TAP-17 AC-TAP-18 stored-result views: missing and abandoned runs",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2686,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_logic.spec.ts",
+   "line": 68,
+   "title": "resolveRoute maps the address bar to views",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 36,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_logic.spec.ts",
+   "line": 68,
+   "title": "resolveRoute maps the address bar to views",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 13,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_plant.spec.ts",
+   "line": 46,
+   "title": "AC-TAP-3 AC-TAP-5 Just save stores the tag only; grace without a run offers Start run",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 905,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_plant.spec.ts",
+   "line": 46,
+   "title": "AC-TAP-3 AC-TAP-5 Just save stores the tag only; grace without a run offers Start run",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3360,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

@@ -1,0 +1,60 @@
+{
+ "hop": "L3",
+ "purpose": "walking back past A after tap-out starts nothing (guard is tag-agnostic)",
+ "expected_value": "R length 1; open(R) length 0",
+ "covering_acs": "APP-TAP AC-TAP-10",
+ "environment": "merged main, production build (npm run build; PW_PROD=1 npx playwright test), local next start on http://localhost:3000, projects chromium + mobile (iPhone 13 WebKit)",
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "coverage_note": null,
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 106,
+   "title": "AC-TAP-10 cross-tag guard after tap-out survives reload and starts at the scanned tag",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 904,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 106,
+   "title": "AC-TAP-10 cross-tag guard after tap-out survives reload and starts at the scanned tag",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3413,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 20,
+   "title": "AC-TAP-6 AC-TAP-7 AC-TAP-8 AC-TAP-9 AC-TAP-10 tap in, reload, guard, tap out, guard again",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1298,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 20,
+   "title": "AC-TAP-6 AC-TAP-7 AC-TAP-8 AC-TAP-9 AC-TAP-10 tap in, reload, guard, tap out, guard again",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 4252,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

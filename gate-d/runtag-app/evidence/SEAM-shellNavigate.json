@@ -1,0 +1,83 @@
+{
+ "hop": "SEAM-shellNavigate",
+ "surface": "shellNavigate",
+ "kind": "writer-reader",
+ "writers": [
+  "APP-SHELL"
+ ],
+ "readers": [
+  "APP-CHAIN",
+  "APP-TAGS",
+  "APP-TAP"
+ ],
+ "pairs": [
+  [
+   "APP-SHELL",
+   "APP-CHAIN"
+  ],
+  [
+   "APP-SHELL",
+   "APP-TAGS"
+  ],
+  [
+   "APP-SHELL",
+   "APP-TAP"
+  ]
+ ],
+ "expected_value": "re-read value on the merged tree — not element presence (evidence/seams-runtag-app.out.json derivedHops)",
+ "covered_by_hops": {
+  "A5": "green"
+ },
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 547,
+   "title": "AC-TAGS-10 create-only grace expires; the list works offline (production service worker) > A2 and A5",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1575,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 547,
+   "title": "AC-TAGS-10 create-only grace expires; the list works offline (production service worker) > A2 and A5",
+   "project": "mobile",
+   "status": "skipped",
+   "result": "skipped",
+   "duration_ms": 0,
+   "retries": 0,
+   "skip_reason": "SW interception is Chromium-only in Playwright",
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 37,
+   "title": "AC-SHELL-1B online in-shell navigation and back",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 841,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 37,
+   "title": "AC-SHELL-1B online in-shell navigation and back",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2159,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

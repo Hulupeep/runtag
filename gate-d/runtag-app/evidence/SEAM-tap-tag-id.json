@@ -1,0 +1,121 @@
+{
+ "hop": "SEAM-tap-tag-id",
+ "surface": "tap-tag-id",
+ "kind": "writer-writer",
+ "writers": [
+  "APP-SHELL",
+  "APP-TAP"
+ ],
+ "readers": [],
+ "pairs": [
+  [
+   "APP-SHELL",
+   "APP-TAP"
+  ]
+ ],
+ "expected_value": "re-read value on the merged tree — not element presence (evidence/seams-runtag-app.out.json derivedHops)",
+ "covered_by_hops": {
+  "I3": "green",
+  "A3": "green"
+ },
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_plant.spec.ts",
+   "line": 11,
+   "title": "AC-TAP-1 AC-TAP-2 AC-TAP-5 plant a new tag, start a run, then the next load is setup grace",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 838,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_plant.spec.ts",
+   "line": 11,
+   "title": "AC-TAP-1 AC-TAP-2 AC-TAP-5 plant a new tag, start a run, then the next load is setup grace",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3466,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 544,
+   "title": "offline and slow network (production service worker) > AC-TAP-16 offline: two never-loaded tag URLs tap in then out with their own ids",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1474,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 544,
+   "title": "offline and slow network (production service worker) > AC-TAP-16 offline: two never-loaded tag URLs tap in then out with their own ids",
+   "project": "mobile",
+   "status": "skipped",
+   "result": "skipped",
+   "duration_ms": 0,
+   "retries": 0,
+   "skip_reason": "SW interception is Chromium-only in Playwright",
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_offline.spec.ts",
+   "line": 55,
+   "title": "J-APP-OFFLINE > AC-SHELL-6 never-loaded tag URLs work offline, each with its own id",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1472,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_offline.spec.ts",
+   "line": 55,
+   "title": "J-APP-OFFLINE > AC-SHELL-6 never-loaded tag URLs work offline, each with its own id",
+   "project": "mobile",
+   "status": "skipped",
+   "result": "skipped",
+   "duration_ms": 0,
+   "retries": 0,
+   "skip_reason": "SW interception is Chromium-only in Playwright",
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 48,
+   "title": "AC-SHELL-2 tag id comes from the URL for consecutive loads",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 769,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 48,
+   "title": "AC-SHELL-2 tag id comes from the URL for consecutive loads",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1321,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

@@ -1,0 +1,36 @@
+{
+ "hop": "A10",
+ "purpose": "no Web NFC: no \"Write to tag\", copy-link instructions, tags unchanged",
+ "expected_value": "\"Write to tag\" count 0; copy-link/writer-app instructions present; T unchanged (positive control with the harness NDEFReader)",
+ "covering_acs": "APP-TAGS AC-TAGS-4",
+ "environment": "merged main, production build (npm run build; PW_PROD=1 npx playwright test), local next start on http://localhost:3000, projects chromium + mobile (iPhone 13 WebKit)",
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "coverage_note": null,
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 213,
+   "title": "AC-TAGS-4 no Web NFC shows the writer-app steps; the harness is the positive control",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1797,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 213,
+   "title": "AC-TAGS-4 no Web NFC shows the writer-app steps; the harness is the positive control",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3802,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

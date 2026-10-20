@@ -1,0 +1,145 @@
+{
+ "hop": "SEAM-tap-primary",
+ "surface": "tap-primary",
+ "kind": "writer-reader",
+ "writers": [
+  "APP-TAP"
+ ],
+ "readers": [
+  "APP-DURABLE"
+ ],
+ "pairs": [
+  [
+   "APP-TAP",
+   "APP-DURABLE"
+  ]
+ ],
+ "expected_value": "re-read value on the merged tree — not element presence (evidence/seams-runtag-app.out.json derivedHops)",
+ "covered_by_hops": {
+  "S14": "green"
+ },
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 481,
+   "title": "AC-DUR-7 AC-DUR-8 in-app browser: warning on load, one confirmation per press, private note",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2066,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 481,
+   "title": "AC-DUR-7 AC-DUR-8 in-app browser: warning on load, one confirmation per press, private note",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 6999,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 523,
+   "title": "AC-TAP-17 AC-TAP-18 stored-result views: missing and abandoned runs",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 897,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 523,
+   "title": "AC-TAP-17 AC-TAP-18 stored-result views: missing and abandoned runs",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2686,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 447,
+   "title": "AC-TAP-22 AC-TAP-23 explicit actions after another screen changed the run > Finish run when the displayed run was finished and another started",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1760,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 475,
+   "title": "AC-TAP-22 AC-TAP-23 explicit actions after another screen changed the run > Finish run when the displayed run was finished and nothing is open",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2024,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 497,
+   "title": "AC-TAP-22 AC-TAP-23 explicit actions after another screen changed the run > Start another run when a run was started elsewhere",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1881,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 447,
+   "title": "AC-TAP-22 AC-TAP-23 explicit actions after another screen changed the run > Finish run when the displayed run was finished and another started",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 4580,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 475,
+   "title": "AC-TAP-22 AC-TAP-23 explicit actions after another screen changed the run > Finish run when the displayed run was finished and nothing is open",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 4396,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 497,
+   "title": "AC-TAP-22 AC-TAP-23 explicit actions after another screen changed the run > Start another run when a run was started elsewhere",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 4684,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

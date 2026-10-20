@@ -1,0 +1,84 @@
+{
+ "hop": "A1",
+ "purpose": "service worker controls /app; build-ID cache; \"Ready offline ✓\"",
+ "expected_value": "after reload navigator.serviceWorker.controller != null; caches.keys() has a name including the build ID; rendered \"Ready offline ✓\" iff every precache entry is cached",
+ "covering_acs": "APP-SHELL AC-SHELL-7, AC-SHELL-8, AC-SHELL-8B",
+ "environment": "merged main, production build (npm run build; PW_PROD=1 npx playwright test), local next start on http://localhost:3000, projects chromium + mobile (iPhone 13 WebKit)",
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "coverage_note": null,
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_offline.spec.ts",
+   "line": 35,
+   "title": "J-APP-OFFLINE > AC-SHELL-7 Ready offline iff the shell and every precache entry are cached",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 7740,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_offline.spec.ts",
+   "line": 35,
+   "title": "J-APP-OFFLINE > AC-SHELL-7 Ready offline iff the shell and every precache entry are cached",
+   "project": "mobile",
+   "status": "skipped",
+   "result": "skipped",
+   "duration_ms": 0,
+   "retries": 0,
+   "skip_reason": "SW interception is Chromium-only in Playwright",
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 219,
+   "title": "production build only > AC-SHELL-8 generated public/sw.js: build-ID cache, no skipWaiting on install, SKIP_WAITING handled",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 83,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 219,
+   "title": "production build only > AC-SHELL-8 generated public/sw.js: build-ID cache, no skipWaiting on install, SKIP_WAITING handled",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 113,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 230,
+   "title": "production build only > AC-SHELL-8B GET /sw.js carries the current BUILD_ID",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 55,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 230,
+   "title": "production build only > AC-SHELL-8B GET /sw.js carries the current BUILD_ID",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 64,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

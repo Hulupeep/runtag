@@ -1,0 +1,99 @@
+{
+ "hop": "SEAM-createTag",
+ "surface": "createTag",
+ "kind": "writer-reader",
+ "writers": [
+  "APP-TAGS"
+ ],
+ "readers": [
+  "APP-DURABLE"
+ ],
+ "pairs": [
+  [
+   "APP-TAGS",
+   "APP-DURABLE"
+  ]
+ ],
+ "expected_value": "re-read value on the merged tree — not element presence (evidence/seams-runtag-app.out.json derivedHops)",
+ "covered_by_hops": {
+  "I2": "green",
+  "A9": "green",
+  "S14": "green"
+ },
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 107,
+   "title": "AC-TAGS-1 create a tag on a fresh device; its link survives reload; home leaves the empty state",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1822,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 107,
+   "title": "AC-TAGS-1 create a tag on a fresh device; its link survives reload; home leaves the empty state",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3233,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 213,
+   "title": "AC-TAGS-4 no Web NFC shows the writer-app steps; the harness is the positive control",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1797,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 213,
+   "title": "AC-TAGS-4 no Web NFC shows the writer-app steps; the harness is the positive control",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3802,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 481,
+   "title": "AC-DUR-7 AC-DUR-8 in-app browser: warning on load, one confirmation per press, private note",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2066,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 481,
+   "title": "AC-DUR-7 AC-DUR-8 in-app browser: warning on load, one confirmation per press, private note",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 6999,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

@@ -1,0 +1,95 @@
+{
+ "hop": "SEAM-cleanTagName",
+ "surface": "cleanTagName",
+ "kind": "writer-reader",
+ "writers": [
+  "APP-TAGS"
+ ],
+ "readers": [
+  "APP-DURABLE"
+ ],
+ "pairs": [
+  [
+   "APP-TAGS",
+   "APP-DURABLE"
+  ]
+ ],
+ "expected_value": "re-read value on the merged tree — not element presence (evidence/seams-runtag-app.out.json derivedHops)",
+ "covered_by_hops": {},
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 146,
+   "title": "AC-TAGS-2 name rule, field reset and one press makes one tag",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2643,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 146,
+   "title": "AC-TAGS-2 name rule, field reset and one press makes one tag",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3887,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 154,
+   "title": "AC-DUR-2 files that are not RunTag backups write nothing",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1149,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 189,
+   "title": "AC-DUR-2 a later selection replaces the earlier plan: invalid clears it, valid applies only the latest",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 865,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 154,
+   "title": "AC-DUR-2 files that are not RunTag backups write nothing",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 5724,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 189,
+   "title": "AC-DUR-2 a later selection replaces the earlier plan: invalid clears it, valid applies only the latest",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 4040,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

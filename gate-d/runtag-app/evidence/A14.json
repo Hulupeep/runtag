@@ -1,0 +1,36 @@
+{
+ "hop": "A14",
+ "purpose": "chain of 40 renders 30 links and the number 40",
+ "expected_value": "chain-day links = 30, data-count \"30\", chain-value \"40\"; no horizontal scroll",
+ "covering_acs": "APP-CHAIN AC-CHAIN-2",
+ "environment": "merged main, production build (npm run build; PW_PROD=1 npx playwright test), local next start on http://localhost:3000, projects chromium + mobile (iPhone 13 WebKit)",
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "coverage_note": null,
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 86,
+   "title": "AC-CHAIN-2 a chain of 40 renders 30 links and the number 40, without horizontal scroll",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 959,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 86,
+   "title": "AC-CHAIN-2 a chain of 40 renders 30 links and the number 40, without horizontal scroll",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2992,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

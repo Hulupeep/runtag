@@ -1,0 +1,200 @@
+{
+ "hop": "SEAM-empty-state",
+ "surface": "empty-state",
+ "kind": "writer-reader",
+ "writers": [
+  "APP-CHAIN"
+ ],
+ "readers": [
+  "APP-DURABLE",
+  "APP-TAGS"
+ ],
+ "pairs": [
+  [
+   "APP-CHAIN",
+   "APP-DURABLE"
+  ],
+  [
+   "APP-CHAIN",
+   "APP-TAGS"
+  ]
+ ],
+ "expected_value": "re-read value on the merged tree — not element presence (evidence/seams-runtag-app.out.json derivedHops)",
+ "covered_by_hops": {
+  "I1": "green",
+  "S12": "green",
+  "S13": "green"
+ },
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 203,
+   "title": "AC-CHAIN-6 empty state on a fresh device",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 960,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 203,
+   "title": "AC-CHAIN-6 empty state on a fresh device",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2388,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 107,
+   "title": "AC-TAGS-1 create a tag on a fresh device; its link survives reload; home leaves the empty state",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1822,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 107,
+   "title": "AC-TAGS-1 create a tag on a fresh device; its link survives reload; home leaves the empty state",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3233,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 292,
+   "title": "AC-DUR-4 at most one open run; changes after the plan are caught > (a) the newer open run wins; (b) a future-dated backup run never displaces a valid one",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 863,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 317,
+   "title": "AC-DUR-4 at most one open run; changes after the plan are caught > (c) a tap on another page between plan and Apply leaves exactly one open run",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1050,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 336,
+   "title": "AC-DUR-4 at most one open run; changes after the plan are caught > (c) a rename after the plan is caught (keep)",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1397,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 336,
+   "title": "AC-DUR-4 at most one open run; changes after the plan are caught > (c) a rename after the plan is caught (use)",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1329,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 292,
+   "title": "AC-DUR-4 at most one open run; changes after the plan are caught > (a) the newer open run wins; (b) a future-dated backup run never displaces a valid one",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3121,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 317,
+   "title": "AC-DUR-4 at most one open run; changes after the plan are caught > (c) a tap on another page between plan and Apply leaves exactly one open run",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 4040,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 336,
+   "title": "AC-DUR-4 at most one open run; changes after the plan are caught > (c) a rename after the plan is caught (keep)",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 5503,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 336,
+   "title": "AC-DUR-4 at most one open run; changes after the plan are caught > (c) a rename after the plan is caught (use)",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 5191,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 87,
+   "title": "AC-DUR-1 round trip: restore from the plant view, chain kept, re-export equal, re-import idempotent",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2393,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 87,
+   "title": "AC-DUR-1 round trip: restore from the plant view, chain kept, re-export equal, re-import idempotent",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 11153,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

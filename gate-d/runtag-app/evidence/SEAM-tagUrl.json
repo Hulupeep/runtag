@@ -1,0 +1,174 @@
+{
+ "hop": "SEAM-tagUrl",
+ "surface": "tagUrl",
+ "kind": "writer-reader",
+ "writers": [
+  "APP-SHELL"
+ ],
+ "readers": [
+  "APP-DURABLE",
+  "APP-TAGS"
+ ],
+ "pairs": [
+  [
+   "APP-SHELL",
+   "APP-DURABLE"
+  ],
+  [
+   "APP-SHELL",
+   "APP-TAGS"
+  ]
+ ],
+ "expected_value": "re-read value on the merged tree — not element presence (evidence/seams-runtag-app.out.json derivedHops)",
+ "covered_by_hops": {
+  "S4": "green"
+ },
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "tests": [
+  {
+   "file": "tests/e2e/app_logic.spec.ts",
+   "line": 63,
+   "title": "AC-SHELL-9 tag URLs only from TAG_ORIGIN",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 15,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_logic.spec.ts",
+   "line": 63,
+   "title": "AC-SHELL-9 tag URLs only from TAG_ORIGIN",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 4,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_logic.spec.ts",
+   "line": 57,
+   "title": "newTagId matches ^[a-z0-9]{10}$ and is not constant",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 250,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_logic.spec.ts",
+   "line": 57,
+   "title": "newTagId matches ^[a-z0-9]{10}$ and is not constant",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 256,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 107,
+   "title": "AC-TAGS-1 create a tag on a fresh device; its link survives reload; home leaves the empty state",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1822,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 107,
+   "title": "AC-TAGS-1 create a tag on a fresh device; its link survives reload; home leaves the empty state",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3233,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 174,
+   "title": "AC-TAGS-3 copy link re-arms the setup grace > clipboard read-back (chromium)",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2008,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 189,
+   "title": "AC-TAGS-3 copy link re-arms the setup grace > reject clipboard: the link is shown to copy by hand, also after reload",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2389,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 189,
+   "title": "AC-TAGS-3 copy link re-arms the setup grace > unavailable clipboard: the link is shown to copy by hand, also after reload",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2281,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 174,
+   "title": "AC-TAGS-3 copy link re-arms the setup grace > clipboard read-back (chromium)",
+   "project": "mobile",
+   "status": "skipped",
+   "result": "skipped",
+   "duration_ms": 950,
+   "retries": 0,
+   "skip_reason": "Playwright WebKit cannot grant clipboard-write (wkPage _grantPermissions)",
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 189,
+   "title": "AC-TAGS-3 copy link re-arms the setup grace > reject clipboard: the link is shown to copy by hand, also after reload",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3677,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 189,
+   "title": "AC-TAGS-3 copy link re-arms the setup grace > unavailable clipboard: the link is shown to copy by hand, also after reload",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3311,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

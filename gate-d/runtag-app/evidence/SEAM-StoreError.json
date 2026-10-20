@@ -1,0 +1,305 @@
+{
+ "hop": "SEAM-StoreError",
+ "surface": "StoreError",
+ "kind": "writer-reader",
+ "writers": [
+  "APP-SHELL"
+ ],
+ "readers": [
+  "APP-CHAIN",
+  "APP-DURABLE",
+  "APP-TAGS",
+  "APP-TAP"
+ ],
+ "pairs": [
+  [
+   "APP-SHELL",
+   "APP-CHAIN"
+  ],
+  [
+   "APP-SHELL",
+   "APP-DURABLE"
+  ],
+  [
+   "APP-SHELL",
+   "APP-TAGS"
+  ],
+  [
+   "APP-SHELL",
+   "APP-TAP"
+  ]
+ ],
+ "expected_value": "re-read value on the merged tree — not element presence (evidence/seams-runtag-app.out.json derivedHops)",
+ "covered_by_hops": {
+  "S5": "green",
+  "S1": "green"
+ },
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "tests": [
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 89,
+   "title": "AC-SHELL-15 quota failure rejects with StoreError and writes nothing",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 573,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 89,
+   "title": "AC-SHELL-15 quota failure rejects with StoreError and writes nothing",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2002,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 258,
+   "title": "AC-TAP-13 storage failure: nothing saved, Retry records the tap",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 679,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 258,
+   "title": "AC-TAP-13 storage failure: nothing saved, Retry records the tap",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2719,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 288,
+   "title": "AC-TAP-13 AC-TAP-18 a store that cannot open shows the failure with the store error and Go",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 480,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 288,
+   "title": "AC-TAP-13 AC-TAP-18 a store that cannot open shows the failure with the store error and Go",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2010,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 607,
+   "title": "AC-DUR-10 failures write nothing > Apply, Not now and the export bookkeeping",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1369,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 654,
+   "title": "AC-DUR-10 failures write nothing > a newer database version shows the store error on Settings",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 495,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 607,
+   "title": "AC-DUR-10 failures write nothing > Apply, Not now and the export bookkeeping",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3435,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 654,
+   "title": "AC-DUR-10 failures write nothing > a newer database version shows the store error on Settings",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1590,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 55,
+   "title": "AC-SHELL-3 store round trip survives reload",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 839,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 55,
+   "title": "AC-SHELL-3 store round trip survives reload",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2099,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 149,
+   "title": "AC-SHELL-17 a failing transaction rolls back every write",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 514,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 149,
+   "title": "AC-SHELL-17 a failing transaction rolls back every write",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2319,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 170,
+   "title": "AC-SHELL-18 withTxn resolves only after the real transaction completes",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 489,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 170,
+   "title": "AC-SHELL-18 withTxn resolves only after the real transaction completes",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1866,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 304,
+   "title": "AC-CHAIN-13 a failed home load writes nothing and shows the store error",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1083,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 304,
+   "title": "AC-CHAIN-13 a failed home load writes nothing and shows the store error",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2431,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 323,
+   "title": "AC-TAGS-8 a failed save writes nothing; Retry after the cause clears; a newer schema shows the store error",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1432,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 350,
+   "title": "AC-TAGS-8 a newer database version shows the store error and no create",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 770,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 323,
+   "title": "AC-TAGS-8 a failed save writes nothing; Retry after the cause clears; a newer schema shows the store error",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3765,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 350,
+   "title": "AC-TAGS-8 a newer database version shows the store error and no create",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1828,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

@@ -1,0 +1,122 @@
+{
+ "hop": "SEAM-ready-offline",
+ "surface": "ready-offline",
+ "kind": "writer-reader",
+ "writers": [
+  "APP-SHELL"
+ ],
+ "readers": [
+  "APP-CHAIN"
+ ],
+ "pairs": [
+  [
+   "APP-SHELL",
+   "APP-CHAIN"
+  ]
+ ],
+ "expected_value": "re-read value on the merged tree — not element presence (evidence/seams-runtag-app.out.json derivedHops)",
+ "covered_by_hops": {
+  "S7": "green",
+  "A1": "green"
+ },
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 282,
+   "title": "AC-CHAIN-10 the chain home keeps Ready offline (production service worker) > Ready offline iff every precache entry is cached",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3348,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 282,
+   "title": "AC-CHAIN-10 the chain home keeps Ready offline (production service worker) > Ready offline iff every precache entry is cached",
+   "project": "mobile",
+   "status": "skipped",
+   "result": "skipped",
+   "duration_ms": 0,
+   "retries": 0,
+   "skip_reason": "SW interception is Chromium-only in Playwright",
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_offline.spec.ts",
+   "line": 35,
+   "title": "J-APP-OFFLINE > AC-SHELL-7 Ready offline iff the shell and every precache entry are cached",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 7740,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_offline.spec.ts",
+   "line": 35,
+   "title": "J-APP-OFFLINE > AC-SHELL-7 Ready offline iff the shell and every precache entry are cached",
+   "project": "mobile",
+   "status": "skipped",
+   "result": "skipped",
+   "duration_ms": 0,
+   "retries": 0,
+   "skip_reason": "SW interception is Chromium-only in Playwright",
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 219,
+   "title": "production build only > AC-SHELL-8 generated public/sw.js: build-ID cache, no skipWaiting on install, SKIP_WAITING handled",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 83,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 219,
+   "title": "production build only > AC-SHELL-8 generated public/sw.js: build-ID cache, no skipWaiting on install, SKIP_WAITING handled",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 113,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 230,
+   "title": "production build only > AC-SHELL-8B GET /sw.js carries the current BUILD_ID",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 55,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 230,
+   "title": "production build only > AC-SHELL-8B GET /sw.js carries the current BUILD_ID",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 64,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

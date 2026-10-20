@@ -1,0 +1,290 @@
+{
+ "hop": "SEAM-app-tags",
+ "surface": "/app/tags",
+ "kind": "writer-writer",
+ "writers": [
+  "APP-SHELL",
+  "APP-TAGS"
+ ],
+ "readers": [],
+ "pairs": [
+  [
+   "APP-SHELL",
+   "APP-TAGS"
+  ]
+ ],
+ "expected_value": "re-read value on the merged tree — not element presence (evidence/seams-runtag-app.out.json derivedHops)",
+ "covered_by_hops": {
+  "I2": "green",
+  "A10": "green",
+  "A5": "green"
+ },
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 107,
+   "title": "AC-TAGS-1 create a tag on a fresh device; its link survives reload; home leaves the empty state",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1822,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 107,
+   "title": "AC-TAGS-1 create a tag on a fresh device; its link survives reload; home leaves the empty state",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3233,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 213,
+   "title": "AC-TAGS-4 no Web NFC shows the writer-app steps; the harness is the positive control",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1797,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 213,
+   "title": "AC-TAGS-4 no Web NFC shows the writer-app steps; the harness is the positive control",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3802,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 547,
+   "title": "AC-TAGS-10 create-only grace expires; the list works offline (production service worker) > A2 and A5",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1575,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 547,
+   "title": "AC-TAGS-10 create-only grace expires; the list works offline (production service worker) > A2 and A5",
+   "project": "mobile",
+   "status": "skipped",
+   "result": "skipped",
+   "duration_ms": 0,
+   "retries": 0,
+   "skip_reason": "SW interception is Chromium-only in Playwright",
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 27,
+   "title": "AC-SHELL-1 hard loads resolve from the address bar > /app → home",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 546,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 27,
+   "title": "AC-SHELL-1 hard loads resolve from the address bar > /app/tags → tags",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 465,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 27,
+   "title": "AC-SHELL-1 hard loads resolve from the address bar > /app/settings → settings",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 419,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 27,
+   "title": "AC-SHELL-1 hard loads resolve from the address bar > /t/abc123def4 → tap",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 463,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 27,
+   "title": "AC-SHELL-1 hard loads resolve from the address bar > /t/ABC123def4 → invalid-tag",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 453,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 27,
+   "title": "AC-SHELL-1 hard loads resolve from the address bar > /t/a/b → invalid-tag",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 508,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 27,
+   "title": "AC-SHELL-1 hard loads resolve from the address bar > /app/nope → not-found",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 544,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 27,
+   "title": "AC-SHELL-1 hard loads resolve from the address bar > /shell → not-found",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 614,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 27,
+   "title": "AC-SHELL-1 hard loads resolve from the address bar > /app → home",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1320,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 27,
+   "title": "AC-SHELL-1 hard loads resolve from the address bar > /app/tags → tags",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1561,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 27,
+   "title": "AC-SHELL-1 hard loads resolve from the address bar > /app/settings → settings",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1378,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 27,
+   "title": "AC-SHELL-1 hard loads resolve from the address bar > /t/abc123def4 → tap",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1411,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 27,
+   "title": "AC-SHELL-1 hard loads resolve from the address bar > /t/ABC123def4 → invalid-tag",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1398,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 27,
+   "title": "AC-SHELL-1 hard loads resolve from the address bar > /t/a/b → invalid-tag",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1264,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 27,
+   "title": "AC-SHELL-1 hard loads resolve from the address bar > /app/nope → not-found",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1358,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 27,
+   "title": "AC-SHELL-1 hard loads resolve from the address bar > /shell → not-found",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1344,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

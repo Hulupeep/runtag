@@ -1,0 +1,74 @@
+{
+ "hop": "SEAM-onCreate",
+ "surface": "onCreate",
+ "kind": "writer-reader",
+ "writers": [
+  "APP-TAGS"
+ ],
+ "readers": [
+  "APP-DURABLE"
+ ],
+ "pairs": [
+  [
+   "APP-TAGS",
+   "APP-DURABLE"
+  ]
+ ],
+ "expected_value": "re-read value on the merged tree — not element presence (evidence/seams-runtag-app.out.json derivedHops)",
+ "covered_by_hops": {
+  "S14": "green",
+  "I14": "green"
+ },
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 481,
+   "title": "AC-DUR-7 AC-DUR-8 in-app browser: warning on load, one confirmation per press, private note",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2066,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 481,
+   "title": "AC-DUR-7 AC-DUR-8 in-app browser: warning on load, one confirmation per press, private note",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 6999,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 442,
+   "title": "AC-DUR-6 Home Screen app: notice on load; planting and restore blocked",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2042,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 442,
+   "title": "AC-DUR-6 Home Screen app: notice on load; planting and restore blocked",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 6474,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

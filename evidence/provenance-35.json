@@ -22,7 +22,7 @@
   {
    "claim": "Release smoke (AC-LINK-6)",
    "source": "scripts/release-smoke.sh, read-only GETs against production after the merge deploys",
-   "verification": "pending until executed: the script runs after the merge deploys; its raw output and exit status are captured to evidence/release-smoke-35.txt (copied to gate-d/runtag-app/evidence/release-smoke.txt) and this row is updated from the observed result"
+   "verification": "executed after the merge deployed: merge 8a4ce32 (PR #36), production deployment dpl_C5vvFhJsrMw3S1SMG6EDJ3v1zTPG READY; bash scripts/release-smoke.sh exit 0 with four PASS lines (release-live, shell, aliases 302 to vercel.com/sso-api, service-worker BUILD_ID 6CqteMJwIn3DFbpnrxvbr); raw output in evidence/release-smoke-35.txt and gate-d/runtag-app/evidence/release-smoke.txt"
   }
  ]
 }

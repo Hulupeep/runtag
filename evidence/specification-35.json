@@ -1,0 +1,227 @@
+{
+  "profile": {
+    "ui": true,
+    "materialSeams": [
+      {
+        "id": "release-checks"
+      }
+    ],
+    "artifacts": [
+      {
+        "id": "link-acceptance",
+        "role": "acceptance-checks",
+        "path": "docs/specs/app/APP-LINK.md",
+        "sha256": "e4c10571194d23c125aa16b7a5bd30d7a3b455ec56cca0d59411d51090ad3e1c",
+        "justification": "AC-LINK criteria with re-read oracles"
+      },
+      {
+        "id": "release-checks",
+        "role": "decision:release-checks",
+        "path": "docs/specs/app/APP-LINK.md",
+        "sha256": "e4c10571194d23c125aa16b7a5bd30d7a3b455ec56cca0d59411d51090ad3e1c",
+        "justification": "Link placement, release-note strings, release smoke and device checklist rules incl. the owner decision on A12"
+      },
+      {
+        "id": "persona-lens",
+        "role": "persona-walkthrough",
+        "path": "PRDs/runtag-app-persona-lens.md",
+        "sha256": "4e6b5d26b336f2615bf7f49b262a76178bd698c1114f8fb7bc06391e5cda56e2",
+        "reuse": true,
+        "shared": true
+      },
+      {
+        "id": "link-walk",
+        "role": "persona-walkthrough",
+        "path": "docs/specs/app/APP-LINK-preflight.md",
+        "sha256": "33decc207e895c2df38cfa1a89b4a7a7890d650d1e62c31adfd44bbf1223763e",
+        "maintenance": "historical",
+        "justification": "dated B.5 persona walk of this ticket; findings folded into the body"
+      },
+      {
+        "id": "persona-sim",
+        "role": "simulation",
+        "path": "PRDs/runtag-app-persona-lens.md",
+        "sha256": "4e6b5d26b336f2615bf7f49b262a76178bd698c1114f8fb7bc06391e5cda56e2",
+        "reuse": true,
+        "shared": true
+      },
+      {
+        "id": "link-preflight",
+        "role": "preflight",
+        "path": "docs/specs/app/APP-LINK-preflight.md",
+        "sha256": "33decc207e895c2df38cfa1a89b4a7a7890d650d1e62c31adfd44bbf1223763e",
+        "maintenance": "historical",
+        "justification": "dated B.5 pre-flight; findings folded"
+      },
+      {
+        "id": "gate-a-verdict",
+        "role": "decision:gate-a",
+        "path": "PRDs/runtag-app-verdict.md",
+        "sha256": "f715e8c9f202a1bbfa04781616ad5ff0c819d1328a2ee92a39b7fad8e19546ec",
+        "reuse": true,
+        "shared": true
+      },
+      {
+        "id": "hops",
+        "role": "acceptance-checks",
+        "path": "PRDs/runtag-app-hops.md",
+        "sha256": "e9a443d8d955684a624d3d5b7a17bd4fce698052710efca1f31c96a965b4106b",
+        "reuse": true,
+        "shared": true
+      },
+      {
+        "id": "docs/specs/app/APP-SHELL.md",
+        "role": "sibling-ticket",
+        "path": "docs/specs/app/APP-SHELL.md",
+        "applicable": false,
+        "reason": "Separate ticket #26; seam context only; its criteria belong to issue #26"
+      },
+      {
+        "id": "docs/specs/app/APP-TAP.md",
+        "role": "sibling-ticket",
+        "path": "docs/specs/app/APP-TAP.md",
+        "applicable": false,
+        "reason": "Separate ticket #27; seam context only; its criteria belong to issue #27"
+      },
+      {
+        "id": "docs/specs/app/APP-CHAIN.md",
+        "role": "sibling-ticket",
+        "path": "docs/specs/app/APP-CHAIN.md",
+        "applicable": false,
+        "reason": "Separate ticket #29; seam context only; its criteria belong to issue #29"
+      },
+      {
+        "id": "docs/specs/app/APP-TAGS.md",
+        "role": "sibling-ticket",
+        "path": "docs/specs/app/APP-TAGS.md",
+        "applicable": false,
+        "reason": "Separate ticket #31; seam context only; its criteria belong to issue #31"
+      },
+      {
+        "id": "docs/specs/app/APP-DURABLE.md",
+        "role": "sibling-ticket",
+        "path": "docs/specs/app/APP-DURABLE.md",
+        "applicable": false,
+        "reason": "Separate ticket #33; seam context only; its criteria belong to issue #33"
+      },
+      {
+        "id": "docs/contracts/journey_app_link.yml",
+        "role": "contract",
+        "path": "docs/contracts/journey_app_link.yml",
+        "deferred": true,
+        "reason": "Created by this slice (J-APP-LINK); implementation obligation"
+      },
+      {
+        "id": "docs/release/runtag-app-v1.md",
+        "role": "contract",
+        "path": "docs/release/runtag-app-v1.md",
+        "deferred": true,
+        "reason": "Release document created by this slice (APP-LINK deliverable); implementation obligation"
+      },
+      {
+        "id": "docs/release/runtag-app-v1-device-checklist.md",
+        "role": "contract",
+        "path": "docs/release/runtag-app-v1-device-checklist.md",
+        "deferred": true,
+        "reason": "Release document created by this slice (APP-LINK deliverable); implementation obligation"
+      }
+    ],
+    "gates": [
+      {
+        "id": "contracts",
+        "command": [
+          "npx",
+          "jest",
+          "--json"
+        ]
+      }
+    ]
+  },
+  "dependencies": [
+    {
+      "issue": 26,
+      "record": "evidence/specification-26.json",
+      "reason": "The link lands on the APP-SHELL /app route (data-view home); the release smoke checks the shell document and the service worker",
+      "evidence": [
+        {
+          "path": "evidence/capability-26-build.log",
+          "sha256": "937c7ab346fe716a0f56ca248c4dedbeef2b23fd71738d680bfc8495e08b3b13"
+        },
+        {
+          "path": "evidence/capability-26-playwright-report.json",
+          "sha256": "d1b7f2a337048294e218e286733a7136caaf767bd39a752fd4eb68e492045c69"
+        },
+        {
+          "path": "evidence/capability-26.json",
+          "sha256": "704d277a2326e88e9f05654545d58f3f65d11ab6af57cee72d2db7bdeec06d41"
+        }
+      ]
+    },
+    {
+      "issue": 31,
+      "record": "evidence/specification-31.json",
+      "reason": "The device checklist carries the APP-TAGS A11 check verbatim",
+      "evidence": [
+        {
+          "path": "evidence/capability-31-build.log",
+          "sha256": "f1975525836c20f6bf8d32205d75d12edb81b79ac1d2ca259ec9fed59b34f52d"
+        },
+        {
+          "path": "evidence/capability-31-playwright-report.json",
+          "sha256": "44746a758b736fc88a9fd0480a442929436891f781a79b787675e7d5650c6f93"
+        },
+        {
+          "path": "evidence/capability-31.json",
+          "sha256": "3beabe1030f39e4f7b43089ac72f3ee9a41332dc260ba8375a8be46aa2464d7c"
+        }
+      ]
+    },
+    {
+      "issue": 33,
+      "record": "evidence/specification-33.json",
+      "reason": "The device checklist carries the APP-DURABLE I17 check verbatim",
+      "evidence": [
+        {
+          "path": "evidence/capability-33-build.log",
+          "sha256": "8dd727d19e0661a049c343a13f361e85b192f53f93d9bdccadbe9a73060c865a"
+        },
+        {
+          "path": "evidence/capability-33-playwright-report.json",
+          "sha256": "ec6b75ed7b05d32baeb21054a0bbded488ea80762c2d246a65b1ece506546c0d"
+        },
+        {
+          "path": "evidence/capability-33.json",
+          "sha256": "f7c83c60be4b2a4efa34f52b5fe762084f69b440ad004f02e8d127440f5d7075"
+        }
+      ]
+    }
+  ],
+  "issue": {
+    "body": "# APP-LINK: demo link to the app + real-device release check\n\n**Epic:** RunTag App v1 (PRDs/runtag-app-prd.md @ f6c230c7…) · **Wave:** W4 · **Priority:** P2 · **Depends on:** APP-SHELL #26, APP-TAP #27, APP-CHAIN #29, APP-TAGS #31, APP-DURABLE #33 — all merged and live\n**Persona:** a demo visitor who wants the real thing; the owner releasing v1 on real phones · **Promise:** \"The demo leads to the real thing, and the real thing works on a real phone.\"\n**Gate A:** SHIP_WITH_STIPULATIONS — verdict §7 APP-LINK items 1–3 (M-8, M-11/M-1, real-device checklist incl. T12 part) folded. **B.5:** docs/specs/app/APP-LINK-preflight.md — C1 (owner decision 2026-10-20, option A), P1-1…P1-5, P2-1…P2-4 folded (v2).\n**Pinned hops:** G2 (automated); I16, I17, A11, A12 (real devices, owner — A12 re-stated by the owner-approved hops amendment 2026-10-20); verdict ledger #20, #21 (release smoke).\n**Covers:** APP-101, the v1 release checklist, the T12 release-notes text.\n\nRevenue statement (M-11 / M-1): see release-note string R3 below.\n\n## Scope\n### In scope\n- Demo scene 8 (`components/scenes/Scene8CTA.tsx`): an **added** link \"Start for real\" to `/app`. The \"Get Starter Kit – £19\" button, the waitlist email form (`aria-label=\"Email address\"`), social proof and \"Restart Demo\" stay unchanged (M-8).\n- Release notes `docs/release/runtag-app-v1.md` with the corrected texts R1–R4 (T12, M-11).\n- The real-device checklist `docs/release/runtag-app-v1-device-checklist.md`, items 1–10, each with hop id and named Gate D evidence files.\n- A release smoke script `scripts/release-smoke.sh` (owner/agent-run after deploy; never in CI or `npm test`).\n### Not in scope\nExecuting the device checklist and signing it (owner only — Gate D); any change to the demo's waitlist, pricing or copy beyond the added link (demo copy slice #12 stays parked); PRD §7 14-day durability metric (owner, from the daily I17 exports, recorded in Gate D findings); persona-lens §5 asks 2 and 5 (recorded as observations if seen, not release blockers).\n\n## Rules\n- **Link (P2-1):** a plain `<a href=\"/app\" data-testid=\"start-for-real\" className=\"cta-button secondary inline-flex min-h-[48px] min-w-[48px] items-center justify-center\">Start for real</a>` — not a `motion` element and not `next/link` (a full document load into the app shell), with exactly the text \"Start for real\" and no other added copy. It is placed after the `{!submitted ? form : success}` block and before the social-proof `<p>`, so it renders whether or not the waitlist was submitted; \"Restart Demo\" stays last.\n- **Release notes (P1-3):** `docs/release/runtag-app-v1.md` contains each of these four strings exactly, as raw markdown (backticks included), each on its own line:\n  - R1 = `Vercel request logs record tag ID, IP, user agent and time for online taps (plan retention); no analytics scripts on `/t/*` or `/app*`.`\n  - R2 = `Every tap screen shows one primary button (hypothesised WebKit user-interaction signal; confirmed or refuted by the §7 8-day iOS check).`\n  - R3 = `Revenue: none in v1; validation only. Alternative today: calendar/streak app or iOS Shortcuts NFC automation; delta: no install, no typing, metric-free chain.`\n  - R4 = `Private browsing is not detected (no reliable signal); the plant screen states 'Private tabs forget your chain.'`\n  The release notes never quote the replaced PRD §3 sentence; parenthetical notes in this ticket are commentary, not release-note text.\n- **Release smoke (P1-1, P2-3, C1):** `scripts/release-smoke.sh` (`set -euo pipefail`, `curl -sS --max-redirs 0`, no cookies, read-only GETs) prints one line per check, `<check> <status> <location-or-marker> PASS|FAIL`, and exits 0 only if all pass:\n  1. **Shell:** `GET https://runtag.vercel.app/t/{id}` with a fresh `[a-z0-9]{10}` id from `/dev/urandom` → 200, the body contains `<title>RunTag</title>` and `data-testid=\"view\"`, and every `<script src=…>` starts with `/_next/static/` (PL-22: no third-party scripts).\n  2. **Aliases (owner decision 2026-10-20, option A):** `GET https://runtag-floutlabs.vercel.app/app` and `GET https://runtag-git-main-floutlabs.vercel.app/app`, anonymous → each is either 302/307 with `Location` starting `https://vercel.com/sso-api`, or 308 with `Location: https://runtag.vercel.app/app`; a 200 or any other status fails.\n  3. **Service worker:** `GET https://runtag.vercel.app/sw.js` → 200, `Cache-Control: no-cache`, and the body matches `const BUILD_ID = '([^'_][^']*)'` (a rendered id, never `__BUILD_ID__`).\n  4. **This release is live (ledger #20):** `GET https://runtag.vercel.app/` → 200 and at least one `/_next/static/chunks/*.js` referenced by that HTML contains `start-for-real`; polled every 30 s for up to 10 min, so it can start as soon as the merge lands.\n  The build agent runs it once the merge commit's production deployment is READY and commits the raw output to `evidence/release-smoke-<issue>.txt` in a docs-only follow-up (the Ignored Build Step skips that deploy); the same file is copied to `gate-d/runtag-app/evidence/release-smoke.txt`.\n- **Device checklist (P1-2, P1-4, P2-4):** each item is a `### <n>. <title>` section with these lines in this order: `Hop:` (hop id or `—`), `Expected:`, `Evidence:` (file names under `gate-d/runtag-app/evidence/`, `.png`/`.txt`/`.json` only), `Result:`, `Date:`, `Phone / OS / browser:`. Items:\n  1. Stickers — Hop `—`; purchase date of NTAG213/215 recorded before the walk (M-10); evidence `stickers-purchase.png`.\n  2. iPhone tap — Hop `I16`; on the iPhone, in Safari, create the tag at `https://runtag.vercel.app/app/tags` and copy its link; write that link with the iOS writer app; the read-back is exactly `https://runtag.vercel.app/t/<id>`; NFC banner → \"Open in Safari\" → TAGGED; an export after tap-in has the run `open`, after tap-out `done`; screen recording < 2 s from the banner tap to the first TAGGED frame on 4G (M-7). Evidence `I16-export-after-in.json`, `I16-export-after-out.json`, `I16-latency.txt` (fps, banner-tap frame, first TAGGED frame, ms), `I16-first-tagged-frame.png` (the recording itself is kept but is not Gate D evidence).\n  3. iPhone default browser — Hop `—`; which browser opens the NFC URL when the default is not Safari, and whether it can land in a Private tab (S-12); evidence `iOS-default-browser.txt`.\n  4. iPhone retention — Hop `I17`; `Expected:` contains the APP-DURABLE DoD text exactly (extraction rule in AC-LINK-5); plus a line `APP-021 hypothesis:` confirmed (no data lost over ≥ 8 days of NFC-launched visits) / refuted (loss observed: date and what was lost); evidence `I17-export-<YYYY-MM-DD>.json` per day, `I17-tally.txt`, `I17-silo.png`.\n  5. Android writing — Hop `A11`; `Expected:` contains the APP-TAGS DoD text exactly; plus `Expected copy: \"NFC is switched off. Turn on NFC in your phone's settings, then try again, or copy the link instead.\"`; evidence `A11-export.json`, `A11-nfctools-readback.png`, `A11-nfc-off.png`.\n  6. Alias domain — Hop `A12` (owner amendment 2026-10-20): (a) on an Android browser **not** signed in to Vercel, `https://runtag-floutlabs.vercel.app/app` shows the Vercel login, never RunTag; (b) in a browser signed in to Vercel, the same URL lands on `https://runtag.vercel.app/app` (address bar re-read); evidence `A12-anonymous.png`, `A12-signed-in.png`.\n  7. Unauthenticated tag URL — Hop `—` (ledger #21); `https://runtag.vercel.app/t/{id}` on mobile data opens the app, no Vercel login; evidence `unauth-t.png`.\n  8. Primary metric — Hop `—`; ≥ 5 real runs in 7 days with physical tags; the chain equals a manual tally written in a dated note **before** opening `/app` each day (T12); evidence `primary-metric.txt` (dated tally rows and chain value per day).\n  9. Demo link — Hop `G2`; on a phone, the demo's \"Start for real\" lands on `/app`; evidence `demo-link.png`.\n  10. Day change — Hop `—` (APP-CHAIN #29 rule \"Day change\"); `/app` open in iPhone Safari before local midnight, switch to another app, return after midnight without reloading → today's history day and state show the new day; evidence `day-change.png`.\n\n## Acceptance Criteria\n| AC | Criterion | Oracle (re-read value) |\n|---|---|---|\n| AC-LINK-1 | Scene 8 gains \"Start for real\" (M-8, G2) | both projects, scene 8 reached by testids: `start-for-real` visible with `href` = `/app` and text exactly \"Start for real\"; the button \"Get Starter Kit – £19\" and the email input with accessible name \"Email address\" are still present; activating the link → `data-view` = `home`, path `/app`, and `performance.getEntriesByType('navigation')[0].name` ends with `/app` (a document load); after a successful waitlist signup (`/api/waitlist` fulfilled 200 by `page.route`) the link is still present |\n| AC-LINK-2 | Accessible and unobtrusive | focus the email input; Tab → the £19 button is focused; Tab → `start-for-real` is focused; Enter → a document load of `/app`; its `boundingBox()` (read before any hover) is ≥ 48 × 48; DOM order inside `scene-8`: form → `start-for-real` → social-proof text → `restart-button` (`compareDocumentPosition`) |\n| AC-LINK-3 | Demo unchanged otherwise | every pre-existing Playwright spec (all of tests/e2e and tests/invariants except journey_app_link.spec.ts) passes, and `git diff --stat main -- tests/` lists only the new spec |\n| AC-LINK-4 | Release notes carry the corrected texts (T12, M-11) | the spec reads R1–R4 from its own constants and finds each as an exact line in docs/release/runtag-app-v1.md; the file does not contain \"contain only random tag IDs\" |\n| AC-LINK-5 | Device checklist complete and Gate D ready | the spec reads docs/release/runtag-app-v1-device-checklist.md: sections 1–10 present; every section has non-empty `Hop:`, `Expected:`, `Evidence:`, `Result:`, `Date:`, `Phone / OS / browser:` lines in that order; items 2, 4, 5, 6 carry `Hop: I16`, `I17`, `A11`, `A12`; every evidence name ends in .png, .txt or .json, and items 2, 4, 5 and 8 list at least one .txt or .json; item 4 has an `APP-021 hypothesis:` line; for each of docs/specs/app/APP-TAGS.md and docs/specs/app/APP-DURABLE.md the spec reads the single line containing `APP-LINK #19 device checklist`, extracts the text between the first `\"` after `verbatim:` and the last `\"` on that line, and finds it as an exact substring of item 5 (APP-TAGS) and item 4 (APP-DURABLE) |\n| AC-LINK-6 | Release smoke against production | after the merge: `bash scripts/release-smoke.sh` exit 0; the captured `evidence/release-smoke-<issue>.txt` shows four PASS lines and the BUILD_ID value |\n\n## Gherkin\n```gherkin\nFeature: From the demo to the app\n  Scenario: Start for real\n    Given I finished the demo and see scene 8\n    Then I still see \"Get Starter Kit – £19\" and the waitlist form\n    When I choose \"Start for real\"\n    Then I am on \"/app\"\n```\n\n## Journey (Definition of Done)\nJ-APP-LINK (`tests/e2e/journey_app_link.spec.ts`, contract `docs/contracts/journey_app_link.yml`), projects chromium + mobile. Scene 8 is reached with testids (P2-2): `start-demo-button` → `nfc-tag` → `scene-5` (timeout 10 000) → `nfc-tag` → `page.getByTestId('scene-6').getByRole('button')` → `page.getByTestId('scene-7').getByRole('button')` → `scene-8` visible; `tap()` on `mobile`, `click()` on `chromium`. The static release-document checks run in both projects (read-only, idempotent). The release smoke runs after deploy and its raw output is retained as evidence; the device checklist is executed and signed by the owner in Gate D.\n\n## Declarations (Gate B)\nSurfaces are route literals, `data-testid` values and exported identifiers as they appear in code. `scene-8`, `Email address`, `restart-button`, `/app` resolve pre-build (APP-SHELL / demo); `start-for-real` and `Start for real` resolve only after this build. The APP-LINK entry of evidence/seams-runtag-app.json is updated to the same writes/reads and the epic graph is recomputed with `--no-resolve`.\nwrites: [`start-for-real`, `Start for real`]\nreads: [`/app`, `scene-8`, `Email address`, `restart-button`, `data-view`]\nfiles: [`components/scenes/Scene8CTA.tsx`, `docs/release/runtag-app-v1.md`, `docs/release/runtag-app-v1-device-checklist.md`, `scripts/release-smoke.sh`, `tests/e2e/journey_app_link.spec.ts`, `docs/contracts/journey_app_link.yml`, `evidence/seams-app-link.json`, `evidence/seams-runtag-app.json`]\nadrNone: \"repo has no ADR folder\"\n\nPost-build (DoD): `bash evidence/seams-check.sh evidence/seams-app-link.json` exits 0 on a clean tree; the epic graph is recomputed with `--no-resolve`.\n\n## Definition of Done\n- [ ] Every criterion in the Acceptance Criteria table asserted; `npm run test:contracts` + full Playwright (chromium + mobile) green on CI (Gate C); AC-LINK-6 captured after deploy\n- [ ] provenance record `evidence/provenance-<issue>.json` passes `scripts/provenance-gate.cjs` on the branch diff\n- [ ] production code < 1000 hand-written lines (owner amendment 2026-10-13: tests and contracts excluded)\n- [ ] `bash evidence/seams-check.sh evidence/seams-app-link.json` exits 0 after build\n- [ ] PRDs/runtag-app-hops.md carries the dated, owner-approved amendment 2026-10-20 re-stating A12 as in checklist item 6 (owner decision recorded in evidence/run-contract-runtag-app.yml before the build)\n- [ ] Device checklist handed to the owner for Gate D (not signed by an agent)\n",
+    "comments": [],
+    "labels": [
+      {
+        "id": "LA_kwDOQ-8GhM8AAAAC8HG-FA",
+        "name": "runtag-app",
+        "description": "RunTag App v1 epic (PRDs/runtag-app-prd.md)",
+        "color": "34c759"
+      },
+      {
+        "id": "LA_kwDOQ-8GhM8AAAAC8HG_aQ",
+        "name": "P2",
+        "description": "",
+        "color": "ff9500"
+      }
+    ],
+    "number": 35,
+    "title": "APP-LINK: demo link to the app + real-device release check (build-ready; promotes thin #19)"
+  },
+  "source": {
+    "kind": "github",
+    "repo": "Hulupeep/runtag",
+    "number": 35
+  },
+  "freshness": {
+    "status": "current"
+  }
+}

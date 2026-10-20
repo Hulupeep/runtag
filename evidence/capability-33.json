@@ -1,0 +1,24 @@
+{
+ "issue": 33,
+ "capability": "APP-DURABLE",
+ "testedSha": "8ff18909656ea1171399d766e6f4512ea71b4be8",
+ "command": "npm run build > evidence/capability-33-build.log && PW_PROD=1 npx playwright test tests/e2e/journey_app_backup.spec.ts --project=chromium --reporter=json > evidence/capability-33-playwright-report.json",
+ "project": "chromium",
+ "buildExitCode": 0,
+ "exitCode": 0,
+ "executed": 22,
+ "failed": 0,
+ "skipped": 0,
+ "flaky": 0,
+ "startTime": "2026-10-19T12:56:03.566Z",
+ "raw": [
+  {
+   "path": "evidence/capability-33-build.log",
+   "sha256": "8dd727d19e0661a049c343a13f361e85b192f53f93d9bdccadbe9a73060c865a"
+  },
+  {
+   "path": "evidence/capability-33-playwright-report.json",
+   "sha256": "ec6b75ed7b05d32baeb21054a0bbded488ea80762c2d246a65b1ece506546c0d"
+  }
+ ]
+}

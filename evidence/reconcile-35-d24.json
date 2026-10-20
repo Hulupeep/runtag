@@ -1,0 +1,26 @@
+{
+ "kind": "nonimpact",
+ "reason": "APP-LINK #35 was written after D24 and applies its fix: Declarations list only data-testid values, visible link text and route literals as writes/reads (the pre-existing surfaces scene-8, Email address, restart-button and /app are named as vacuous; start-for-real and Start for real resolve only after the build), touched files are listed separately under files:, evidence/seams-app-link.json and the APP-LINK entry of evidence/seams-runtag-app.json mirror them, and the post-build DoD runs bash evidence/seams-check.sh evidence/seams-app-link.json on a clean tree. No APP-LINK surface is a file path (the earlier draft file-path surface was removed in v2, B.5 P1-5). Promotion requires reconciliation only.",
+ "evidence": [
+  {
+   "path": "docs/specs/app/APP-LINK.md",
+   "sha256": "e4c10571194d23c125aa16b7a5bd30d7a3b455ec56cca0d59411d51090ad3e1c"
+  },
+  {
+   "path": "evidence/seams-app-link.json",
+   "sha256": "1b33ac681c59116a400a928c91c77fc0b2d7ad1a287dd1cac9f3075a8e8be2c5"
+  },
+  {
+   "path": "evidence/seams-runtag-app.json",
+   "sha256": "86980d13f1429be3d1b828c230bb2885e51684c20d40c2246df78d89ba66804c"
+  },
+  {
+   "path": "PRDs/runtag-app-hops.md",
+   "sha256": "e9a443d8d955684a624d3d5b7a17bd4fce698052710efca1f31c96a965b4106b"
+  },
+  {
+   "path": "evidence/seams-check.sh",
+   "sha256": "78c0017cc702e86362bbfd1041bd5286a77c5d71299304e8bc6791517cc69b91"
+  }
+ ]
+}

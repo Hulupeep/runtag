@@ -1,0 +1,1 @@
+Promoted to the build-ready ticket #35 (same scope; criteria namespaced as AC-LINK-n; B.5 pre-flight docs/specs/app/APP-LINK-preflight.md folded as v2, incl. the owner decision of 2026-10-20 on alias domains behind Vercel protection). This thin outline had no reviews; it is closed rather than rewritten so its original outline is not changed.

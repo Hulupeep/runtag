@@ -65,7 +65,7 @@
         "id": "hops",
         "role": "acceptance-checks",
         "path": "PRDs/runtag-app-hops.md",
-        "sha256": "fe4d5d1f9c06caacd7afee11ffa6f60f53f977d462c436f6d541d10c87b4c8b6",
+        "sha256": "e9a443d8d955684a624d3d5b7a17bd4fce698052710efca1f31c96a965b4106b",
         "reuse": true,
         "shared": true
       },
@@ -219,7 +219,7 @@
   },
   "capability": {
     "status": "tested",
-    "scope": "316e7bfb582cfdded62bb18f90bb543750977c9fe9c538d700127bfa10620599",
+    "scope": "15ee7ccf2bff3cc6c0aed5f2ad3aba5d139769dea0d4734dfad8900a02c9a855",
     "evidence": [
       {
         "path": "evidence/capability-26.json",

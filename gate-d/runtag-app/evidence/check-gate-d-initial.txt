@@ -1,0 +1,17 @@
+# node scripts/teardown-gate.cjs check-gate-d gate-d/runtag-app/  (merged main f086ead5d958c97f22aa316af1fdf976910695e1, 2026-10-20)
+✗ Gate D check FAILED:
+  - dangling evidence: evidence/I16-timeline.txt referenced for I16 but file does not exist
+  - dangling evidence: evidence/I16-export-after-in.json referenced for I16 but file does not exist
+  - dangling evidence: evidence/I16-export-after-out.json referenced for I16 but file does not exist
+  - dangling evidence: evidence/I16-latency.txt referenced for I16 but file does not exist
+  - dangling evidence: evidence/I16-first-tagged-frame.png referenced for I16 but file does not exist
+  - dangling evidence: evidence/I17-tally.txt referenced for I17 but file does not exist
+  - dangling evidence: evidence/I17-silo.png referenced for I17 but file does not exist
+  - dangling evidence: evidence/A11-export.json referenced for A11 but file does not exist
+  - dangling evidence: evidence/A11-nfctools-readback.png referenced for A11 but file does not exist
+  - dangling evidence: evidence/A11-nfc-off.png referenced for A11 but file does not exist
+  - dangling evidence: evidence/A12-anonymous.txt referenced for A12 but file does not exist
+  - dangling evidence: evidence/A12-signed-in.txt referenced for A12 but file does not exist
+  - dangling evidence: evidence/A12-anonymous.png referenced for A12 but file does not exist
+  - dangling evidence: evidence/A12-signed-in.png referenced for A12 but file does not exist
+# exit: 1

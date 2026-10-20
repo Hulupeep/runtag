@@ -1,0 +1,60 @@
+{
+ "hop": "I12",
+ "purpose": "storage failure on tap: nothing saved, Retry",
+ "expected_value": "rendered \"This tap wasn't saved\" and \"Retry\"; TAGGED count 0; R length 0 re-read in the same context (2026-10-14 harness)",
+ "covering_acs": "APP-TAP AC-TAP-13",
+ "environment": "merged main, production build (npm run build; PW_PROD=1 npx playwright test), local next start on http://localhost:3000, projects chromium + mobile (iPhone 13 WebKit)",
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "coverage_note": null,
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 258,
+   "title": "AC-TAP-13 storage failure: nothing saved, Retry records the tap",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 679,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 258,
+   "title": "AC-TAP-13 storage failure: nothing saved, Retry records the tap",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2719,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 288,
+   "title": "AC-TAP-13 AC-TAP-18 a store that cannot open shows the failure with the store error and Go",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 480,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 288,
+   "title": "AC-TAP-13 AC-TAP-18 a store that cannot open shows the failure with the store error and Go",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2010,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

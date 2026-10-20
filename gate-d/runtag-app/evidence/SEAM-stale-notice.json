@@ -1,0 +1,145 @@
+{
+ "hop": "SEAM-stale-notice",
+ "surface": "stale-notice",
+ "kind": "writer-writer",
+ "writers": [
+  "APP-CHAIN",
+  "APP-TAP"
+ ],
+ "readers": [],
+ "pairs": [
+  [
+   "APP-CHAIN",
+   "APP-TAP"
+  ]
+ ],
+ "expected_value": "re-read value on the merged tree — not element presence (evidence/seams-runtag-app.out.json derivedHops)",
+ "covered_by_hops": {
+  "S9": "green",
+  "S8": "green"
+ },
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 173,
+   "title": "AC-CHAIN-5 stale open runs are abandoned on /app and never count > R6 exactly 6 h old",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1601,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 173,
+   "title": "AC-CHAIN-5 stale open runs are abandoned on /app and never count > R9 7 h old, dated yesterday",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1474,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 173,
+   "title": "AC-CHAIN-5 stale open runs are abandoned on /app and never count > RF dated in the future",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1561,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 193,
+   "title": "AC-CHAIN-5 stale open runs are abandoned on /app and never count > a fresh open run stays open and shows the banner",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 899,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 173,
+   "title": "AC-CHAIN-5 stale open runs are abandoned on /app and never count > R6 exactly 6 h old",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3250,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 173,
+   "title": "AC-CHAIN-5 stale open runs are abandoned on /app and never count > R9 7 h old, dated yesterday",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3367,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 173,
+   "title": "AC-CHAIN-5 stale open runs are abandoned on /app and never count > RF dated in the future",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3109,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_chain.spec.ts",
+   "line": 193,
+   "title": "AC-CHAIN-5 stale open runs are abandoned on /app and never count > a fresh open run stays open and shows the banner",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2573,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 127,
+   "title": "AC-TAP-11 stale and future-dated runs > an open run aged 7 h is abandoned on the next tap, which then taps in",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 793,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 127,
+   "title": "AC-TAP-11 stale and future-dated runs > an open run aged 7 h is abandoned on the next tap, which then taps in",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2914,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

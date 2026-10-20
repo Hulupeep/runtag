@@ -1,0 +1,108 @@
+{
+ "hop": "I10",
+ "purpose": "no metrics, clock times or durations on any app screen",
+ "expected_value": "document.body.innerText matches neither \\b\\d{1,2}:\\d{2}\\b nor the duration regex, and contains no whole-word FORBIDDEN_TERMS on /app, /app/tags, /app/settings and /t/* result screens",
+ "covering_acs": "APP-SHELL AC-SHELL-11; APP-TAP AC-TAP-17; APP-TAGS AC-TAGS-9; APP-DURABLE AC-DUR-11",
+ "environment": "merged main, production build (npm run build; PW_PROD=1 npx playwright test), local next start on http://localhost:3000, projects chromium + mobile (iPhone 13 WebKit)",
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "coverage_note": null,
+ "tests": [
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 191,
+   "title": "AC-SHELL-11 app screens render no metrics",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 767,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/app_shell.spec.ts",
+   "line": 191,
+   "title": "AC-SHELL-11 app screens render no metrics",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2548,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 523,
+   "title": "AC-TAP-17 AC-TAP-18 stored-result views: missing and abandoned runs",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 897,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 523,
+   "title": "AC-TAP-17 AC-TAP-18 stored-result views: missing and abandoned runs",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2686,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 373,
+   "title": "AC-TAGS-9 accessible controls of at least 48 × 48 px; feature detection only",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1310,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_tags.spec.ts",
+   "line": 373,
+   "title": "AC-TAGS-9 accessible controls of at least 48 × 48 px; feature detection only",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3144,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 678,
+   "title": "AC-DUR-11 Settings controls are labelled and at least 48 × 48 px",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 965,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 678,
+   "title": "AC-DUR-11 Settings controls are labelled and at least 48 × 48 px",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2300,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

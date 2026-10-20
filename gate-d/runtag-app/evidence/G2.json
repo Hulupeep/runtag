@@ -1,0 +1,84 @@
+{
+ "hop": "G2",
+ "purpose": "seam scene 8: email field and £19 CTA stay; \"Start for real\" loads /app",
+ "expected_value": "email input accessible name \"Email address\"; £19 CTA and waitlist form present; \"Start for real\" href = /app and activating it is a document load of /app (data-view home)",
+ "covering_acs": "APP-LINK AC-LINK-1, AC-LINK-2",
+ "environment": "merged main, production build (npm run build; PW_PROD=1 npx playwright test), local next start on http://localhost:3000, projects chromium + mobile (iPhone 13 WebKit)",
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "coverage_note": null,
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_link.spec.ts",
+   "line": 31,
+   "title": "AC-LINK-1 scene 8 adds Start for real; the £19 button and the waitlist stay; the link loads /app",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 16408,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_link.spec.ts",
+   "line": 31,
+   "title": "AC-LINK-1 scene 8 adds Start for real; the £19 button and the waitlist stay; the link loads /app",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 17488,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_link.spec.ts",
+   "line": 44,
+   "title": "AC-LINK-1 the link sits outside both waitlist branches, so it stays after a signup",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 7,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_link.spec.ts",
+   "line": 44,
+   "title": "AC-LINK-1 the link sits outside both waitlist branches, so it stays after a signup",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 28,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_link.spec.ts",
+   "line": 59,
+   "title": "AC-LINK-2 reachable by Tab after the £19 button, at least 48 × 48, in the pinned order",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 15763,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_link.spec.ts",
+   "line": 59,
+   "title": "AC-LINK-2 reachable by Tab after the £19 button, at least 48 × 48, in the pinned order",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 17809,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

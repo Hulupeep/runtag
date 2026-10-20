@@ -1,0 +1,123 @@
+{
+ "hop": "SEAM-plantTag",
+ "surface": "plantTag",
+ "kind": "writer-reader",
+ "writers": [
+  "APP-TAP"
+ ],
+ "readers": [
+  "APP-DURABLE"
+ ],
+ "pairs": [
+  [
+   "APP-TAP",
+   "APP-DURABLE"
+  ]
+ ],
+ "expected_value": "re-read value on the merged tree — not element presence (evidence/seams-runtag-app.out.json derivedHops)",
+ "covered_by_hops": {
+  "S14": "green",
+  "L6": "green",
+  "I3": "green"
+ },
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 481,
+   "title": "AC-DUR-7 AC-DUR-8 in-app browser: warning on load, one confirmation per press, private note",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2066,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 481,
+   "title": "AC-DUR-7 AC-DUR-8 in-app browser: warning on load, one confirmation per press, private note",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 6999,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_plant.spec.ts",
+   "line": 71,
+   "title": "AC-TAP-4 unknown tag while a run is open: Save and tap out here finishes it at the new tag",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 576,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_plant.spec.ts",
+   "line": 71,
+   "title": "AC-TAP-4 unknown tag while a run is open: Save and tap out here finishes it at the new tag",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2441,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_plant.spec.ts",
+   "line": 86,
+   "title": "AC-TAP-4 plant tap-out race: the displayed run changed on another screen, nothing is tapped out",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1335,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_plant.spec.ts",
+   "line": 86,
+   "title": "AC-TAP-4 plant tap-out race: the displayed run changed on another screen, nothing is tapped out",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3685,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_plant.spec.ts",
+   "line": 11,
+   "title": "AC-TAP-1 AC-TAP-2 AC-TAP-5 plant a new tag, start a run, then the next load is setup grace",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 838,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_plant.spec.ts",
+   "line": 11,
+   "title": "AC-TAP-1 AC-TAP-2 AC-TAP-5 plant a new tag, start a run, then the next load is setup grace",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3466,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

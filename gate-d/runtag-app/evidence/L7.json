@@ -1,0 +1,36 @@
+{
+ "hop": "L7",
+ "purpose": "grace for a freshly planted tag applies after tap-out",
+ "expected_value": "R length unchanged, open(R) 0; rendered \"Tag works ✓\" and \"Start run\"",
+ "covering_acs": "APP-TAP AC-TAP-5",
+ "environment": "merged main, production build (npm run build; PW_PROD=1 npx playwright test), local next start on http://localhost:3000, projects chromium + mobile (iPhone 13 WebKit)",
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "coverage_note": "Composition: grace after \"Just save\" (no run open) is AC-TAP-5; the hops-doc variant (grace after \"Save and tap out here\") relies on the same graceUntil rule (S11).",
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_plant.spec.ts",
+   "line": 46,
+   "title": "AC-TAP-3 AC-TAP-5 Just save stores the tag only; grace without a run offers Start run",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 905,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_plant.spec.ts",
+   "line": 46,
+   "title": "AC-TAP-3 AC-TAP-5 Just save stores the tag only; grace without a run offers Start run",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3360,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

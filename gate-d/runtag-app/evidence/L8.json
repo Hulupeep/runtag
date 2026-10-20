@@ -1,0 +1,36 @@
+{
+ "hop": "L8",
+ "purpose": "stale open run is abandoned before an unknown tag is planted",
+ "expected_value": "old row status 'abandoned'; \"Save and tap out here\" count 0; after plant open(R) 0",
+ "covering_acs": "APP-TAP AC-TAP-11",
+ "environment": "merged main, production build (npm run build; PW_PROD=1 npx playwright test), local next start on http://localhost:3000, projects chromium + mobile (iPhone 13 WebKit)",
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "coverage_note": null,
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_plant.spec.ts",
+   "line": 135,
+   "title": "AC-TAP-11 forgotten tap-out with an unknown tag: the stale run is abandoned and cannot be tapped out",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 634,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_plant.spec.ts",
+   "line": 135,
+   "title": "AC-TAP-11 forgotten tap-out with an unknown tag: the stale run is abandoned and cannot be tapped out",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 2168,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

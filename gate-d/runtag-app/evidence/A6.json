@@ -1,0 +1,60 @@
+{
+ "hop": "A6",
+ "purpose": "online with navigations delayed 30 s, tap commits and shows TAGGED < 1000 ms",
+ "expected_value": "open(R) length 1 committed and TAGGED visible < 1000 ms (cache-first, no network wait)",
+ "covering_acs": "APP-TAP AC-TAP-20; APP-SHELL AC-SHELL-6B",
+ "environment": "merged main, production build (npm run build; PW_PROD=1 npx playwright test), local next start on http://localhost:3000, projects chromium + mobile (iPhone 13 WebKit)",
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "coverage_note": null,
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 567,
+   "title": "offline and slow network (production service worker) > AC-TAP-20 online with navigations delayed 30 s, a tap still commits and shows TAGGED at once",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1759,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 567,
+   "title": "offline and slow network (production service worker) > AC-TAP-20 online with navigations delayed 30 s, a tap still commits and shows TAGGED at once",
+   "project": "mobile",
+   "status": "skipped",
+   "result": "skipped",
+   "duration_ms": 0,
+   "retries": 0,
+   "skip_reason": "SW interception is Chromium-only in Playwright",
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_offline.spec.ts",
+   "line": 81,
+   "title": "J-APP-OFFLINE > AC-SHELL-6B online navigations are served cache-first even when the network is slow",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 715,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_offline.spec.ts",
+   "line": 81,
+   "title": "J-APP-OFFLINE > AC-SHELL-6B online navigations are served cache-first even when the network is slow",
+   "project": "mobile",
+   "status": "skipped",
+   "result": "skipped",
+   "duration_ms": 0,
+   "retries": 0,
+   "skip_reason": "SW interception is Chromium-only in Playwright",
+   "error": null
+  }
+ ]
+}

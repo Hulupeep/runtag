@@ -1,0 +1,7 @@
+{
+  "source": "QA/loops/feature-build.yaml epic_gate.signoff_policy (mirrored; loadGateDPolicy reads this file)",
+  "signoff_policy": {
+    "required": false,
+    "artifacts": []
+  }
+}

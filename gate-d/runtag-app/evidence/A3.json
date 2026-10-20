@@ -1,0 +1,60 @@
+{
+ "hop": "A3",
+ "purpose": "offline, never-loaded /t/<A> taps in with its own id, < 1000 ms",
+ "expected_value": "R length 1; R[0].tagInId = A (not B); status 'open'; result visible < 1000 ms after goto resolves (Node-side timing)",
+ "covering_acs": "APP-TAP AC-TAP-16; APP-SHELL AC-SHELL-6",
+ "environment": "merged main, production build (npm run build; PW_PROD=1 npx playwright test), local next start on http://localhost:3000, projects chromium + mobile (iPhone 13 WebKit)",
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "coverage_note": null,
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 544,
+   "title": "offline and slow network (production service worker) > AC-TAP-16 offline: two never-loaded tag URLs tap in then out with their own ids",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1474,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_run.spec.ts",
+   "line": 544,
+   "title": "offline and slow network (production service worker) > AC-TAP-16 offline: two never-loaded tag URLs tap in then out with their own ids",
+   "project": "mobile",
+   "status": "skipped",
+   "result": "skipped",
+   "duration_ms": 0,
+   "retries": 0,
+   "skip_reason": "SW interception is Chromium-only in Playwright",
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_offline.spec.ts",
+   "line": 55,
+   "title": "J-APP-OFFLINE > AC-SHELL-6 never-loaded tag URLs work offline, each with its own id",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1472,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_offline.spec.ts",
+   "line": 55,
+   "title": "J-APP-OFFLINE > AC-SHELL-6 never-loaded tag URLs work offline, each with its own id",
+   "project": "mobile",
+   "status": "skipped",
+   "result": "skipped",
+   "duration_ms": 0,
+   "retries": 0,
+   "skip_reason": "SW interception is Chromium-only in Playwright",
+   "error": null
+  }
+ ]
+}

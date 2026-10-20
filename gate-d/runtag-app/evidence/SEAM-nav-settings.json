@@ -1,0 +1,71 @@
+{
+ "hop": "SEAM-nav-settings",
+ "surface": "nav-settings",
+ "kind": "writer-reader",
+ "writers": [
+  "APP-SHELL"
+ ],
+ "readers": [
+  "APP-DURABLE"
+ ],
+ "pairs": [
+  [
+   "APP-SHELL",
+   "APP-DURABLE"
+  ]
+ ],
+ "expected_value": "re-read value on the merged tree — not element presence (evidence/seams-runtag-app.out.json derivedHops)",
+ "covered_by_hops": {},
+ "main_sha": "f086ead5d958c97f22aa316af1fdf976910695e1",
+ "status": "green",
+ "tests": [
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 607,
+   "title": "AC-DUR-10 failures write nothing > Apply, Not now and the export bookkeeping",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1369,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 654,
+   "title": "AC-DUR-10 failures write nothing > a newer database version shows the store error on Settings",
+   "project": "chromium",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 495,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 607,
+   "title": "AC-DUR-10 failures write nothing > Apply, Not now and the export bookkeeping",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 3435,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  },
+  {
+   "file": "tests/e2e/journey_app_backup.spec.ts",
+   "line": 654,
+   "title": "AC-DUR-10 failures write nothing > a newer database version shows the store error on Settings",
+   "project": "mobile",
+   "status": "expected",
+   "result": "passed",
+   "duration_ms": 1590,
+   "retries": 0,
+   "skip_reason": null,
+   "error": null
+  }
+ ]
+}

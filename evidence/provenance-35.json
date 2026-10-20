@@ -1,0 +1,28 @@
+{
+ "issue": 35,
+ "slice": "APP-LINK",
+ "head": "feat/35-app-link",
+ "result": "pass",
+ "source_provenance": [
+  {
+   "claim": "Start for real on scene 8 (AC-LINK-1, AC-LINK-2)",
+   "source": "components/scenes/Scene8CTA.tsx renders a plain anchor href /app outside both waitlist branches",
+   "verification": "rendered href and text re-read; the £19 button and the Email address field still present; after activation data-view home, path /app and the navigation entry name ends with /app; Tab order email -> £19 -> link; box at least 48 x 48; DOM order form -> link -> social proof -> restart; source order places the link after the branch expression"
+  },
+  {
+   "claim": "Release notes strings (AC-LINK-4)",
+   "source": "docs/release/runtag-app-v1.md",
+   "verification": "R1-R4 read from the spec constants are exact lines of the file; the replaced PRD sentence is absent"
+  },
+  {
+   "claim": "Device checklist (AC-LINK-5)",
+   "source": "docs/release/runtag-app-v1-device-checklist.md",
+   "verification": "sections 1-10 with Hop/Expected/Evidence/Result/Date/Phone lines in order; hop ids I16, I17, A11, A12; text or JSON evidence for every value-bearing item; the APP-TAGS and APP-DURABLE DoD texts extracted from their spec lines are exact substrings"
+  },
+  {
+   "claim": "Release smoke (AC-LINK-6)",
+   "source": "scripts/release-smoke.sh, read-only GETs against production after the merge deploys",
+   "verification": "raw output captured to evidence/release-smoke-35.txt: shell markers, alias statuses, rendered BUILD_ID and the new link in a deployed chunk"
+  }
+ ]
+}

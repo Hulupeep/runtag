@@ -247,3 +247,11 @@ Reason: the APP-DURABLE v2 declarations (docs/specs/app/APP-DURABLE.md, evidence
 | Step | From → URL | Control | EXPECTED VALUE (re-read) | Owner |
 |---|---|---|---|---|
 | S15.1 | 3 done runs, never exported | `/app` | `backup-nudge` inside `backup-status`; home starts one store transaction (the APP-CHAIN forced-failure test unchanged) | APP-DURABLE (AC-DUR-9) |
+
+## Amendment 2026-10-20 (owner-approved stale-oracle disposition for A12; APP-LINK B.5 pre-flight C1)
+Owner decision 2026-10-20 (recorded in evidence/run-contract-runtag-app.yml `owner_decision_2026-10-20`): alias hosts stay behind Vercel Deployment Protection. Observed 2026-10-19/20: an anonymous `GET https://runtag-floutlabs.vercel.app/app` answers 302 to `https://vercel.com/sso-api?...` (Vercel answers before the Next redirect), so A12's original expected value is unreachable for anonymous visitors. The goal of S-7 (no second origin stores RunTag data) holds because anonymous visitors never reach the app on an alias.
+
+| Hop | Re-stated expected value |
+|---|---|
+| A12 | (a) a real Android browser **not** signed in to Vercel: `https://runtag-floutlabs.vercel.app/app` shows the Vercel login, never RunTag; (b) a browser signed in to Vercel: the same URL lands on `https://runtag.vercel.app/app` (address bar re-read). Automated release smoke: each alias `/app` answers 302/307 to `https://vercel.com/sso-api…` or 308 to `https://runtag.vercel.app/app`; a 200 fails. The redirect rule itself stays covered locally by the APP-SHELL Host-header test (tests/e2e/app_shell.spec.ts). Owner APP-LINK (device checklist item 6, release smoke check 2). |
+| G2 | Unchanged expected values; "Start for real" is reached by testids and asserted as a document load of `/app` (APP-LINK AC-LINK-1). |

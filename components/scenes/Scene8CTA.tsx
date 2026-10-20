@@ -97,6 +97,15 @@ export function Scene8CTA({ onRestart }: Scene8CTAProps) {
           </motion.div>
         )}
 
+        {/* Outside both waitlist branches, so it is there before and after a signup (APP-LINK). */}
+        <a
+          href="/app"
+          data-testid="start-for-real"
+          className="cta-button secondary inline-flex min-h-[48px] min-w-[48px] items-center justify-center"
+        >
+          Start for real
+        </a>
+
         <motion.p
           className="subline"
           initial={{ opacity: 0 }}

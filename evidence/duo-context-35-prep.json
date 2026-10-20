@@ -1,0 +1,86 @@
+{
+  "workKind": "preparation",
+  "specification": {
+    "record": "evidence/specification-35.json",
+    "targetTier": "build-ready",
+    "reviewerModel": "gpt-6-astra"
+  },
+  "goal": "docs/goal.md",
+  "task": "docs/specs/app/APP-LINK.md",
+  "references": [
+    "PRDs/runtag-app-prd.md",
+    "PRDs/runtag-app-verdict.md",
+    "PRDs/runtag-app-hops.md",
+    "docs/specs/app/APP-LINK-preflight.md"
+  ],
+  "objective": "APP-LINK #35 v3 (promotes thin #19; linked successor of run 1792491184562-5db6da84: F-I16-PRECONDITIONS, F-GATE-D-VALUE-EVIDENCE, F-MOCKED-SIGNUP-ORACLE repaired): every AC-LINK criterion has an executable re-read oracle; Gate A stipulations (M-8, M-11/M-1, real-device checklist incl. T12) and all B.5 findings folded, incl. the owner-approved A12 amendment 2026-10-20; APP-SHELL #26, APP-TAGS #31 and APP-DURABLE #33 dependencies carry raw capability evidence",
+  "finish": "Scoped independent review passes for build-ready preparation; promotion succeeds",
+  "criteria": [
+    {
+      "id": "AC-LINK-1",
+      "source": "docs/specs/app/APP-LINK.md",
+      "anchor": "| AC-LINK-1 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-LINK-2",
+      "source": "docs/specs/app/APP-LINK.md",
+      "anchor": "| AC-LINK-2 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-LINK-3",
+      "source": "docs/specs/app/APP-LINK.md",
+      "anchor": "| AC-LINK-3 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-LINK-4",
+      "source": "docs/specs/app/APP-LINK.md",
+      "anchor": "| AC-LINK-4 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-LINK-5",
+      "source": "docs/specs/app/APP-LINK.md",
+      "anchor": "| AC-LINK-5 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-LINK-6",
+      "source": "docs/specs/app/APP-LINK.md",
+      "anchor": "| AC-LINK-6 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "GATE-A-STIPULATIONS",
+      "source": "PRDs/runtag-app-verdict.md",
+      "anchor": "### APP-LINK (W4)",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-B5",
+      "source": "QA/loops/spec-build.yaml",
+      "anchor": "gate: no CRITICAL design gap survives",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-BUILD-READY",
+      "source": "SPECIFICATION.md",
+      "anchor": "Build-ready also references acceptance-checks, simulation and preflight;",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-CONTRACTS",
+      "source": "CLAUDE.md",
+      "anchor": "npm test -- contracts    # Must pass",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-B",
+      "source": "QA/loops/spec-build.yaml",
+      "anchor": "requirement→journey→test→issue complete; no orphans; no duplicate IDs;",
+      "kind": "gate"
+    }
+  ]
+}

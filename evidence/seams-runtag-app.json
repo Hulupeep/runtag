@@ -306,11 +306,25 @@
  {
   "id": "APP-LINK",
   "writes": [
-   "start-for-real"
+   "start-for-real",
+   "Start for real"
   ],
   "reads": [
    "/app",
-   "Email address"
+   "scene-8",
+   "Email address",
+   "restart-button",
+   "data-view"
+  ],
+  "files": [
+   "components/scenes/Scene8CTA.tsx",
+   "docs/release/runtag-app-v1.md",
+   "docs/release/runtag-app-v1-device-checklist.md",
+   "scripts/release-smoke.sh",
+   "tests/e2e/journey_app_link.spec.ts",
+   "docs/contracts/journey_app_link.yml",
+   "evidence/seams-app-link.json",
+   "evidence/seams-runtag-app.json"
   ]
  }
 ]

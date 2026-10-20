@@ -65,7 +65,7 @@
         "id": "hops",
         "role": "acceptance-checks",
         "path": "PRDs/runtag-app-hops.md",
-        "sha256": "fe4d5d1f9c06caacd7afee11ffa6f60f53f977d462c436f6d541d10c87b4c8b6",
+        "sha256": "e9a443d8d955684a624d3d5b7a17bd4fce698052710efca1f31c96a965b4106b",
         "reuse": true,
         "shared": true
       },
@@ -277,5 +277,16 @@
       }
     },
     "at": "2026-10-19T11:49:23.061Z"
+  },
+  "capability": {
+    "status": "tested",
+    "scope": "d9d72dbd65900132f4ce5e0d8f8d68c56cc0a359d8cde553b50a619076262fba",
+    "evidence": [
+      {
+        "path": "evidence/capability-33.json",
+        "sha256": "f7c83c60be4b2a4efa34f52b5fe762084f69b440ad004f02e8d127440f5d7075"
+      }
+    ],
+    "note": "APP-DURABLE merged in PR #34 (8ff1890) and live; raw build log and Playwright report referenced by hash from the summary"
   }
 }

@@ -12,11 +12,11 @@
   },
   {
    "path": "evidence/seams-runtag-app.json",
-   "sha256": "f1116e9c21b270914c7d9b885bed07529b183dbcbc89c6afb1ea6a94064d4798"
+   "sha256": "86980d13f1429be3d1b828c230bb2885e51684c20d40c2246df78d89ba66804c"
   },
   {
    "path": "PRDs/runtag-app-hops.md",
-   "sha256": "fe4d5d1f9c06caacd7afee11ffa6f60f53f977d462c436f6d541d10c87b4c8b6"
+   "sha256": "e9a443d8d955684a624d3d5b7a17bd4fce698052710efca1f31c96a965b4106b"
   },
   {
    "path": "evidence/seams-check.sh",

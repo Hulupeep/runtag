@@ -1,0 +1,83 @@
+{
+  "workKind": "implementation",
+  "specification": {
+    "record": "evidence/specification-35.json"
+  },
+  "goal": "docs/goal.md",
+  "task": "docs/specs/app/APP-LINK.md",
+  "references": [
+    "PRDs/runtag-app-prd.md",
+    "PRDs/runtag-app-hops.md",
+    "PRDs/runtag-app-verdict.md"
+  ],
+  "objective": "Implement APP-LINK #35: Start for real on demo scene 8 (document load of /app, £19 CTA and waitlist untouched), release notes R1-R4, a Gate D-ready device checklist, and the post-deploy release smoke; J-APP-LINK journey — all AC-LINK criteria asserted, CI green, and the release smoke captured after the merge deploys",
+  "finish": "Every AC-LINK criterion asserted by an executed test or captured run; contracts and full Playwright green on branch CI (Gate C); provenance complete; seam check exits 0; production code under 1000 lines; release smoke exit 0 after the merge deploys",
+  "criteria": [
+    {
+      "id": "AC-LINK-1",
+      "source": "docs/specs/app/APP-LINK.md",
+      "anchor": "| AC-LINK-1 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-LINK-2",
+      "source": "docs/specs/app/APP-LINK.md",
+      "anchor": "| AC-LINK-2 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-LINK-3",
+      "source": "docs/specs/app/APP-LINK.md",
+      "anchor": "| AC-LINK-3 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-LINK-4",
+      "source": "docs/specs/app/APP-LINK.md",
+      "anchor": "| AC-LINK-4 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-LINK-5",
+      "source": "docs/specs/app/APP-LINK.md",
+      "anchor": "| AC-LINK-5 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "AC-LINK-6",
+      "source": "docs/specs/app/APP-LINK.md",
+      "anchor": "| AC-LINK-6 |",
+      "kind": "acceptance"
+    },
+    {
+      "id": "GATE-CONTRACTS",
+      "source": "CLAUDE.md",
+      "anchor": "npm test -- contracts    # Must pass",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-C",
+      "source": "QA/loops/feature-build.yaml",
+      "anchor": "contract + journey tests green on branch-protected CI vs real seeded backend",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-PROVENANCE",
+      "source": "QA/loops/feature-build.yaml",
+      "anchor": "every value-bearing output/assertion is source-proven after implementation:",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-SEAMS",
+      "source": "docs/specs/app/APP-LINK.md",
+      "anchor": "- [ ] `bash evidence/seams-check.sh evidence/seams-app-link.json` exits 0 after build",
+      "kind": "gate"
+    },
+    {
+      "id": "GATE-SIZE",
+      "source": "docs/specs/app/APP-LINK.md",
+      "anchor": "- [ ] production code < 1000 hand-written lines (owner amendment 2026-10-13: tests and contracts excluded)",
+      "kind": "gate"
+    }
+  ]
+}

@@ -39,3 +39,8 @@ run_contract:
       limit counts shipped production code only; tests and contracts are excluded (they add safety, not scope).
       Applies to APP-SHELL #26 and all RunTag app tickets. APP-SHELL #26: 659 production lines (<1000);
       tests 508 and contracts 130 excluded per this amendment.
+
+owner_decision_2026-10-20:
+  topic: "APP-LINK hop A12 / alias domains behind Vercel Deployment Protection"
+  decision: "Accept login-or-308: keep Vercel protection. A12 expected value becomes: anonymous request to an alias host -> Vercel login (302 to vercel.com/sso-api) or 308 to https://runtag.vercel.app, never a 200 app response (no separate-storage silo); signed in to Vercel -> 308 to the canonical origin. Recorded as an owner-approved dated hops amendment. No Vercel settings change."
+  answered_by: owner (AskUserQuestion, 2026-10-20)

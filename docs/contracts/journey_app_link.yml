@@ -1,0 +1,27 @@
+# J-APP-LINK — the demo leads to the real app; release documents ready for Gate D (APP-LINK #35)
+journey_meta:
+  id: J-APP-LINK
+  from_spec: "PRDs/runtag-app-prd.md"
+  covers_reqs: [APP-101, AC-LINK-1, AC-LINK-2, AC-LINK-3, AC-LINK-4, AC-LINK-5]
+  type: "e2e"
+  dod_criticality: critical
+  status: not_tested
+  owner: "@hulupeep"
+
+preconditions:
+  - description: "The demo at / reached by testids; release documents under docs/release/"
+    setup_hint: "goto('/'); start-demo-button, nfc-tag, scene-5, nfc-tag, scene-6 button, scene-7 button"
+
+steps:
+  - step: 1
+    name: "Scene 8 shows the £19 button, the waitlist form and Start for real"
+    required_elements:
+      - selector: "[data-testid='scene-8']"
+      - selector: "[data-testid='start-for-real']"
+  - step: 2
+    name: "Start for real loads /app as a document; the chain home renders"
+    required_elements:
+      - selector: "[data-testid='view'][data-view='home']"
+
+test_hooks:
+  e2e_test_file: "tests/e2e/journey_app_link.spec.ts"

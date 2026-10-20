@@ -1,14 +1,14 @@
 #!/bin/bash
 # APP-LINK #35 GATE-SIZE: hand-written app production lines added by this slice (owner amendment 2026-10-13:
 # tests and contracts excluded). Baseline = merge-base with main (APP-SHELL #26 merged there).
-# Specflow tooling under scripts/ (vendored from Hulupeep/Specflow by the runtime update that carries the #208 fix)
+# Release tooling (scripts/release-smoke.sh) and Specflow tooling under scripts/ (vendored from Hulupeep/Specflow by the runtime update that carries the #208 fix)
 # is not app code and is listed separately, never hidden.
 set -euo pipefail
 BASE=$(git merge-base main HEAD)
 echo "baseline: $BASE ($(git log -1 --format=%s "$BASE"))"
 echo "head:     $(git rev-parse HEAD)"
 APP='^(app|lib|components|public|scripts/sw)/|^(next\.config\.mjs|package\.json)$'
-TOOL='^scripts/(duo-|specflow-|improve-|review-)'
+TOOL='^scripts/(duo-|specflow-|improve-|review-|release-smoke)'
 rows=$(git diff --numstat "$BASE" HEAD)
 echo "--- app production files (added deleted path)"
 awk -F'\t' -v re="$APP" '$3 ~ re' <<<"$rows"

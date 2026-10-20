@@ -211,7 +211,8 @@
         "name": "P2",
         "description": "",
         "color": "ff9500"
-      }
+      },
+      "spec:build-ready"
     ],
     "number": 35,
     "title": "APP-LINK: demo link to the app + real-device release check (build-ready; promotes thin #19)"
@@ -222,6 +223,53 @@
     "number": 35
   },
   "freshness": {
-    "status": "current"
+    "status": "current",
+    "scope": "847144ef260584cc2b0b67e84e7414dce27f908997e7db88d3737f53b48afdd0"
+  },
+  "remoteDiscoveries": [],
+  "readiness": {
+    "id": "4f33b55b-20ca-49f4-8be1-7fcb8aa7b069",
+    "producer": "specflow-specification/v1",
+    "tier": "build-ready",
+    "inputHash": "49cc5a479879cc01e847e4a10eab1c6fba38e1b5dbb2551f30e4b2b8f449f95b",
+    "dependenciesHash": "199535b25ba2ca8b6fd77d1bb6fb4ef2933ca34ca66aefbde1b802d993c49e9e",
+    "discoveryHash": "54f320e350e5c9ae8a1a70b2b477c08732f14d489d87689c5ad7872b9abd7a87",
+    "discoverySources": [
+      35,
+      26,
+      31,
+      33,
+      24
+    ],
+    "why": "APP-LINK #35 v3 build-ready: scoped independent review (duo run 1792491755218-cc9b0b12) verified AC-LINK-1..6 and gates; owner-approved A12 amendment 2026-10-20; I16 timing, value evidence and structural submitted-state oracle repaired; D24 reconciled for #35",
+    "selected": 35,
+    "gates": [
+      {
+        "id": "contracts",
+        "scope": "49cc5a479879cc01e847e4a10eab1c6fba38e1b5dbb2551f30e4b2b8f449f95b",
+        "status": "passed",
+        "executed": true,
+        "skipped": false,
+        "evidence": {
+          "path": ".specflow/specification/evidence/gate-35-f9366222-2998-4fc8-91e2-638788e3510c.json",
+          "sha256": "efdc7c2c8b966b6bafdcae2a86dfbea7535c4104b447e5926fa09663256f6fef"
+        }
+      }
+    ],
+    "review": {
+      "outcome": "passed",
+      "evidence": {
+        "path": ".specflow/duo/1792491755218-cc9b0b12/round-001/stdout.txt",
+        "sha256": "60969be898a47673aabbbc92a3d49a6c81823a4242e02bb16f45b845a39d3af0"
+      },
+      "identity": {
+        "provider": "codex",
+        "model": "gpt-6-astra",
+        "family": "gpt",
+        "modelEvidence": "explicit-cli-selection (provider did not report served model)",
+        "mode": "live"
+      }
+    },
+    "at": "2026-10-20T10:30:19.106Z"
   }
 }

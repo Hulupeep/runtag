@@ -22,7 +22,7 @@
   {
    "claim": "Release smoke (AC-LINK-6)",
    "source": "scripts/release-smoke.sh, read-only GETs against production after the merge deploys",
-   "verification": "raw output captured to evidence/release-smoke-35.txt: shell markers, alias statuses, rendered BUILD_ID and the new link in a deployed chunk"
+   "verification": "pending until executed: the script runs after the merge deploys; its raw output and exit status are captured to evidence/release-smoke-35.txt (copied to gate-d/runtag-app/evidence/release-smoke.txt) and this row is updated from the observed result"
   }
  ]
 }

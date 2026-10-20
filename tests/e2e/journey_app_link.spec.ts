@@ -7,6 +7,8 @@ import path from 'node:path'
 
 const ROOT = path.join(__dirname, '..', '..')
 const read = (f: string) => fs.readFileSync(path.join(ROOT, f), 'utf8')
+// A mutation run may point the checklist check at a modified copy (CHECKLIST_PATH, absolute); normal runs read the repo file.
+const CHECKLIST = process.env.CHECKLIST_PATH ?? path.join(ROOT, 'docs/release/runtag-app-v1-device-checklist.md')
 
 const R1 = 'Vercel request logs record tag ID, IP, user agent and time for online taps (plan retention); no analytics scripts on `/t/*` or `/app*`.'
 const R2 = 'Every tap screen shows one primary button (hypothesised WebKit user-interaction signal; confirmed or refuted by the §7 8-day iOS check).'
@@ -85,7 +87,7 @@ test('AC-LINK-4 the release notes carry R1–R4 exactly and never the replaced s
 })
 
 test('AC-LINK-5 the device checklist is complete and Gate D ready', () => {
-  const doc = read('docs/release/runtag-app-v1-device-checklist.md')
+  const doc = fs.readFileSync(CHECKLIST, 'utf8')
   const sections = doc.split(/^### /m).slice(1)
   expect(sections.map((s) => Number(s.split('.')[0]))).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
   const fields = ['Hop:', 'Expected:', 'Evidence:', 'Result:', 'Date:', 'Phone / OS / browser:']
@@ -94,7 +96,7 @@ test('AC-LINK-5 the device checklist is complete and Gate D ready', () => {
     const at = fields.map((f) => s.split('\n').findIndex((l) => l.startsWith(f)))
     expect(at.every((i) => i >= 0), s.slice(0, 30)).toBe(true)
     expect([...at].sort((a, b) => a - b), s.slice(0, 30)).toEqual(at) // in this order
-    for (const f of ['Hop:', 'Expected:', 'Evidence:']) expect(field(s, f).slice(f.length).trim(), `${s.slice(0, 20)} ${f}`).not.toBe('')
+    for (const f of fields) expect(field(s, f).slice(f.length).trim(), `${s.slice(0, 20)} ${f}`).not.toBe('') // unexecuted fields carry 'pending — owner'
   }
   const hop = (n: number) => field(sections[n - 1], 'Hop:').slice(4).trim()
   expect([hop(2), hop(4), hop(5), hop(6)]).toEqual(['I16', 'I17', 'A11', 'A12'])
